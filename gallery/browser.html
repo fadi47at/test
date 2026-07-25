@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-design="0" data-var="0">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Cinzel:wght@400;500;600&family=Bebas+Neue&family=Italiana&family=Caveat:wght@400;500;600&family=Archivo+Black&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="browser.css" />
+</head>
+<body>
+
+  <!-- Browser chrome -->
+  <div class="chrome">
+    <button class="chrome__back" id="back" type="button" aria-label="Back to gallery">
+      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M10 3 L5 8 L10 13" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to gallery
+    </button>
+    <div class="chrome__url">
+      <span class="chrome__dot"></span>
+      <span class="chrome__dot"></span>
+      <span class="chrome__dot"></span>
+      <span class="chrome__addr" id="addr">vad.dev</span>
+    </div>
+    <div class="chrome__vars" id="vars">
+      <button class="chrome__var is-active" data-var="0" type="button">V1</button>
+      <button class="chrome__var" data-var="1" type="button">V2</button>
+      <button class="chrome__var" data-var="2" type="button">V3</button>
+    </div>
+  </div>
+
+  <!-- Live preview frame -->
+  <div class="frame" id="frame">
+
+    <!-- Optional hero background image -->
+    <div class="dhero-bg" id="dheroBg" aria-hidden="true"></div>
+
+    <!-- Top nav -->
+    <header class="dnav" id="dnav">
+      <a class="dnav__logo" href="#" id="dlogo">
+        <span class="dnav__mark" id="dmark"></span>
+        <span class="dnav__word" id="dword">Brand</span>
+      </a>
+      <nav class="dnav__links" id="dlinks">
+        <a href="#d-showcase">Work</a>
+        <a href="#d-features">Why us</a>
+        <a href="#d-pricing">Pricing</a>
+        <a href="#d-contact">Contact</a>
+      </nav>
+      <a class="dnav__cta" href="#d-cta" id="dnavcta">Get started →</a>
+    </header>
+
+    <!-- Hero -->
+    <section class="dhero" id="dhero">
+      <span class="deyebrow" id="deyebrow">A small word above the title</span>
+      <h1 class="dtitle" id="dtitle">Brand</h1>
+      <span class="drule" aria-hidden="true"></span>
+      <p class="dsub" id="dsub">A single-line tagline that captures the whole brand in twelve words or fewer.</p>
+      <div class="dactions" id="dactions">
+        <a class="dbtn dbtn--primary" href="#d-cta" id="dbtn1">Primary action</a>
+        <a class="dbtn" href="#d-showcase" id="dbtn2">See the work</a>
+      </div>
+    </section>
+
+    <!-- Showcase (3 image cards) -->
+    <section id="d-showcase" class="dshowcase">
+      <div class="dshowcase__head">
+        <span class="dsec-eyebrow" id="dsh-eyebrow">Selected work</span>
+        <h2 class="dsec-title" id="dsh-title">Three things we made</h2>
+        <p class="dsh-lede" id="dsh-lede">A quick look at what we do, who we do it for, and how it turned out.</p>
+      </div>
+      <div class="dshowcase__grid" id="dsh-grid">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="d-features" class="dfeatures">
+      <span class="dsec-eyebrow" id="dsec-eyebrow">Why us</span>
+      <h2 class="dsec-title" id="dsec-title">Three reasons we exist</h2>
+      <div class="dgrid" id="dgrid">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section id="d-testimonial" class="dtestimonial">
+      <p class="dquote" id="dquote">"A quote from a customer that captures what it actually feels like to use the product."</p>
+      <div class="dquote-author">
+        <span class="dquote-name" id="dquote-name">— Someone, somewhere</span>
+        <span class="dquote-role" id="dquote-role">Their role</span>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="d-pricing" class="dpricing">
+      <span class="dsec-eyebrow">Pricing</span>
+      <h2 class="dsec-title">Pick a plan</h2>
+      <div class="dplans" id="dplans">
+        <div class="dplan">
+          <div class="dplan__name">Starter</div>
+          <div class="dplan__price">$0</div>
+          <ul class="dplan__feats">
+            <li>For trying things out</li>
+            <li>Up to 1 user</li>
+            <li>Community support</li>
+          </ul>
+          <a class="dbtn" href="#">Start free</a>
+        </div>
+        <div class="dplan dplan--featured">
+          <div class="dplan__name">Studio</div>
+          <div class="dplan__price">$24<span>/mo</span></div>
+          <ul class="dplan__feats">
+            <li>For working pros</li>
+            <li>Up to 10 users</li>
+            <li>Priority support</li>
+            <li>Advanced features</li>
+          </ul>
+          <a class="dbtn dbtn--primary" href="#">Choose Studio</a>
+        </div>
+        <div class="dplan">
+          <div class="dplan__name">Enterprise</div>
+          <div class="dplan__price">Custom</div>
+          <ul class="dplan__feats">
+            <li>For large teams</li>
+            <li>Unlimited users</li>
+            <li>Dedicated success manager</li>
+            <li>Custom contracts</li>
+          </ul>
+          <a class="dbtn" href="#">Talk to sales</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="d-cta" class="dcta">
+      <h2 id="dcta-title">Ready when you are.</h2>
+      <p id="dcta-sub">One line that closes the deal.</p>
+      <a class="dbtn dbtn--primary" href="#" id="dctabtn">Get started →</a>
+    </section>
+
+    <!-- Footer -->
+    <footer id="d-contact" class="dfooter">
+      <div class="dfooter__inner">
+        <div class="dfooter__brand">
+          <span class="dnav__mark" id="dmark2"></span>
+          <span class="dnav__word" id="dword2">Brand</span>
+        </div>
+        <span id="dfooter-copy">© 2026 Brand · All rights reserved.</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="browser.js"></script>
+</body>
+</html>

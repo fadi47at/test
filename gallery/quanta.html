@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quanta — Learn anything, at your own pace</title>
+  <meta name="description" content="Quanta — A friendly, project-based online learning platform. Real instructors. Real projects. Real outcomes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Caveat:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="quanta.css" />
+</head>
+<body>
+
+  <!-- Top nav -->
+  <header class="qnav">
+    <div class="qnav__inner">
+      <a class="qnav__logo" href="#">
+        <span class="qnav__mark"></span>
+        <span class="qnav__word">Quanta</span>
+      </a>
+      <nav class="qnav__links">
+        <a href="#courses">Courses</a>
+        <a href="#instructors">Instructors</a>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#stories">Stories</a>
+      </nav>
+      <div class="qnav__cta">
+        <a class="qbtn qbtn--ghost" href="#">Sign in</a>
+        <a class="qbtn qbtn--primary" href="#">Start free</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="qhero">
+    <div class="qhero__bg" aria-hidden="true">
+      <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="q-glow" cx="50%" cy="0%" r="70%">
+            <stop offset="0%" stop-color="#FF6B6B" stop-opacity="0.18"/>
+            <stop offset="50%" stop-color="#FFD60A" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#FFF4B8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1440" height="600" fill="url(#q-glow)"/>
+        <!-- Dotted pattern -->
+        <g fill="#1A1A1A" opacity="0.06">
+          <circle cx="200" cy="100" r="2"/>
+          <circle cx="280" cy="60" r="2"/>
+          <circle cx="360" cy="120" r="2"/>
+          <circle cx="120" cy="180" r="2"/>
+          <circle cx="440" cy="80" r="2"/>
+          <circle cx="1000" cy="100" r="2"/>
+          <circle cx="1080" cy="60" r="2"/>
+          <circle cx="1160" cy="140" r="2"/>
+          <circle cx="1240" cy="80" r="2"/>
+          <circle cx="1320" cy="180" r="2"/>
+        </g>
+        <!-- Stars -->
+        <text x="180" y="160" font-size="22" fill="#FF6B6B" opacity="0.6">✦</text>
+        <text x="1280" y="120" font-size="18" fill="#FFD60A" opacity="0.7">★</text>
+        <text x="640" y="80" font-size="14" fill="#1A1A1A" opacity="0.2">+</text>
+      </svg>
+    </div>
+    <div class="qhero__content">
+      <span class="qeyebrow">✦ Learn anything · At your own pace</span>
+      <h1 class="qtitle">Quanta</h1>
+      <p class="qsub">Real instructors. Real projects. Real outcomes — without the cohort calendar, the deadlines, or the course catalog anxiety.</p>
+      <div class="qhero__actions">
+        <a class="qbtn qbtn--primary qbtn--lg" href="#courses">Browse 240+ courses →</a>
+        <a class="qbtn qbtn--ghost qbtn--lg" href="#how">See how it works</a>
+      </div>
+      <div class="qhero__meta">
+        <span>🎓 50,000+ active learners</span>
+        <span>🌍 Students in 92 countries</span>
+        <span>⭐ 4.9 / 5 average rating</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="qstats">
+    <div class="qstats__inner">
+      <div class="qstat"><div class="qstat__num" data-target="240">0</div><div class="qstat__label">courses</div></div>
+      <div class="qstat"><div class="qstat__num" data-target="50">0</div><div class="qstat__suffix">K+</div><div class="qstat__label">learners</div></div>
+      <div class="qstat"><div class="qstat__num" data-target="92">0</div><div class="qstat__label">countries</div></div>
+      <div class="qstat"><div class="qstat__num" data-target="4.9" data-decimal="1">0</div><div class="qstat__suffix">/5</div><div class="qstat__label">avg rating</div></div>
+      <div class="qstat"><div class="qstat__num" data-target="87">0</div><div class="qstat__suffix">%</div><div class="qstat__label">finish rate</div></div>
+    </div>
+  </section>
+
+  <!-- Featured courses -->
+  <section id="courses" class="qcourses">
+    <div class="container">
+      <div class="qsec-head">
+        <span class="qsec-eyebrow">Featured this month</span>
+        <h2 class="qsec-title">Courses you'll actually finish</h2>
+        <p class="qsec-lede">Project-based, instructor-led, and self-paced. Pick one. Build something real by Friday.</p>
+      </div>
+      <div class="qcourse-grid">
+        <article class="qcourse">
+          <div class="qcourse__cover">
+            <img src="showcase/quanta_course_python.png" alt="Python for Data Science" />
+            <span class="qcourse__badge">Bestseller</span>
+          </div>
+          <div class="qcourse__body">
+            <div class="qcourse__meta">
+              <span class="qcourse__cat">Data</span>
+              <span class="qcourse__level">Beginner</span>
+            </div>
+            <h3 class="qcourse__title">Python for Data Science</h3>
+            <p class="qcourse__instr">with Dr. Yuki Tanaka · 38 lessons · 6h 20m</p>
+            <div class="qcourse__rating">
+              <span class="qstars">★★★★★</span> <span>4.9</span> <span class="qcourse__count">(2,140)</span>
+            </div>
+            <div class="qcourse__foot">
+              <span class="qcourse__price">Free<span class="qcourse__price-old">$49</span></span>
+              <a class="qbtn qbtn--primary qbtn--sm" href="#">Start course →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="qcourse">
+          <div class="qcourse__cover">
+            <img src="showcase/quanta_course_ux.png" alt="UX & Product Design" />
+            <span class="qcourse__badge">New</span>
+          </div>
+          <div class="qcourse__body">
+            <div class="qcourse__meta">
+              <span class="qcourse__cat">Design</span>
+              <span class="qcourse__level">Intermediate</span>
+            </div>
+            <h3 class="qcourse__title">UX & Product Design</h3>
+            <p class="qcourse__instr">with Mateo Reyes · 42 lessons · 9h 10m</p>
+            <div class="qcourse__rating">
+              <span class="qstars">★★★★★</span> <span>4.8</span> <span class="qcourse__count">(1,205)</span>
+            </div>
+            <div class="qcourse__foot">
+              <span class="qcourse__price">$29<span class="qcourse__price-old">$89</span></span>
+              <a class="qbtn qbtn--primary qbtn--sm" href="#">Start course →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="qcourse">
+          <div class="qcourse__cover">
+            <img src="showcase/quanta_course_photo.png" alt="Photography Masterclass" />
+          </div>
+          <div class="qcourse__body">
+            <div class="qcourse__meta">
+              <span class="qcourse__cat">Creative</span>
+              <span class="qcourse__level">All levels</span>
+            </div>
+            <h3 class="qcourse__title">Photography Masterclass</h3>
+            <p class="qcourse__instr">with Mira Ostrowski · 24 lessons · 4h 45m</p>
+            <div class="qcourse__rating">
+              <span class="qstars">★★★★★</span> <span>4.9</span> <span class="qcourse__count">(3,580)</span>
+            </div>
+            <div class="qcourse__foot">
+              <span class="qcourse__price">$39<span class="qcourse__price-old">$99</span></span>
+              <a class="qbtn qbtn--primary qbtn--sm" href="#">Start course →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="qcourse">
+          <div class="qcourse__cover">
+            <img src="showcase/quanta_course_data.png" alt="Data Science Fundamentals" />
+          </div>
+          <div class="qcourse__body">
+            <div class="qcourse__meta">
+              <span class="qcourse__cat">Data</span>
+              <span class="qcourse__level">Beginner</span>
+            </div>
+            <h3 class="qcourse__title">Data Science Fundamentals</h3>
+            <p class="qcourse__instr">with Priya Iyer · 56 lessons · 12h 30m</p>
+            <div class="qcourse__rating">
+              <span class="qstars">★★★★★</span> <span>4.9</span> <span class="qcourse__count">(2,890)</span>
+            </div>
+            <div class="qcourse__foot">
+              <span class="qcourse__price">$49<span class="qcourse__price-old">$129</span></span>
+              <a class="qbtn qbtn--primary qbtn--sm" href="#">Start course →</a>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="qcourses__more">
+        <a class="qbtn qbtn--ghost qbtn--lg" href="#">Browse all 240 courses →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="qhow">
+    <div class="container">
+      <div class="qsec-head">
+        <span class="qsec-eyebrow">How it works</span>
+        <h2 class="qsec-title">Start today, finish this month</h2>
+        <p class="qsec-lede">No cohorts. No "enrollment windows." No pressure. Just you, the work, and a deadline you set yourself.</p>
+      </div>
+      <div class="qsteps">
+        <div class="qstep">
+          <div class="qstep__num">01</div>
+          <div class="qstep__icon">✦</div>
+          <h3>Pick a course</h3>
+          <p>Browse 240 courses across code, design, data, creative, business, and more. Try the first lesson free, no signup.</p>
+        </div>
+        <div class="qstep__arrow">→</div>
+        <div class="qstep">
+          <div class="qstep__num">02</div>
+          <div class="qstep__icon">◐</div>
+          <h3>Learn at your pace</h3>
+          <p>Watch lessons when you want. Take notes. Try the exercises. Ask the instructor a question — they actually answer.</p>
+        </div>
+        <div class="qstep__arrow">→</div>
+        <div class="qstep">
+          <div class="qstep__num">03</div>
+          <div class="qstep__icon">✺</div>
+          <h3>Build & ship</h3>
+          <p>Every course ends with a real project you can put in your portfolio. Get feedback from the community.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="qcats">
+    <div class="container">
+      <div class="qsec-head">
+        <span class="qsec-eyebrow">Subjects</span>
+        <h2 class="qsec-title">12 subjects, 240 courses</h2>
+      </div>
+      <div class="qcat-grid">
+        <a class="qcat" href="#"><span class="qcat__icon">⌨</span> <span>Code</span> <span class="qcat__count">38</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">◐</span> <span>Design</span> <span class="qcat__count">24</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">∿</span> <span>Data</span> <span class="qcat__count">19</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">✦</span> <span>Creative</span> <span class="qcat__count">22</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">⬡</span> <span>Business</span> <span class="qcat__count">31</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">◑</span> <span>Marketing</span> <span class="qcat__count">18</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">✎</span> <span>Writing</span> <span class="qcat__count">15</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">♫</span> <span>Music</span> <span class="qcat__count">12</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">✺</span> <span>Languages</span> <span class="qcat__count">21</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">◈</span> <span>Math</span> <span class="qcat__count">9</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">❀</span> <span>Wellness</span> <span class="qcat__count">14</span></a>
+        <a class="qcat" href="#"><span class="qcat__icon">⌖</span> <span>Science</span> <span class="qcat__count">17</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instructors -->
+  <section id="instructors" class="qinstructors">
+    <div class="container">
+      <div class="qsec-head">
+        <span class="qsec-eyebrow">The teachers</span>
+        <h2 class="qsec-title">People who do the thing, teaching</h2>
+        <p class="qsec-lede">Every Quanta instructor is a working professional. No content marketers. No "10x engineer" LinkedIn fluff. Real people, real work.</p>
+      </div>
+      <div class="qinstr-grid">
+        <article class="qinstr">
+          <div class="qinstr__photo"><img src="showcase/quanta_inst_01.png" alt="Dr. Yuki Tanaka" /></div>
+          <h3>Dr. Yuki Tanaka</h3>
+          <p class="qinstr__role">Data Science Lead, Stripe</p>
+          <p class="qinstr__bio">12 years in ML. PhD from Tokyo. Built the fraud detection system at three fintechs.</p>
+          <div class="qinstr__stats">
+            <span><strong>14</strong> courses</span>
+            <span><strong>42K</strong> students</span>
+            <span><strong>4.9</strong> ★</span>
+          </div>
+        </article>
+        <article class="qinstr">
+          <div class="qinstr__photo"><img src="showcase/quanta_inst_02.png" alt="Mateo Reyes" /></div>
+          <h3>Mateo Reyes</h3>
+          <p class="qinstr__role">Principal Designer, Figma</p>
+          <p class="qinstr__bio">Designed the tools you probably used today. Teaches UX from the inside of a real product team.</p>
+          <div class="qinstr__stats">
+            <span><strong>8</strong> courses</span>
+            <span><strong>28K</strong> students</span>
+            <span><strong>4.8</strong> ★</span>
+          </div>
+        </article>
+        <article class="qinstr">
+          <div class="qinstr__photo"><img src="showcase/quanta_inst_03.png" alt="Mira Ostrowski" /></div>
+          <h3>Mira Ostrowski</h3>
+          <p class="qinstr__role">Photographer & Author</p>
+          <p class="qinstr__bio">Published three photo books. Shot for National Geographic. Lives on a sailboat in Lisbon.</p>
+          <div class="qinstr__stats">
+            <span><strong>6</strong> courses</span>
+            <span><strong>19K</strong> students</span>
+            <span><strong>4.9</strong> ★</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community / Social proof -->
+  <section class="qcommunity">
+    <div class="container">
+      <div class="qcommunity__inner">
+        <div class="qcommunity__text">
+          <span class="qsec-eyebrow">The community</span>
+          <h2 class="qsec-title">50,000 learners, one Slack</h2>
+          <p>Every learner gets access to our community Slack — 50,000+ people across 92 countries, all learning, all sharing work, all answering questions. The instructors are in there too.</p>
+          <a class="qbtn qbtn--primary qbtn--lg" href="#">Join the community →</a>
+        </div>
+        <div class="qcommunity__img">
+          <img src="showcase/quanta_community.png" alt="Quanta community" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="stories" class="qstories">
+    <div class="container">
+      <div class="qsec-head">
+        <span class="qsec-eyebrow">Learner stories</span>
+        <h2 class="qsec-title">What people built (and where they went)</h2>
+      </div>
+      <div class="qstory-grid">
+        <article class="qstory">
+          <span class="qstory__quote">"</span>
+          <p>I went from knowing nothing to shipping a real app in five months. I now teach the next cohort.</p>
+          <div class="qstory__author">
+            <strong>Priya Iyer</strong>
+            <span>Graduate → Mentor · 2023</span>
+          </div>
+        </article>
+        <article class="qstory">
+          <span class="qstory__quote">"</span>
+          <p>The UX course changed my career. I went from admin work to a senior designer role in 8 months.</p>
+          <div class="qstory__author">
+            <strong>Daniel Owusu</strong>
+            <span>Graduate · Accra · 2024</span>
+          </div>
+        </article>
+        <article class="qstory">
+          <span class="qstory__quote">"</span>
+          <p>I love that I can start a lesson at 11pm and the instructor is still answering questions at midnight.</p>
+          <div class="qstory__author">
+            <strong>Naomi Sato</strong>
+            <span>Photographer · Tokyo · 2025</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="qpricing">
+    <div class="container">
+      <div class="qsec-head">
+        <span class="qsec-eyebrow">Pricing</span>
+        <h2 class="qsec-title">Pay for what you need</h2>
+        <p class="qsec-lede">Try before you buy. Cancel any time. No "limited time offers." No dark patterns.</p>
+      </div>
+      <div class="qplans">
+        <article class="qplan">
+          <div class="qplan__name">Free</div>
+          <div class="qplan__price">$0<span>/forever</span></div>
+          <ul class="qplan__feats">
+            <li>✓ 12 free courses</li>
+            <li>✓ Community Slack access</li>
+            <li>✓ First lesson of any course</li>
+            <li>✓ Mobile + desktop</li>
+          </ul>
+          <a class="qbtn qbtn--ghost qbtn--block" href="#">Start free</a>
+        </article>
+        <article class="qplan qplan--featured">
+          <div class="qplan__tag">Most popular</div>
+          <div class="qplan__name">Pro</div>
+          <div class="qplan__price">$19<span>/mo</span></div>
+          <ul class="qplan__feats">
+            <li>✓ All 240 courses</li>
+            <li>✓ Downloadable lessons</li>
+            <li>✓ Instructor Q&A</li>
+            <li>✓ Certificate of completion</li>
+            <li>✓ Project feedback</li>
+          </ul>
+          <a class="qbtn qbtn--primary qbtn--block" href="#">Start 14-day trial</a>
+        </article>
+        <article class="qplan">
+          <div class="qplan__name">Teams</div>
+          <div class="qplan__price">$12<span>/seat/mo</span></div>
+          <ul class="qplan__feats">
+            <li>✓ Everything in Pro</li>
+            <li>✓ Team analytics</li>
+            <li>✓ Custom learning paths</li>
+            <li>✓ SSO + admin controls</li>
+            <li>✓ Dedicated success manager</li>
+          </ul>
+          <a class="qbtn qbtn--ghost qbtn--block" href="#">Talk to sales</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="qfaq">
+    <div class="container qfaq__inner">
+      <div>
+        <span class="qsec-eyebrow">FAQ</span>
+        <h2 class="qsec-title">The honest answers</h2>
+      </div>
+      <div class="qfaq__list">
+        <details class="qfaq__item" open>
+          <summary>Do I need any experience to start?</summary>
+          <p>No. About 40% of our courses are beginner-friendly and assume nothing. We mark every course with its level so you know before you start.</p>
+        </details>
+        <details class="qfaq__item">
+          <summary>Do I get a certificate?</summary>
+          <p>Yes — on Pro and Teams plans. We don't put our logo on the certificate (weird, we know) but employers recognize them.</p>
+        </details>
+        <details class="qfaq__item">
+          <summary>What if I don't like a course?</summary>
+          <p>14-day refund, no questions asked. We'd rather you leave happy than stay frustrated.</p>
+        </details>
+        <details class="qfaq__item">
+          <summary>Are the instructors actually good?</summary>
+          <p>Every instructor is a working professional in the field they teach. No course-mill teachers. You can see their bio and day job on every course page.</p>
+        </details>
+        <details class="qfaq__item">
+          <summary>Can I download lessons?</summary>
+          <p>Yes, on Pro and Teams. Watch on a plane, on a train, on a desert island.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="qcta">
+    <div class="container">
+      <div class="qcta__card">
+        <h2>Start learning today.</h2>
+        <p>First lesson is free. No credit card. No "limited offer." Just try it.</p>
+        <a class="qbtn qbtn--primary qbtn--lg" href="#">Start free →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="qfooter">
+    <div class="container">
+      <div class="qfooter__top">
+        <div class="qfooter__brand">
+          <a class="qnav__logo" href="#">
+            <span class="qnav__mark"></span>
+            <span class="qnav__word">Quanta</span>
+          </a>
+          <p class="qfooter__tag">Learn anything, at your own pace.</p>
+        </div>
+        <div class="qfooter__cols">
+          <div><h4>Learn</h4><a href="#">All courses</a><a href="#">Subjects</a><a href="#">Free courses</a><a href="#">Certificates</a></div>
+          <div><h4>Teach</h4><a href="#">Become an instructor</a><a href="#">Instructor guide</a><a href="#">Resources</a></div>
+          <div><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Blog</a></div>
+          <div><h4>Support</h4><a href="#">Help center</a><a href="#">Contact</a><a href="#">Status</a></div>
+        </div>
+      </div>
+      <div class="qfooter__bottom">
+        <span>© 2026 Quanta · Built on the MiniMax platform.</span>
+        <span class="qfooter__sep">·</span>
+        <a href="#">Terms</a>
+        <span class="qfooter__sep">·</span>
+        <a href="#">Privacy</a>
+        <span class="qfooter__sep">·</span>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="quanta.js"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VAD — A modern AI coding assistant</title>
+  <meta name="description" content="VAD — A next-generation AI coding assistant with unlimited context. Built on MiniMax." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <!-- Hidden reveal painting (shown when user brushes the mask) -->
+    <div class="hero__bg" aria-hidden="true"></div>
+    <!-- Canvas mask that erases with the cursor, like an ink brush -->
+    <canvas class="hero__mask" id="heroMask" aria-hidden="true"></canvas>
+
+    <!-- Subtle atmospheric SVG art overlay -->
+    <div class="hero__art" aria-hidden="true">
+      <svg viewBox="0 0 1440 600" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="skyGlow" cx="50%" cy="100%" r="65%">
+            <stop offset="0%" stop-color="#e8d9b8" stop-opacity="0.55" />
+            <stop offset="55%" stop-color="#e8d9b8" stop-opacity="0.15" />
+            <stop offset="100%" stop-color="#e8d9b8" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient id="farMtn" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#c2a878" stop-opacity="0.18" />
+            <stop offset="100%" stop-color="#c2a878" stop-opacity="0.05" />
+          </linearGradient>
+          <linearGradient id="midMtn" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#a89066" stop-opacity="0.28" />
+            <stop offset="100%" stop-color="#a89066" stop-opacity="0.08" />
+          </linearGradient>
+          <linearGradient id="nearMtn" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#8a7548" stop-opacity="0.32" />
+            <stop offset="100%" stop-color="#8a7548" stop-opacity="0.12" />
+          </linearGradient>
+          <filter id="inkBlur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.2"/>
+          </filter>
+        </defs>
+
+        <!-- Sky glow -->
+        <rect width="1440" height="600" fill="url(#skyGlow)" />
+
+        <!-- Far mountain range — light silhouette -->
+        <path d="M 0 470 L 90 410 L 180 440 L 270 380 L 360 425 L 460 370 L 560 415 L 670 365 L 780 405 L 890 360 L 1000 400 L 1110 370 L 1220 410 L 1330 380 L 1440 405 L 1440 600 L 0 600 Z"
+              fill="url(#farMtn)" />
+
+        <!-- Mid mountain range -->
+        <path d="M 0 520 L 110 470 L 210 495 L 320 440 L 440 480 L 560 445 L 680 490 L 810 450 L 940 495 L 1070 455 L 1200 490 L 1330 460 L 1440 485 L 1440 600 L 0 600 Z"
+              fill="url(#midMtn)" />
+
+        <!-- Near mountain range — darker, layered -->
+        <path d="M 0 555 L 130 525 L 260 545 L 400 510 L 540 540 L 690 515 L 830 545 L 980 520 L 1130 545 L 1280 525 L 1440 540 L 1440 600 L 0 600 Z"
+              fill="url(#nearMtn)" />
+
+        <!-- Mist band above mountains (very subtle) -->
+        <rect x="0" y="430" width="1440" height="60" fill="#fcfaf8" fill-opacity="0.4" filter="url(#inkBlur)" />
+
+        <!-- Floating ink dots — scattered -->
+        <g fill="#26251e">
+          <circle cx="180" cy="120" r="2.2" fill-opacity="0.16"/>
+          <circle cx="320" cy="200" r="1.6" fill-opacity="0.12"/>
+          <circle cx="460" cy="80"  r="1.2" fill-opacity="0.10"/>
+          <circle cx="600" cy="180" r="2.0" fill-opacity="0.14"/>
+          <circle cx="780" cy="60"  r="1.4" fill-opacity="0.16"/>
+          <circle cx="940" cy="160" r="1.8" fill-opacity="0.10"/>
+          <circle cx="1080" cy="100" r="2.4" fill-opacity="0.18"/>
+          <circle cx="1240" cy="220" r="1.6" fill-opacity="0.12"/>
+          <circle cx="1360" cy="140" r="1.3" fill-opacity="0.10"/>
+          <circle cx="80"  cy="240" r="1.5" fill-opacity="0.10"/>
+          <circle cx="240" cy="320" r="1.2" fill-opacity="0.08"/>
+          <circle cx="1180" cy="320" r="1.4" fill-opacity="0.10"/>
+        </g>
+
+        <!-- A single thin brush stroke above the title area -->
+        <path d="M 720 270 Q 740 268 760 270" stroke="#26251e" stroke-width="0.7" stroke-opacity="0.2" fill="none" stroke-linecap="round" />
+      </svg>
+    </div>
+
+    <!-- Top nav -->
+    <header class="topbar">
+      <a class="topbar__logo" href="#">
+        <span class="logo-mark"></span>
+        <span class="logo-text">VAD</span>
+      </a>
+      <div class="topbar__divider" aria-hidden="true"></div>
+      <nav class="topbar__nav">
+        <a href="#features">Product</a>
+        <a href="#install">Install</a>
+        <a href="#story">Story</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="topbar__lang">
+        <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
+        <span class="lang-sep">/</span>
+        <button class="lang-btn" type="button" data-lang="ar">عربي</button>
+      </div>
+    </header>
+
+    <!-- Hero content -->
+    <div class="hero__content">
+      <div class="hero__heading">
+        <span class="hero__eyebrow">AI Coding Assistant</span>
+        <h1 class="hero__title">VAD</h1>
+        <span class="hero__rule" aria-hidden="true"></span>
+        <p class="hero__subtitle" id="heroSubtitle" data-text="A next-generation AI coding assistant with unlimited context — helping you understand, build, and ship faster.">A next-generation AI coding assistant with unlimited context — helping you understand, build, and ship faster.</p>
+      </div>
+
+      <div class="install">
+        <div class="platform-switch" role="tablist" aria-label="Install platform">
+          <button type="button" class="platform-switch__option is-active" data-platform="unix" role="tab" aria-selected="true">macOS / Linux</button>
+          <button type="button" class="platform-switch__option" data-platform="windows" role="tab" aria-selected="false">Windows</button>
+        </div>
+        <div class="terminal" data-copy-text="curl -fsSL https://vad.dev/install | bash">
+          <span class="terminal__cmd">
+            <span class="terminal__prompt">&gt;_</span>
+            <span class="terminal__text">curl -fsSL https://vad.dev/install | bash</span>
+          </span>
+          <button class="terminal__copy" type="button" aria-label="Copy command">
+            <svg class="ic ic--copy" viewBox="0 0 16 17" aria-hidden="true">
+              <rect x="4.5" y="4.5" width="9" height="11" rx="1.5" stroke="currentColor" fill="none" stroke-width="1.2"/>
+              <path d="M2.5 11.5V3a1 1 0 0 1 1-1h7" stroke="currentColor" fill="none" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <svg class="ic ic--check" viewBox="0 0 18 18" aria-hidden="true">
+              <path d="M4 9.5 L7.5 13 L14 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <span class="terminal__copy-tooltip">Copied</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ctas">
+        <a class="btn" href="#" id="btnGithub">
+          GitHub
+          <svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M6.3333 3.66665H12.3333V9.66665" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M3.848 12.152L12.3333 3.66665" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </a>
+        <a class="btn" href="#" id="btnDocs">
+          Docs
+          <svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M6.3333 3.66665H12.3333V9.66665" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M3.848 12.152L12.3333 3.66665" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </a>
+        <a class="btn btn--primary" href="#" id="btnBlog">
+          Read the story
+          <svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M6.3333 3.66665H12.3333V9.66665" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M3.848 12.152L12.3333 3.66665" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="features">
+    <h2 class="features__title">Why VAD</h2>
+    <div class="features__list">
+      <article class="card card--1">
+        <div class="card__art" data-art="models"></div>
+        <div class="card__text">
+          <h3>Top-tier models, out of the box</h3>
+          <p>No login, no setup. Get instant access to models on par with the best in the world — including multimodal capabilities.</p>
+        </div>
+      </article>
+      <article class="card card--2">
+        <div class="card__text">
+          <h3>Model + Agent collaboration</h3>
+          <p>VAD models and agents are co-optimized so complex coding tasks complete in a single pass — not ten back-and-forths.</p>
+        </div>
+        <div class="card__art" data-art="agents"></div>
+      </article>
+      <article class="card card--3">
+        <div class="card__art" data-art="context"></div>
+        <div class="card__text">
+          <h3>Unlimited context</h3>
+          <p>Knowledge accumulates automatically, paired with smart memory. Hundreds of turns deep and nothing important gets lost.</p>
+        </div>
+      </article>
+      <article class="card card--4">
+        <div class="card__text">
+          <h3>Self-evolving system</h3>
+          <p>Learns from your feedback continuously. The more you build with it, the more it becomes your dedicated AI pair-programmer.</p>
+        </div>
+        <div class="card__art" data-art="evolution"></div>
+      </article>
+      <article class="card card--5">
+        <div class="card__art" data-art="compose"></div>
+        <div class="card__text">
+          <h3>Compose mode</h3>
+          <p>An entire professional dev team in one tool — from idea to industrial-grade product delivery.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="footer">
+    <div class="footer__inner">
+      <span>© 2026 VAD. All rights reserved.</span>
+      <span class="footer__sep">|</span>
+      <a class="footer__link" href="#">Terms of Service</a>
+      <span class="footer__sep">|</span>
+      <a class="footer__link" href="#">Privacy Policy</a>
+      <span class="footer__sep">|</span>
+      <a class="footer__link" href="#">Cookie Policy</a>
+      <span class="footer__sep">|</span>
+      <button class="footer__btn" type="button">Cookie Preferences</button>
+      <span class="footer__sep">|</span>
+      <span>Built on MiniMax.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fadi's Design Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: #FCFAF8;
+      color: #26251E;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      max-width: 980px; margin: 0 auto;
+      padding: 80px 32px;
+    }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 500; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #B89968;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: 'Questrial', sans-serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 400; letter-spacing: 1px;
+      margin: 0 0 16px;
+    }
+    .lede {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 20px; line-height: 1.5;
+      color: #504F49;
+      max-width: 600px;
+      margin: 0 0 64px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      display: block;
+      padding: 36px 32px;
+      background: #fff;
+      border: 1px solid rgba(38, 37, 30, 0.12);
+      border-radius: 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 280ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #26251E;
+      box-shadow: 0 12px 32px rgba(38, 37, 30, 0.08);
+    }
+    .card__icon {
+      width: 48px; height: 48px;
+      background: #F3F0EF;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    .card__cat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #504F49;
+      margin-bottom: 8px;
+    }
+    .card__title {
+      font-family: 'Questrial', sans-serif;
+      font-size: 28px; font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .card__desc {
+      font-size: 14px; line-height: 1.5;
+      color: #504F49;
+      margin-bottom: 20px;
+    }
+    .card__arrow {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #26251E;
+      font-weight: 500;
+    }
+    .foot {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(38, 37, 30, 0.1);
+      font-size: 13px;
+      color: #504F49;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">A small library</div>
+    <h1>Fadi's Design Library</h1>
+    <p class="lede">A collection of web design work — three projects to browse. Each one is a real, interactive page, not a screenshot.</p>
+
+    <div class="grid">
+      <a class="card" href="./vad/">
+        <div class="card__icon">⌬</div>
+        <div class="card__cat">AI / Tech</div>
+        <div class="card__title">VAD</div>
+        <p class="card__desc">An AI coding assistant with a MiMo Code-inspired aesthetic. Cream + serif + an ink-reveal canvas effect that uncovers a hidden landscape on hover.</p>
+        <span class="card__arrow">Open VAD →</span>
+      </a>
+
+      <a class="card" href="./gallery/">
+        <div class="card__icon">✦</div>
+        <div class="card__cat">Inspiration</div>
+        <div class="card__title">20 Designs</div>
+        <p class="card__desc">A gallery of 20 distinct website design directions, each with 3 creative variations. Click any design to browse it live.</p>
+        <span class="card__arrow">Open gallery →</span>
+      </a>
+
+      <a class="card" href="./gallery/quanta.html">
+        <div class="card__icon">✎</div>
+        <div class="card__cat">Education</div>
+        <div class="card__title">Quanta</div>
+        <p class="card__desc">A complete online learning platform design. Courses, instructors, pricing, FAQ, and a community — the whole thing, not a stub.</p>
+        <span class="card__arrow">Open Quanta →</span>
+      </a>
+    </div>
+
+    <div class="foot">Designed &amp; built by Fadi · 2026</div>
+  </div>
+</body>
+</html>

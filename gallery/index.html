@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio — 20 Creative Website Designs</title>
+  <meta name="description" content="A gallery of 20 distinct, creative website designs — pick the direction that fits your project." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Questrial&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="hdr">
+    <div class="hdr__inner">
+      <a class="hdr__logo" href="#">
+        <span class="hdr__mark"></span>
+        <span class="hdr__word">Studio</span>
+      </a>
+      <div class="hdr__divider"></div>
+      <nav class="hdr__nav">
+        <a href="#gallery">Gallery</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="hdr__count">20 designs</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__art" aria-hidden="true">
+      <svg viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hglow" cx="50%" cy="100%" r="60%">
+            <stop offset="0%" stop-color="#e8d9b8" stop-opacity="0.45"/>
+            <stop offset="60%" stop-color="#e8d9b8" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="#e8d9b8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1440" height="500" fill="url(#hglow)"/>
+        <path d="M 0 480 Q 360 440 720 470 T 1440 460 L 1440 500 L 0 500 Z" fill="#b89968" fill-opacity="0.08"/>
+      </svg>
+    </div>
+    <div class="hero__content">
+      <span class="eyebrow">A design library</span>
+      <h1 class="hero__title">Twenty <em>creative</em> directions</h1>
+      <p class="hero__subtitle" id="heroSub">Twenty distinct website design directions, each with three variations. Browse, compare, and pick the one that fits your project.</p>
+    </div>
+  </section>
+
+  <!-- Filters + Gallery -->
+  <section id="gallery" class="gallery">
+    <div class="container">
+      <div class="filters">
+        <button class="chip is-active" data-filter="all">All <span>20</span></button>
+        <button class="chip" data-filter="AI / Tech">AI / Tech <span>1</span></button>
+        <button class="chip" data-filter="Fashion">Fashion <span>1</span></button>
+        <button class="chip" data-filter="Travel">Travel <span>2</span></button>
+        <button class="chip" data-filter="Architecture">Architecture <span>1</span></button>
+        <button class="chip" data-filter="Restaurant">Restaurant <span>2</span></button>
+        <button class="chip" data-filter="Sustainability">Sustainability <span>1</span></button>
+        <button class="chip" data-filter="Music">Music <span>1</span></button>
+        <button class="chip" data-filter="Crypto">Crypto <span>1</span></button>
+        <button class="chip" data-filter="Healthcare">Healthcare <span>1</span></button>
+        <button class="chip" data-filter="Aerospace">Aerospace <span>1</span></button>
+        <button class="chip" data-filter="Photography">Photography <span>1</span></button>
+        <button class="chip" data-filter="Events">Events <span>1</span></button>
+        <button class="chip" data-filter="Art">Art <span>1</span></button>
+        <button class="chip" data-filter="Fitness">Fitness <span>1</span></button>
+        <button class="chip" data-filter="Publishing">Publishing <span>1</span></button>
+        <button class="chip" data-filter="Agency">Agency <span>1</span></button>
+        <button class="chip" data-filter="Real Estate">Real Estate <span>1</span></button>
+        <button class="chip" data-filter="Education">Education <span>1</span></button>
+        <div class="search">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+            <circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M11 11 L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input id="search" type="text" placeholder="Search by name or category…" />
+        </div>
+      </div>
+
+      <div id="grid" class="grid">
+        <!-- Cards injected by script.js -->
+      </div>
+
+      <p class="empty" id="empty">No designs match your search.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="ftr">
+    <div class="ftr__inner">
+      <span>© 2026 Studio · Built on the MiniMax platform.</span>
+      <span class="ftr__sep">|</span>
+      <a href="#">Terms</a>
+      <span class="ftr__sep">|</span>
+      <a href="#">Privacy</a>
+    </div>
+  </footer>
+
+  <!-- Detail Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal__overlay" data-close></div>
+    <div class="modal__panel">
+      <button class="modal__close" data-close aria-label="Close">
+        <svg viewBox="0 0 16 16" width="16" height="16"><path d="M3 3 L13 13 M13 3 L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="modal__head">
+        <span class="modal__cat" id="m-cat"></span>
+        <h2 class="modal__title" id="m-title"></h2>
+        <p class="modal__desc" id="m-desc"></p>
+      </div>
+      <div class="modal__hero">
+        <img id="m-hero" alt="" />
+      </div>
+      <div class="modal__variations" id="m-vars">
+        <!-- Injected -->
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--primary" id="m-pick">Pick this design</button>
+        <button class="btn" data-close>Keep browsing</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
