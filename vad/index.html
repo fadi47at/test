@@ -14,10 +14,15 @@
 
   <!-- Hero -->
   <section class="hero">
-    <!-- Hidden reveal painting (shown when user brushes the mask) -->
-    <div class="hero__bg" aria-hidden="true"></div>
-    <!-- Canvas mask that erases with the cursor, like an ink brush -->
-    <canvas class="hero__mask" id="heroMask" aria-hidden="true"></canvas>
+    <!-- B&W ink-painting (default visible) -->
+    <div class="hero__bg hero__bg--ink" aria-hidden="true"></div>
+    <!-- Colorful version (fades in on scroll) -->
+    <div class="hero__bg hero__bg--color" id="heroBgColor" aria-hidden="true"></div>
+    <!-- Scroll progress indicator -->
+    <div class="hero__scroll-hint" id="heroScrollHint" aria-hidden="true">
+      <span>مرر للأسفل</span>
+      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 3 V13 M3 8 L8 13 L13 8" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
 
     <!-- Top bar -->
     <header class="topbar">
