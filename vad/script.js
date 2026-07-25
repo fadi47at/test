@@ -36,6 +36,15 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   update();
+
+  // Test helper: ?scroll=400 → instant scroll on load (for screenshot tests)
+  const params = new URLSearchParams(window.location.search);
+  const testScroll = parseInt(params.get('scroll') || '0', 10);
+  if (testScroll > 0) {
+    requestAnimationFrame(() => {
+      window.scrollTo(0, testScroll);
+    });
+  }
 })();
 
 // =========================================================
