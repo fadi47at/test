@@ -174,6 +174,27 @@ function applyContent(d, v) {
   `).join('');
   document.getElementById('d-press').style.display = press.length ? 'block' : 'none';
 
+  // Live / Current items (industry-specific)
+  const live = preset.liveSection || null;
+  if (live && live.items && live.items.length) {
+    document.getElementById('dlive-eyebrow').textContent = live.eyebrow || 'Right now';
+    document.getElementById('dlive-title').textContent = live.title || 'In the rotation';
+    document.getElementById('dlive-intro').textContent = live.intro || 'A few things in motion this week.';
+    document.getElementById('dlive-list').innerHTML = live.items.map((it) => `
+      <div class="dlive-item">
+        <span class="dlive-item__tag">${it.tag || ''}</span>
+        <div class="dlive-item__body">
+          <h4 class="dlive-item__name">${it.name}</h4>
+          <p class="dlive-item__desc">${it.desc || ''}</p>
+        </div>
+        <span class="dlive-item__meta">${it.meta || ''}</span>
+      </div>
+    `).join('');
+    document.getElementById('d-live').style.display = 'block';
+  } else {
+    document.getElementById('d-live').style.display = 'none';
+  }
+
   // FAQ
   const faq = preset.faq || [];
   document.getElementById('dfaq-eyebrow').textContent = preset.faqEyebrow || 'Questions, answered';

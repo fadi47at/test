@@ -1800,6 +1800,248 @@ const PRICING_PER_DESIGN = {
   ],
 };
 
+// =========================================================
+// LIVE SECTIONS — industry-specific current items
+// (menu items, listings, courses, releases, departures, etc.)
+// =========================================================
+const LIVE_SECTIONS = {
+  1: { // Lumière — fashion: in the collection
+    eyebrow: 'This season',
+    title: 'In the collection',
+    intro: 'Five pieces from the Spring/Summer 2026 line, available now.',
+    items: [
+      { tag: 'Couture', name: 'The Spring Coat', meta: '€4,200', desc: 'Hand-stitched, lined with cupro, made for the next decade.' },
+      { tag: 'Atelier', name: 'The Wool Dress', meta: '€3,800', desc: 'Cut on the bias, French seams throughout, signed by the seamstress.' },
+      { tag: 'Accessories', name: 'The Heritage Bag', meta: '€2,400', desc: 'Vegetable-tanned, single piece, designed to age beautifully.' },
+      { tag: 'Accessories', name: 'Silk Twilly', meta: '€680', desc: 'Hand-rolled edges, printed in Lyon from a 1962 archive pattern.' },
+      { tag: 'Jewelry', name: 'Pearl Earrings', meta: '€1,200', desc: 'South Sea pearls, hand-set in 18k. One pair per year, made to order.' },
+    ],
+  },
+  2: { // Nomad — travel: departures
+    eyebrow: 'Next departures',
+    title: 'On the calendar this season',
+    intro: 'Four hand-picked expeditions, all with space left.',
+    items: [
+      { tag: 'Desert', name: 'Sahara Slow Walk', meta: '14 days · May', desc: 'Algeria, on foot, no WiFi. 6 travelers max, 4 guides, no shortcuts.' },
+      { tag: 'Mountains', name: 'Himalayan Edges', meta: '21 days · Sept', desc: 'High-altitude, Sherpa-led, the slow way. 8 travelers max.' },
+      { tag: 'Coastal', name: 'Aegean Quiet', meta: '7 days · Jun', desc: 'Greek island hopping on a wooden sailboat. 6 people max.' },
+      { tag: 'Trail', name: 'Patagonian Edges', meta: '18 days · Oct', desc: 'Washed by weather, made by effort. The Roof of the World.' },
+    ],
+  },
+  3: { // Atelier — architecture: on the boards
+    eyebrow: 'On the boards',
+    title: 'In the studio right now',
+    intro: 'Four projects between sketch and breaking ground.',
+    items: [
+      { tag: 'Residential', name: 'The Concrete House', meta: 'Loire · 2027', desc: 'A family home in the Loire. Concrete, oak, light — that is it.' },
+      { tag: 'Interior', name: 'The Reading Room', meta: 'Bordeaux · 2026', desc: 'Floor-to-ceiling windows, a single chair, 4,000 books.' },
+      { tag: 'Public', name: 'The Museum Stair', meta: 'Lyon · 2026', desc: 'Cast in place. The kind of detail that lasts 200 years.' },
+      { tag: 'Studio', name: 'The Workshop', meta: 'Brittany · 2027', desc: "A sculptor's studio. North-facing light, polished concrete floor." },
+    ],
+  },
+  4: { // Crescent — restaurant: tonight's menu
+    eyebrow: 'Tonight',
+    title: 'On the menu',
+    intro: 'Six courses, changing with the season. Tasting menu only.',
+    items: [
+      { tag: '1', name: 'Heirloom Tomato', meta: '€24', desc: 'Stracciatella, basil oil, aged sherry.' },
+      { tag: '2', name: 'Hand-Cut Tagliolini', meta: '€32', desc: 'Cuttlefish, ink, lemon, chili.' },
+      { tag: '3', name: 'Charred Hispi', meta: '€28', desc: 'Brown butter, anchovy, sourdough crumb.' },
+      { tag: '4', name: 'Wild Sea Bass', meta: '€48', desc: 'Sauce vierge, fennel pollen, sea purslane.' },
+      { tag: '5', name: 'Aged Luma Beef', meta: '€58', desc: 'On the bone, smoked bone marrow, red wine jus.' },
+      { tag: '6', name: 'Brown Butter Tart', meta: '€22', desc: 'Crème fraîche sorbet, salted honeycomb.' },
+    ],
+  },
+  5: { // Verdant — sustainability: refill cycle
+    eyebrow: 'In the cycle',
+    title: 'Refillable this month',
+    intro: 'Five products on the rotation. Bottles returned last month: 4,820.',
+    items: [
+      { tag: 'Kitchen', name: 'Dish Soap', meta: '€14', desc: 'Eucalyptus + mint. Refillable forever, compostable refill pack.' },
+      { tag: 'Bath', name: 'Body Wash', meta: '€18', desc: 'Bergamot + cedar. The bottle outlives its contents.' },
+      { tag: 'Home', name: 'All-Purpose Cleaner', meta: '€16', desc: 'Lavender + lemon. Concentrated. One bottle = 12 refills.' },
+      { tag: 'Bath', name: 'Hand Soap', meta: '€12', desc: 'Rosemary + thyme. For every sink in the house.' },
+      { tag: 'Laundry', name: 'Laundry Detergent', meta: '€22', desc: 'Cedar + lily. Cold-water effective, plant-based surfactants.' },
+    ],
+  },
+  6: { // Nebula — music: on rotation
+    eyebrow: 'On rotation',
+    title: 'This week, no algorithm',
+    intro: 'A real human picked these. The way music used to be shared.',
+    items: [
+      { tag: 'Electronic', name: 'Floating Points, "Cascade"', meta: '38 min', desc: 'A 38-minute ambient suite. Recorded in one take, in a chapel.' },
+      { tag: 'Jazz', name: 'Yussef Dayes, "Black Classical Music"', meta: '11 tracks', desc: 'A drummer-led jazz record. The most human record of the year.' },
+      { tag: 'Soul', name: 'Sampha, "Lahai"', meta: '15 tracks', desc: 'Five years in the making. The follow-up to Process.' },
+      { tag: 'Jazz', name: 'Nala Sinephro, "Endlessness"', meta: '9 tracks', desc: 'Modern spiritual jazz. Two drummers, one piano, endless space.' },
+    ],
+  },
+  7: { // Odyssey — expeditions: next summits
+    eyebrow: 'Next summits',
+    title: 'On the calendar this season',
+    intro: 'Four expeditions with space left. Sherpa-led, max 6 climbers.',
+    items: [
+      { tag: 'Summit', name: 'K2 Approach', meta: '28 days · Jul', desc: "6 climbers, 1 sherpa team. The world's hardest non-technical summit." },
+      { tag: 'River', name: 'Grand Canyon Raft', meta: '18 days · May', desc: 'Whitewater class IV, sleeping under the stars.' },
+      { tag: 'Trail', name: 'Patagonia Roof', meta: '14 days · Dec', desc: 'High-altitude trekking. Washed by weather, made by effort.' },
+      { tag: 'Ice', name: 'Iceland Glacier', meta: '10 days · Aug', desc: 'Ice climbing, glacier hiking, hot springs every night.' },
+    ],
+  },
+  8: { // Vertex — DeFi: live rates
+    eyebrow: 'Live rates',
+    title: 'On the books right now',
+    intro: 'Real-time APYs across 12 chains. Audited, transparent, no lock-ups.',
+    items: [
+      { tag: 'Stable', name: 'USDC Vault', meta: '8.2% APY', desc: 'Fully collateralized, redeemable any time, no lock-ups.' },
+      { tag: 'Native', name: 'ETH Staking', meta: '4.8% APY', desc: 'Native staking across 12 chains. No slashing risk, batched validators.' },
+      { tag: 'Wrapped', name: 'BTC Yield', meta: '5.6% APY', desc: 'Wrapped BTC lending, audited by three firms, public ledger.' },
+      { tag: 'Native', name: 'SOL Earn', meta: '7.1% APY', desc: 'Validator-grade staking. MEV rewards passed back to depositors.' },
+    ],
+  },
+  9: { // Helix — telemedicine: available today
+    eyebrow: 'Available today',
+    title: 'On call right now',
+    intro: 'Five clinicians, same-day, in your language. Median wait: 8 minutes.',
+    items: [
+      { tag: 'Adult', name: 'Dr. Mira Aslan, MD', meta: 'Family Medicine', desc: '20 years, Spanish + English. Available 9-5 today.' },
+      { tag: 'Adult', name: 'Dr. Sam Kim, MD', meta: 'Internal Med', desc: '15 years, Korean + English. Available 11-7 today.' },
+      { tag: 'Pediatrics', name: 'Dr. Anna Volkov, MD', meta: 'Pediatrics', desc: '12 years, Russian + English. Same-day for kids 0-18.' },
+      { tag: 'Mental Health', name: 'Dr. Marcus Bell, LCSW', meta: 'Therapy', desc: 'CBT + ACT, 18 years. Available evenings + weekends.' },
+      { tag: 'Wellness', name: 'Dr. Yasmin Said, RD', meta: 'Nutrition', desc: 'Plant-forward, Mediterranean, Arabic + English.' },
+    ],
+  },
+  10: { // Polaris — aerospace: next launches
+    eyebrow: 'Next launches',
+    title: 'On the pad this year',
+    intro: 'Four missions, all on schedule, all under contract.',
+    items: [
+      { tag: 'Earth Obs', name: 'Atlas-9 / EOS-3', meta: 'Apr 12 · Vandenberg', desc: 'Sub-meter EO satellite for a civilian research customer.' },
+      { tag: 'Comms', name: 'Atlas-10 / MEO-2', meta: 'Jun 04 · Cape Canaveral', desc: 'Medium Earth Orbit comms satellite, 5-year mission.' },
+      { tag: 'Training', name: 'Atlas-11 / Train-2', meta: 'Aug 19 · Mojave', desc: 'Sub-orbital training flight, civilian researcher crew.' },
+      { tag: 'Constellation', name: 'Atlas-12 / CONST-1', meta: 'Oct 22 · Cape Canaveral', desc: 'Multi-satellite constellation, 8 cubesats, rideshare.' },
+    ],
+  },
+  11: { // Mira — photography: recent shoots
+    eyebrow: 'Recent shoots',
+    title: 'In the studio this season',
+    intro: 'Four series shot over the last six months. Prints available.',
+    items: [
+      { tag: 'Portrait', name: 'Faces of Lisbon', meta: '60 portraits', desc: 'One neighborhood, one summer. Now showing at MAAT.' },
+      { tag: 'Street', name: 'Night Walk', meta: '12 cities', desc: 'A solo project shot over three winters, after midnight.' },
+      { tag: 'Fine Art', name: 'Long Exposure', meta: '24 frames', desc: 'A series on motion, time, and the human figure. Limited prints.' },
+      { tag: 'Portrait', name: 'The Salt Series', meta: '18 frames', desc: 'Coastal portraits. Salt on skin, wind in the hair, sea in the eyes.' },
+    ],
+  },
+  12: { // Brew & Co — coffee: on the shelf
+    eyebrow: 'On the shelf',
+    title: 'Roasted this week',
+    intro: 'Five single origins, all roasted to order. Shipped within 48 hours.',
+    items: [
+      { tag: 'Light', name: 'Yirgacheffe Konga', meta: 'Ethiopia', desc: 'Jasmine, bergamot, lemon zest. Washed, single farm.' },
+      { tag: 'Medium', name: 'Huila Las Margaritas', meta: 'Colombia', desc: 'Caramel, plum, dark chocolate. Honey process.' },
+      { tag: 'Light', name: 'Sidamo Hambela', meta: 'Ethiopia', desc: 'Peach, honey, white tea. Anaerobic natural.' },
+      { tag: 'Dark', name: 'Sumatra Mandheling', meta: 'Indonesia', desc: 'Cedar, dark chocolate, brown sugar. Wet-hulled.' },
+      { tag: 'Medium', name: 'Kenya Nyeri AA', meta: 'Kenya', desc: 'Blackcurrant, tomato, brown sugar. Washed.' },
+    ],
+  },
+  13: { // Ember — wedding: this season
+    eyebrow: 'This season',
+    title: 'Weddings in the works',
+    intro: 'Four weddings between now and October. All booked with a single planner.',
+    items: [
+      { tag: 'Europe', name: 'Tuscan Vineyard', meta: 'June · 50 guests', desc: 'Three days, one estate, fifty guests. Every detail handled.' },
+      { tag: 'Europe', name: 'Paris Salon', meta: 'Sept · 80 guests', desc: 'A grand Haussmannian salon. The kind of room that holds you.' },
+      { tag: 'Europe', name: 'Santorini Cliffside', meta: 'May · 60 guests', desc: 'Whitewashed, cliffside, the sun on the water, the wind on the linen.' },
+      { tag: 'UK', name: 'Cotswolds Manor', meta: 'Aug · 120 guests', desc: 'A stone manor, 40 acres, the kind of English summer you remember forever.' },
+    ],
+  },
+  14: { // Mosaic — art gallery: on the wall now
+    eyebrow: 'On the wall now',
+    title: 'In the gallery this month',
+    intro: 'Four shows, all on view. Free First Fridays every month.',
+    items: [
+      { tag: 'Solo Show', name: 'Sarah O\'Brien, "Soft Edges"', meta: 'Oil on linen', desc: '12 large canvases. Up through April 28. The most-talked-about show of the year.' },
+      { tag: 'Solo Show', name: 'Marcus Lin, "Field Studies"', meta: 'Mixed media', desc: '8 works on paper, 4 sculptures. Up through May 12.' },
+      { tag: 'Group Show', name: 'Group: "Quiet Rooms"', meta: '14 artists', desc: 'A group show, curated. Up through June 02.' },
+      { tag: 'Solo Show', name: 'Helen Aspler, "Soft Machines"', meta: 'Bronze + steel', desc: '6 sculptures in the back room. Up through May 30.' },
+    ],
+  },
+  15: { // Apex — fitness: this week
+    eyebrow: 'This week',
+    title: 'On the gym floor',
+    intro: 'Five coached sessions, open gym 24/7. Bring a friend any day.',
+    items: [
+      { tag: 'Strength', name: 'Mon — Lower Body Power', meta: '6:00am + 6:00pm', desc: 'Heavy squats, accessory work, mobility finish. 75 min, coached.' },
+      { tag: 'Conditioning', name: 'Wed — VO2 Max Intervals', meta: '6:00am + 6:00pm', desc: 'Rower + bike intervals. Heart-rate zone-based, 60 min.' },
+      { tag: 'Olympic', name: 'Fri — Olympic Lifting', meta: '6:00am + 6:00pm', desc: 'Snatch + clean & jerk technique. Coached, 90 min.' },
+      { tag: 'Endurance', name: 'Sat — Long Run', meta: '8:00am', desc: '75-90 min, zone 2. Paced by a coach, conversational pace.' },
+      { tag: 'Recovery', name: 'Sun — Recovery + Mobility', meta: '9:00am', desc: 'Foam roll, mobility flow, breathwork. 60 min, the kind of slow Sunday.' },
+    ],
+  },
+  16: { // Chapter — publishing: this season's releases
+    eyebrow: 'This season',
+    title: 'On the press this spring',
+    intro: 'Four titles, all edited by a human, all on real shelves.',
+    items: [
+      { tag: 'Essays', name: '"The Long Field" by Vera Maass', meta: 'Essays · Mar', desc: 'A debut essay collection. Long-form, slow-read, essential.' },
+      { tag: 'Poetry', name: '"Salt Light" by Noor Hassan', meta: 'Poetry · Apr', desc: 'A second collection. Coastal, spare, deeply human.' },
+      { tag: 'Anthology', name: '"The Translator\'s Year" ed. Anna Lin', meta: 'Anthology · May', desc: '12 translators, 12 essays. The first of its kind.' },
+      { tag: 'Fiction', name: '"Glass House" by Pavel Dorn', meta: 'Novel · Jun', desc: 'A debut novel. Translated from the German by Anna Lin.' },
+    ],
+  },
+  17: { // Spark — agency: recent launches
+    eyebrow: 'Recent launches',
+    title: 'On the wall this season',
+    intro: 'Four brands shipped between March and June. Senior team, fixed price.',
+    items: [
+      { tag: 'Branding', name: 'Verda — wellness brand identity', meta: 'Identity + Web · Mar', desc: 'A full rebrand. Logo, type, color, packaging, web. The whole system.' },
+      { tag: 'Hospitality', name: 'Mira Hotel — boutique hospitality', meta: 'Identity + Site · Apr', desc: 'A 12-room hotel on the Aegean. Identity, signage, web, wayfinding.' },
+      { tag: 'Fintech', name: 'Tala Finance — fintech rebrand', meta: 'Identity + App · May', desc: 'A rebrand for a Series B fintech. The first public launch in 8 years.' },
+      { tag: 'Architecture', name: 'Studio Mara — architecture firm', meta: 'Identity + Site · Jun', desc: 'Identity for a new architecture studio. 3-week sprint, fixed price.' },
+    ],
+  },
+  18: { // Tide — real estate: featured listings
+    eyebrow: 'On the market',
+    title: 'Featured this month',
+    intro: 'Four listings, all off-market first for our clients. Live on MLS Friday.',
+    items: [
+      { tag: 'East Coast', name: 'Montauk Dune House', meta: '$4.2M · 4bd/3ba', desc: 'A cedar-shingled house on a private dune. 280-degree ocean view, no road noise.' },
+      { tag: 'Aegean', name: 'Mykonos Cliff Villa', meta: '€3.8M · 5bd/5ba', desc: 'A whitewashed villa carved into the cliff. Infinity pool, sea in every window.' },
+      { tag: 'East Coast', name: 'Cape Cod Saltbox', meta: '$1.8M · 3bd/2ba', desc: 'A restored 1860 saltbox. Five minutes from the beach, a real New England summer.' },
+      { tag: 'Mediterranean', name: 'Sardinia Stone House', meta: '€2.4M · 4bd/3ba', desc: 'A stone house on the south coast. 200m to the water, terraced olive grove.' },
+    ],
+  },
+  19: { // Quanta — education: open courses
+    eyebrow: 'Open courses',
+    title: 'Enrolling this month',
+    intro: 'Four self-paced courses, free first lesson, no card required.',
+    items: [
+      { tag: 'Code', name: 'TypeScript from First Principles', meta: '8 weeks · Self-paced', desc: 'From zero to typesafe. Real project, real feedback, real portfolio.' },
+      { tag: 'Design', name: 'Brand Identity Studio', meta: '6 weeks · Self-paced', desc: 'Logo, type, color, voice. Your portfolio, your system, your name on it.' },
+      { tag: 'Data', name: 'Data Engineering Foundations', meta: '10 weeks · Self-paced', desc: 'Pipelines, warehouses, dbt, Airflow. The full stack, end to end.' },
+      { tag: 'Photo', name: 'Cinematic Photography', meta: '5 weeks · Self-paced', desc: 'Light, color, composition. Field-proven assignments, real reviews.' },
+    ],
+  },
+  20: { // VAD — AI coding: latest releases
+    eyebrow: 'Latest',
+    title: 'Recent releases',
+    intro: 'Four versions shipped since March. Open source, fast, multi-agent.',
+    items: [
+      { tag: 'Release', name: 'VAD 0.9.4 — Multi-agent', meta: 'Mar', desc: 'Six sub-agents in parallel. One prompt, one PR, one merged commit.' },
+      { tag: 'Release', name: 'VAD 0.9.5 — Codebase Memory', meta: 'Apr', desc: 'Remembers decisions across sessions. The model learns the codebase.' },
+      { tag: 'Release', name: 'VAD 0.9.6 — Native MCP', meta: 'May', desc: 'Every tool, on demand, with permission. The integration is the surface.' },
+      { tag: 'Release', name: 'VAD 0.9.7 — Sub-2s First-Fix', meta: 'Jun', desc: 'Median time from prompt to first passing test. Less than two seconds.' },
+    ],
+  },
+};
+
+// Merge LIVE_SECTIONS into DESIGN_PRESETS
+Object.keys(LIVE_SECTIONS).forEach((id) => {
+  const designId = parseInt(id, 10);
+  if (DESIGN_PRESETS[designId]) {
+    DESIGN_PRESETS[designId].liveSection = LIVE_SECTIONS[designId];
+  }
+});
+
 // Merge EXTRA_CONTENT into DESIGN_PRESETS
 Object.keys(EXTRA_CONTENT).forEach((id) => {
   const designId = parseInt(id, 10);
