@@ -901,15 +901,15 @@ const DESIGN_PRESETS = {
 // These add rich per-design content beyond the core sections.
 // =========================================================
 
-// Helper: build a 6-tile gallery from existing assets
+// Helper: build a 6-tile gallery — all 6 tiles use unique images
 function buildGallery(id, thumbName) {
   return [
     { img: `showcase/${thumbName}_01.png`, cap: 'Hero moment' },
     { img: `showcase/${thumbName}_02.png`, cap: 'In the studio' },
     { img: `showcase/${thumbName}_03.png`, cap: 'On the ground' },
     { img: `thumbs/${thumbName}.png`, cap: 'In the wild' },
-    { img: `showcase/${thumbName}_01.png`, cap: 'Detail' },
-    { img: `showcase/${thumbName}_02.png`, cap: 'The full piece' },
+    { img: `showcase/${thumbName}_04.png`, cap: 'In the details' },
+    { img: `showcase/${thumbName}_05.png`, cap: 'The full picture' },
   ];
 }
 
