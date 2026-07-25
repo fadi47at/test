@@ -1,49 +1,207 @@
 // =========================================================
-// Fadi landing — scroll-triggered B&W → color hero reveal
+// Fadi landing — cursor paints the COLORFUL version onto the
+// B&W hero. Like the original MiMo ink-brush, but reveals color.
 // =========================================================
 
 (function () {
   const hero = document.querySelector('.hero');
-  if (!hero) return;
+  const canvas = document.getElementById('heroPaint');
+  if (!hero || !canvas) return;
 
-  // Threshold = how far you scroll (in px) before the color reveal completes.
-  // Tuned to roughly the hero height so the transition is "scroll through the hero".
-  const THRESHOLD = () => Math.max(360, hero.offsetHeight * 0.85);
+  // Only on hover-capable devices
+  if (!window.matchMedia('(hover: hover)').matches) return;
 
-  let ticking = false;
-  function update() {
-    const y = window.scrollY || window.pageYOffset || 0;
-    const t = Math.max(0, Math.min(1, y / THRESHOLD()));
-    // ease-out so the first 20% of scroll does most of the work
-    const eased = 1 - Math.pow(1 - t, 1.6);
-    hero.classList.toggle('is-revealed', eased > 0.5);
-    // Drive opacities directly so the transition is buttery, not gated by the class
-    const ink = hero.querySelector('.hero__bg--ink');
-    const color = hero.querySelector('.hero__bg--color');
-    if (ink) ink.style.opacity = String(1 - eased);
-    if (color) {
-      color.style.opacity = String(eased);
-      color.style.transform = `scale(${1.04 - eased * 0.04})`;
-    }
-    ticking = false;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  // Brush geometry
+  const R_START = 30;     // initial brush radius
+  const R_END = 200;      // max brush radius
+  const R_VARY = 0.35;    // per-stamp radius variation
+  const LIFETIME = 2200;  // ms — how long a stamp stays before fading out
+  const STAMP_STEP = 18;  // px between stamps along the cursor path
+  const MAX_STAMPS = 220; // cap
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  // Test helper: ?paint=hold → never fade (for screenshot tests)
+  const testParams = new URLSearchParams(window.location.search);
+  const HOLD = testParams.get('paint') === 'hold';
+
+  // Load the colorful image (this is what we paint)
+  const colorImg = new Image();
+  let imgReady = false;
+  colorImg.onload = () => { imgReady = true; };
+  colorImg.src = 'hero_bg_color.png';
+
+  // Track the page color so the faded-out region looks identical to the
+  // untouched page (no harsh edges, no color shift)
+  const MASK = '252, 250, 248'; // matches --color-bg
+
+  let w = 0, h = 0;
+  function resize() {
+    const rect = hero.getBoundingClientRect();
+    w = rect.width;
+    h = rect.height;
+    canvas.width = Math.round(w * DPR);
+    canvas.height = Math.round(h * DPR);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // Reset the paint to fully transparent — user starts fresh
+    ctx.clearRect(0, 0, w, h);
   }
-  function onScroll() {
-    if (!ticking) {
-      window.requestAnimationFrame(update);
-      ticking = true;
-    }
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  update();
+  resize();
+  window.addEventListener('resize', resize);
 
-  // Test helper: ?scroll=400 → instant scroll on load (for screenshot tests)
-  const params = new URLSearchParams(window.location.search);
-  const testScroll = parseInt(params.get('scroll') || '0', 10);
-  if (testScroll > 0) {
-    requestAnimationFrame(() => {
-      window.scrollTo(0, testScroll);
+  const stamps = [];
+  let lastX = null, lastY = null;
+
+  function addStamp(x, y) {
+    if (stamps.length >= MAX_STAMPS) stamps.shift();
+    stamps.push({
+      x: x, y: y,
+      born: performance.now(),
+      seed: Math.random() * Math.PI * 2,
+      rmax: R_END * (1 - R_VARY + Math.random() * R_VARY),
+      scaleX: 1, scaleY: 1, offX: 0, offY: 0,
     });
+  }
+
+  function stampAlong(x, y) {
+    if (lastX === null) {
+      addStamp(x, y);
+    } else {
+      const dx = x - lastX;
+      const dy = y - lastY;
+      const dist = Math.hypot(dx, dy);
+      const steps = Math.max(1, Math.ceil(dist / STAMP_STEP));
+      for (let i = 1; i <= steps; i++) {
+        addStamp(lastX + (dx * i) / steps, lastY + (dy * i) / steps);
+      }
+    }
+    lastX = x; lastY = y;
+  }
+
+  // Compute where a stamp should sample the colorful image.
+  // The hero (1440x viewport) and the source image may differ in size
+  // (the image is 1440x whatever its natural aspect), so we scale.
+  function getSourceRect(x, y, r) {
+    if (!imgReady) return null;
+    const heroRect = hero.getBoundingClientRect();
+    const sx = colorImg.width / heroRect.width;
+    const sy = colorImg.height / heroRect.height;
+    return {
+      sx: (x - r) * sx,
+      sy: (y - r) * sy,
+      sw: r * 2 * sx,
+      sh: r * 2 * sy,
+      dx: x - r,
+      dy: y - r,
+      dw: r * 2,
+      dh: r * 2,
+    };
+  }
+
+  // Draw one stamp: a soft circle that "stamps" the color image at
+  // the cursor position. The soft edge comes from destination-in on a
+  // radial gradient (alpha mask).
+  function drawStamp(s, now) {
+    const age = now - s.born;
+    const t = age / LIFETIME; // 0..1
+    if (t >= 1 && !HOLD) return false;
+
+    // Expand smoothly (easeOutCubic), hold for a beat, then fade
+    const expand = Math.min(1, t * 2.4);          // 0→1 in first ~40% of life
+    const ease = 1 - Math.pow(1 - expand, 3);
+    const r = R_START + (s.rmax - R_START) * ease;
+    // Fade in quickly, hold, fade out
+    const fadeIn = Math.min(1, t * 8);
+    const fadeOut = t < 0.55 ? 1 : 1 - (t - 0.55) / 0.45;
+    const alpha = HOLD ? 1 : Math.max(0, Math.min(1, fadeIn)) * Math.max(0, Math.min(1, fadeOut));
+
+    const rect = getSourceRect(s.x, s.y, r);
+    if (!rect) return true;
+
+    // 1) Paint the color image slice to an offscreen-equivalent region on the
+    //    main canvas. We use destination-over so the stamp adds to whatever
+    //    is already there, never erasing existing paint.
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = alpha;
+    try {
+      ctx.drawImage(colorImg, rect.sx, rect.sy, rect.sw, rect.sh, rect.dx, rect.dy, rect.dw, rect.dh);
+    } catch (e) {
+      // Source rect may briefly fall outside the image — skip safely
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+    return true;
+  }
+
+  let running = false;
+  function loop() {
+    const now = performance.now();
+    // We DON'T clear the canvas — stamps accumulate. We just repaint them all
+    // every frame so the "fade" reads as a smooth alpha transition.
+    // To fade stamps, we need them to not paint themselves at full alpha.
+    // Simplest: clear and redraw all stamps each frame, computing per-stamp alpha.
+    ctx.clearRect(0, 0, w, h);
+    for (let i = stamps.length - 1; i >= 0; i--) {
+      const alive = drawStamp(stamps[i], now);
+      if (!alive) stamps.splice(i, 1);
+    }
+    if (stamps.length || hasCursor) {
+      requestAnimationFrame(loop);
+    } else {
+      running = false;
+    }
+  }
+  function start() {
+    if (!running) { running = true; requestAnimationFrame(loop); }
+  }
+
+  let hasCursor = false;
+  hero.addEventListener('mouseenter', (e) => {
+    hasCursor = true;
+    const rect = hero.getBoundingClientRect();
+    lastX = e.clientX - rect.left;
+    lastY = e.clientY - rect.top;
+    stampAlong(lastX, lastY);
+    hero.classList.add('is-painted');
+    start();
+  });
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    stampAlong(e.clientX - rect.left, e.clientY - rect.top);
+    start();
+  });
+  hero.addEventListener('mouseleave', () => {
+    hasCursor = false;
+    lastX = null; lastY = null;
+  });
+
+  // Test helper: ?paint=1 or ?paint=hold → paint a diagonal trail on load
+  if (testParams.get('paint') === '1' || HOLD) {
+    const simulatePath = () => {
+      const rect = hero.getBoundingClientRect();
+      const startX = rect.width * 0.15, startY = rect.height * 0.55;
+      const endX = rect.width * 0.85, endY = rect.height * 0.7;
+      const steps = 40;
+      hasCursor = true;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const x = startX + (endX - startX) * t;
+        const y = startY + (endY - startY) * t + Math.sin(t * 6) * 30;
+        stampAlong(x, y);
+      }
+      hero.classList.add('is-painted');
+      start();
+    };
+    // Wait for the image to load before simulating
+    const tryStart = () => {
+      if (imgReady) simulatePath();
+      else setTimeout(tryStart, 100);
+    };
+    tryStart();
   }
 })();
 

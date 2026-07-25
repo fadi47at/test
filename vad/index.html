@@ -16,12 +16,12 @@
   <section class="hero">
     <!-- B&W ink-painting (default visible) -->
     <div class="hero__bg hero__bg--ink" aria-hidden="true"></div>
-    <!-- Colorful version (fades in on scroll) -->
-    <div class="hero__bg hero__bg--color" id="heroBgColor" aria-hidden="true"></div>
-    <!-- Scroll progress indicator -->
-    <div class="hero__scroll-hint" id="heroScrollHint" aria-hidden="true">
-      <span>مرر للأسفل</span>
-      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M8 3 V13 M3 8 L8 13 L13 8" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <!-- Canvas that "paints" the COLORFUL version wherever the cursor passes -->
+    <canvas class="hero__paint" id="heroPaint" aria-hidden="true"></canvas>
+    <!-- Cursor hint -->
+    <div class="hero__cursor-hint" id="heroCursorHint" aria-hidden="true">
+      <span>حرّك الماوس على الصورة</span>
+      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 3 L13 8 L8.5 9.5 L7 14 Z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
 
     <!-- Top bar -->

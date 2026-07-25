@@ -47,47 +47,44 @@ body {
   background-position: bottom center;
   background-repeat: no-repeat;
   z-index: 0;
-  will-change: opacity, transform;
   pointer-events: none;
 }
 .hero__bg--ink {
   background-image: url('hero_bg.png');
   z-index: 0;
 }
-.hero__bg--color {
-  background-image: url('hero_bg_color.png');
+.hero__paint {
+  position: absolute;
+  inset: 0;
   z-index: 1;
-  opacity: 0;
-  /* Slight scale so the color version breathes as it appears */
-  transform: scale(1.06);
+  pointer-events: none;
+  display: block;
+  /* Soften the hard stamp edges into an inky wash */
+  filter: blur(6px);
 }
-.hero.is-revealed .hero__bg--ink { opacity: 0; }
-.hero.is-revealed .hero__bg--color { opacity: 1; transform: scale(1); }
 
-.hero__scroll-hint {
+.hero__cursor-hint {
   position: absolute;
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-family: var(--ff-mono);
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--color-ink);
-  opacity: 0.65;
+  opacity: 0.6;
   pointer-events: none;
-  animation: scroll-hint-bob 2.4s ease-in-out infinite;
-  transition: opacity 400ms ease;
+  transition: opacity 600ms ease;
 }
-.hero.is-revealed .hero__scroll-hint { opacity: 0; }
-@keyframes scroll-hint-bob {
-  0%, 100% { transform: translate(-50%, 0); }
-  50% { transform: translate(-50%, 6px); }
+.hero.is-painted .hero__cursor-hint { opacity: 0; }
+@keyframes cursor-hint-fade {
+  from { opacity: 0.6; }
+  to { opacity: 0; }
 }
 
 /* Top bar */
@@ -528,8 +525,9 @@ body {
 }
 
 @media (hover: none) {
-  /* On touch devices the color layer still reveals on scroll — no canvas needed. */
-  .hero__bg--color { transition: opacity 400ms ease, transform 600ms ease; }
+  /* On touch devices, no cursor → no paint. Show a tap-hint or reveal color always. */
+  .hero__cursor-hint { display: none; }
+  .hero__paint { display: none; }
 }
 
 /* =========================================================
