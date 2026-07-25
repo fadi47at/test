@@ -493,6 +493,373 @@ function getDesign(id) {
 }
 
 // =========================================================
+// Design Presets — per-design layout, decoration, and rich content
+// =========================================================
+const DESIGN_PRESETS = {
+  1: {
+    layout: 'editorial',
+    decoration: 'lines',
+    marquee: ['Spring/Summer 2026', 'Haute Couture', 'Ready-to-Wear', 'Made in France', 'Hand-embroidered', 'Silk & Wool', 'Atelier Cambon', 'Sample Room'],
+    stats: [
+      { value: '38', label: 'Years on rue Cambon' },
+      { value: '2400', label: 'Pieces per season' },
+      { value: '94', suffix: '%', label: 'Made in France' },
+      { value: '12', suffix: 'K', label: 'Atelier members' },
+    ],
+    process: [
+      { icon: '✦', title: 'Sketch', desc: 'A single drawing, twenty tries. The silhouette before the stitch.' },
+      { icon: '✂', title: 'Cut', desc: 'Hand-cut from the bolt. One piece, one pair of scissors, one seamstress.' },
+      { icon: '◆', title: 'Stitch', desc: 'Two hundred hours per piece. The body learns the fabric.' },
+      { icon: '◈', title: 'Finish', desc: 'Final fitting, hand-pressed, boxed in cotton. Ready for the runway.' },
+    ],
+    bigQuote: { text: 'A dress is not made in a single day. It is made in a hundred. That is the secret nobody tells.', attr: '— Marie-Louise, Atelier Director' },
+  },
+  2: {
+    layout: 'full-bleed',
+    decoration: 'sun',
+    marquee: ['Sahara · 14 days', 'Himalaya · 21 days', 'Aegean · 7 days', 'Patagonia · 18 days', 'Iceland · 10 days', 'Mongolia · 12 days', 'Bhutan · 16 days', 'Greenland · 9 days'],
+    stats: [
+      { value: '92', label: 'Trips per year' },
+      { value: '6', label: 'Continents' },
+      { value: '8', label: 'Max group size' },
+      { value: '100', suffix: '%', label: 'Locally led' },
+    ],
+    process: [
+      { icon: '✺', title: 'Plan', desc: 'A real human reads your application, then designs a route around you.' },
+      { icon: '◉', title: 'Connect', desc: 'We pair you with a local guide who has actually walked the path.' },
+      { icon: '➤', title: 'Go', desc: 'You walk, you eat, you sleep, you repeat. No megabuses, no megajetlags.' },
+      { icon: '✦', title: 'Return', desc: 'You come back different. We\'ve seen it happen more than 4,000 times.' },
+    ],
+    bigQuote: { text: 'Travel is not about the places you go. It is about the people you become on the way there.', attr: '— Salma, founder' },
+  },
+  3: {
+    layout: 'split',
+    decoration: 'grid',
+    marquee: ['Residential', 'Cultural', 'Commercial', 'Public', 'Adaptive Reuse', 'Interiors', 'Master Plans', 'Pavilions'],
+    stats: [
+      { value: '142', label: 'Projects delivered' },
+      { value: '28', label: 'Years in practice' },
+      { value: '11', label: 'Countries' },
+      { value: '7', label: 'Awards, 2024' },
+    ],
+    process: [
+      { icon: '◧', title: 'Site', desc: 'We spend two weeks on the site before we draw a single line.' },
+      { icon: '◐', title: 'Brief', desc: 'What you need. What you do not need. What you did not know you needed.' },
+      { icon: '◇', title: 'Draw', desc: 'Hand sketches first. Then models. Then drawings. Then more models.' },
+      { icon: '◧', title: 'Build', desc: 'We stay on site. The building is the test.' },
+    ],
+    bigQuote: { text: 'Architecture is the will of an age conceived in spatial terms. It is not a style.', attr: '— Mies van der Rohe' },
+  },
+  4: {
+    layout: 'centered',
+    decoration: 'candle',
+    marquee: ['Eight-Course Tasting', 'Wine Pairing', 'Chef\'s Table', 'Seasonal Menu', 'Mediterranean', 'Private Dining', 'Cellar Selection', 'Sommelier Hour'],
+    stats: [
+      { value: '12', label: 'Seats at the pass' },
+      { value: '8', label: 'Courses, changing monthly' },
+      { value: '320', label: 'Bottles in the cellar' },
+      { value: '4.9', suffix: '/5', label: 'Critic rating' },
+    ],
+    process: [
+      { icon: '✻', title: 'Source', desc: 'The market at 5am. The fisherman we know by name. The farm down the road.' },
+      { icon: '❦', title: 'Compose', desc: 'Eight courses from a single fire. Whatever the season is doing.' },
+      { icon: '✦', title: 'Plate', desc: 'The chef plates each course. Every guest watches from the pass.' },
+      { icon: '◐', title: 'Pour', desc: 'The sommelier pairs. A different glass for every course. No exceptions.' },
+    ],
+    bigQuote: { text: 'We do not have a signature dish. We have a signature season. It changes four times a year.', attr: '— Chef Yara' },
+  },
+  5: {
+    layout: 'organic',
+    decoration: 'leaf',
+    marquee: ['Carbon Negative', 'Plant-Based', 'Refillable', 'Compostable', 'Local Sourcing', 'Zero Waste', 'Regenerative', 'B-Corp'],
+    stats: [
+      { value: '184', suffix: 'K', label: 'Trees planted' },
+      { value: '100', suffix: '%', label: 'Carbon negative' },
+      { value: '0', label: 'Single-use plastic' },
+      { value: '23', label: 'Local farms' },
+    ],
+    process: [
+      { icon: '❀', title: 'Source', desc: 'Every supplier answers: does this leave the land better than we found it?' },
+      { icon: '✿', title: 'Make', desc: 'In small batches, by hand, with materials that compost in 90 days.' },
+      { icon: '✤', title: 'Ship', desc: 'Compostable mailers, recycled paper tape, mushroom packaging. Nothing wasted.' },
+      { icon: '✦', title: 'Refill', desc: 'When you run out, you send the bottle back. We refill and ship again.' },
+    ],
+    bigQuote: { text: 'We do not sell products. We sell a relationship with the land. That is the only honest way.', attr: '— Amara, founder' },
+  },
+  6: {
+    layout: 'full-bleed',
+    decoration: 'stars',
+    marquee: ['Lossless Audio', 'Vinyl Vault', 'Front-Row', 'Indie Sessions', 'World Music', 'Jazz Club', 'Late Night', 'Hi-Fi'],
+    stats: [
+      { value: '24', suffix: 'K', label: 'Albums' },
+      { value: '8', suffix: 'M', label: 'Tracks' },
+      { value: '92', label: 'Genres' },
+      { value: '4', label: 'Real humans curating' },
+    ],
+    process: [
+      { icon: '♫', title: 'Find', desc: 'A real person listens. Not an algorithm. The same curator for years.' },
+      { icon: '◐', title: 'Master', desc: 'Lossless from the original studio masters. 24-bit, 96kHz. No compression.' },
+      { icon: '♪', title: 'Stream', desc: 'Across every device. Offline, online, in your car, on a plane.' },
+      { icon: '♬', title: 'Share', desc: 'A Friday mixtape from a real human. The way music used to be shared.' },
+    ],
+    bigQuote: { text: 'Music is the only art form that lives in the body. We treat it accordingly.', attr: '— Devon, Head of Curation' },
+  },
+  7: {
+    layout: 'full-bleed',
+    decoration: 'mountain',
+    marquee: ['K2 · 28 days', 'Patagonia · 18 days', 'Grand Canyon · 21 days', 'Greenland · 14 days', 'Bhutan · 12 days', 'Mongolia · 16 days', 'Iceland · 10 days', 'Atlas · 9 days'],
+    stats: [
+      { value: '142', label: 'Successful summits' },
+      { value: '6', label: 'Continents' },
+      { value: '0', label: 'Client fatalities' },
+      { value: '12', label: 'Years guiding' },
+    ],
+    process: [
+      { icon: '▲', title: 'Train', desc: 'Six months of preparation. We design a plan for your body, not the brochure.' },
+      { icon: '◐', title: 'Acclimatize', desc: 'Ten days at altitude before we even start. The mountain punishes shortcuts.' },
+      { icon: '✦', title: 'Climb', desc: 'One step at a time. The summit is a side-effect of the journey.' },
+      { icon: '◈', title: 'Return', desc: 'You come back. Most of our clients come back. That is how you know it worked.' },
+    ],
+    bigQuote: { text: 'The summit is the easy part. The hard part is everything you become on the way up.', attr: '— Pavel, lead guide' },
+  },
+  8: {
+    layout: 'split',
+    decoration: 'grid',
+    marquee: ['Auto-Compound', 'Pro Trading', 'Stable Vault', 'Cross-Chain', 'Audited', 'Self-Custody', 'No Lock-ups', 'On-chain'],
+    stats: [
+      { value: '$2.4', suffix: 'B', label: 'TVL' },
+      { value: '180', suffix: 'K', label: 'Active wallets' },
+      { value: '12', label: 'Chains' },
+      { value: '0', label: 'Security incidents' },
+    ],
+    process: [
+      { icon: '◆', title: 'Connect', desc: 'Your wallet. Your keys. We never see them. Self-custody is non-negotiable.' },
+      { icon: '◐', title: 'Choose', desc: 'A strategy that fits your time horizon. Conservative, balanced, or aggressive.' },
+      { icon: '✦', title: 'Earn', desc: 'Set-and-forget. We rebalance automatically. You check in when you want to.' },
+      { icon: '◈', title: 'Withdraw', desc: 'Any time, any amount, no fees. The money is always yours.' },
+    ],
+    bigQuote: { text: 'We do not want your money. We want your trust. The money follows.', attr: '— Lena, founder' },
+  },
+  9: {
+    layout: 'centered',
+    decoration: 'pulse',
+    marquee: ['Same-Day Visits', 'At-Home Labs', 'Therapy', 'Pediatrics', 'Mental Health', 'Dermatology', 'Nutrition', '24/7 Care'],
+    stats: [
+      { value: '8', suffix: 'min', label: 'Average wait' },
+      { value: '320', label: 'Licensed clinicians' },
+      { value: '24', suffix: '/7', label: 'Available' },
+      { value: '92', suffix: '%', label: 'Resolved in one visit' },
+    ],
+    process: [
+      { icon: '✚', title: 'Book', desc: 'Online or in-app. Pick a clinician, pick a time, done. No phone tree.' },
+      { icon: '◉', title: 'Visit', desc: 'Video or in-person. Same clinician every time if you want.' },
+      { icon: '✦', title: 'Treat', desc: 'Prescriptions, labs, referrals, follow-up. All in one place.' },
+      { icon: '◈', title: 'Follow up', desc: 'Your clinician checks in. Not a chatbot. A real person who knows you.' },
+    ],
+    bigQuote: { text: 'Healthcare is not a transaction. It is a relationship. We built the platform around that.', attr: '— Dr. Yuki, Chief Medical Officer' },
+  },
+  10: {
+    layout: 'full-bleed',
+    decoration: 'stars',
+    marquee: ['Atlas Program', 'Astronaut Training', 'Earth Observation', 'Sub-Orbital', 'Mission Control', 'Telemetry', 'Launch Services', 'Constellation Ops'],
+    stats: [
+      { value: '14', label: 'Successful launches' },
+      { value: '320', label: 'Million km flown' },
+      { value: '42', label: 'Active satellites' },
+      { value: '0', label: 'Mission failures' },
+    ],
+    process: [
+      { icon: '▲', title: 'Design', desc: 'Every mission starts on a napkin. We turn it into hardware.' },
+      { icon: '◐', title: 'Build', desc: 'Mission-grade components. Tested to NASA outgassing specs.' },
+      { icon: '✦', title: 'Launch', desc: 'On time, on budget. The launch is the easy part.' },
+      { icon: '◈', title: 'Operate', desc: '24/7 mission control. Real-time telemetry. Decades of operations.' },
+    ],
+    bigQuote: { text: 'Space is hard. The reason we do it is because it is hard.', attr: '— Anonymous, mission control' },
+  },
+  11: {
+    layout: 'full-bleed',
+    decoration: 'grain',
+    marquee: ['Portrait', 'Street', 'Long Exposure', 'Documentary', 'Editorial', 'Film', 'Night', 'Black & White'],
+    stats: [
+      { value: '12', label: 'Solo shows' },
+      { value: '38', label: 'Countries shot' },
+      { value: '2', label: 'Books published' },
+      { value: '∞', label: 'Rolls of film' },
+    ],
+    process: [
+      { icon: '◐', title: 'See', desc: 'I walk for an hour before I shoot. The body has to know the place first.' },
+      { icon: '✦', title: 'Frame', desc: 'A single frame, the one that cannot be repeated. That is the only one worth taking.' },
+      { icon: '◈', title: 'Wait', desc: 'For the light. For the moment. For the person to be themselves.' },
+      { icon: '◇', title: 'Print', desc: 'Hand-printed in the darkroom. The final act. The one that matters.' },
+    ],
+    bigQuote: { text: 'I do not photograph things. I photograph the way I see them. The two are not the same.', attr: '— Mira' },
+  },
+  12: {
+    layout: 'editorial',
+    decoration: 'steam',
+    marquee: ['Single Origin', 'Pour-Over', 'Espresso', 'Cold Brew', 'Roasted to Order', 'Direct Trade', 'Hand-Picked', 'Cup of Excellence'],
+    stats: [
+      { value: '24', label: 'Single origins' },
+      { value: '3', suffix: 'x', label: 'Fair Trade minimum' },
+      { value: '48', suffix: 'h', label: 'From drum to door' },
+      { value: '100', suffix: '%', label: 'Direct trade' },
+    ],
+    process: [
+      { icon: '◉', title: 'Source', desc: 'We visit the farm. We pay the farmer. We pay them three times the minimum.' },
+      { icon: '☕', title: 'Roast', desc: 'Small batches. The drum holds 12 kilos. We roast on Tuesdays.' },
+      { icon: '✦', title: 'Cup', desc: 'Every batch cupped by Q-graders. The defective 3% goes home with us.' },
+      { icon: '◐', title: 'Ship', desc: 'Within 48 hours of leaving the drum. Always fresh. Always traceable.' },
+    ],
+    bigQuote: { text: 'Coffee is not a beverage. It is a relationship between a person, a plant, and a place.', attr: '— Kenji, head roaster' },
+  },
+  13: {
+    layout: 'editorial',
+    decoration: 'petal',
+    marquee: ['Tuscan Vineyard', 'Parisian Château', 'Santorini Cliffside', 'Moroccan Riad', 'Marrakech', 'Cotswolds Barn', 'Lake Como', 'Bordeaux'],
+    stats: [
+      { value: '142', label: 'Weddings planned' },
+      { value: '0', label: 'Bridezilla moments' },
+      { value: '14', label: 'Countries' },
+      { value: '100', suffix: '%', label: 'Vendor-agnostic' },
+    ],
+    process: [
+      { icon: '✦', title: 'Meet', desc: 'Coffee, not champagne. A long conversation about what you actually want.' },
+      { icon: '◐', title: 'Design', desc: 'A single planner from first call to last dance. No hand-offs, no surprises.' },
+      { icon: '✦', title: 'Plan', desc: 'Vendor-agnostic means we recommend what is right. We do not take commissions.' },
+      { icon: '◈', title: 'Run', desc: 'Day-of. We run the day. You live it. We handle every glitch in real time.' },
+    ],
+    bigQuote: { text: 'The wedding is not the day. The wedding is the marriage. We plan for the marriage.', attr: '— Anya, founder' },
+  },
+  14: {
+    layout: 'editorial',
+    decoration: 'shape',
+    marquee: ['Solo Shows', 'Group Shows', 'Installations', 'Performance', 'Sculpture', 'Photography', 'New Media', 'Curatorial'],
+    stats: [
+      { value: '12', label: 'Exhibitions per year' },
+      { value: '4', label: 'Solo shows per artist' },
+      { value: '280', suffix: 'K', label: 'Visitors annually' },
+      { value: '0', label: 'Reproductions sold' },
+    ],
+    process: [
+      { icon: '◐', title: 'Curate', desc: 'We show four artists a year. Not forty. Each one gets a real show.' },
+      { icon: '✦', title: 'Install', desc: 'Lighting, walls, sound. The gallery is built around the work, not the other way around.' },
+      { icon: '◈', title: 'Open', desc: 'First Fridays. Free, with wine, with the artists actually in the room.' },
+      { icon: '◇', title: 'Sell', desc: 'If the work sells, the artist gets 70%. Direct from studio. No middlemen.' },
+    ],
+    bigQuote: { text: 'A gallery is not a shop. It is a place where art happens, and the shop is a side-effect.', attr: '— Mateo, director' },
+  },
+  15: {
+    layout: 'split',
+    decoration: 'noise',
+    marquee: ['Strength', 'Powerlifting', 'CrossFit', 'Olympic Lifting', 'Marathon', 'Calisthenics', 'Mobility', 'Conditioning'],
+    stats: [
+      { value: '12', suffix: 'K', label: 'Members' },
+      { value: '8', label: 'Coaches' },
+      { value: '0', label: 'Mirrors on the floor' },
+      { value: '24', suffix: '/7', label: 'Open gym' },
+    ],
+    process: [
+      { icon: '◆', title: 'Assess', desc: 'Every new member does an InBody scan, a movement screen, and a goals interview.' },
+      { icon: '◐', title: 'Program', desc: 'Periodized. Cycles, deloads, progressive overload. No random workouts.' },
+      { icon: '✦', title: 'Coach', desc: 'Real coaches. Certified. Watching. We\'d rather you lift less with perfect form.' },
+      { icon: '◈', title: 'Progress', desc: 'Re-assess every 8 weeks. The data tells the truth. We use it.' },
+    ],
+    bigQuote: { text: 'Form first, every session. The PR is a side-effect of the discipline, not the goal.', attr: '— Tariq, head coach' },
+  },
+  16: {
+    layout: 'centered',
+    decoration: 'paper',
+    marquee: ['Fiction', 'Memoir', 'Essays', 'Poetry', 'Translation', 'Reissue', 'Limited Edition', 'Audiobook'],
+    stats: [
+      { value: '142', label: 'Titles in print' },
+      { value: '12', label: 'Per year' },
+      { value: '240', label: 'Independent stockists' },
+      { value: '0', label: 'Ghostwriters' },
+    ],
+    process: [
+      { icon: '❦', title: 'Receive', desc: 'Manuscripts arrive by post. We read every one. No algorithmic slush pile.' },
+      { icon: '✦', title: 'Edit', desc: 'Two editors. Six months. We do not cut what makes the work the work.' },
+      { icon: '◐', title: 'Print', desc: 'Letterpress for limited editions. Offset for the long run. Always on acid-free paper.' },
+      { icon: '◈', title: 'Distribute', desc: 'Independent bookstores in 12 countries. Not Amazon. Not algorithmic.' },
+    ],
+    bigQuote: { text: 'A book must be the axe for the frozen sea within us. That is the only test that matters.', attr: '— Franz Kafka' },
+  },
+  17: {
+    layout: 'centered',
+    decoration: 'shape',
+    marquee: ['Brand Identity', 'Web & Product', 'Strategy', 'Naming', 'Editorial', 'Packaging', 'Campaign', 'Art Direction'],
+    stats: [
+      { value: '142', label: 'Brands shipped' },
+      { value: '14', label: 'Years in business' },
+      { value: '8', label: 'Senior team' },
+      { value: '0', label: 'Hourly billing' },
+    ],
+    process: [
+      { icon: '✦', title: 'Listen', desc: 'Two weeks of conversations. With you, with your customers, with the people who hate you.' },
+      { icon: '◐', title: 'Position', desc: 'A document. One page. Who you are, who you are for, and how to say it.' },
+      { icon: '◈', title: 'Design', desc: 'Logo, type, color, voice. The whole thing, designed as one.' },
+      { icon: '◇', title: 'Ship', desc: 'Fixed price. No scope creep. No surprise invoices. We say no when we mean no.' },
+    ],
+    bigQuote: { text: 'We do not make things pretty. We make things that work, and that work is beautiful.', attr: '— Theo, founder' },
+  },
+  18: {
+    layout: 'editorial',
+    decoration: 'wave',
+    marquee: ['Cove House', 'Olive Estate', 'Cliffside Modern', 'Mediterranean Villa', 'Aegean', 'Cotswolds', 'Provence', 'Bordeaux'],
+    stats: [
+      { value: '$2.4', suffix: 'B', label: 'Sold in 2025' },
+      { value: '142', label: 'Homes closed' },
+      { value: '14', label: 'Coastal markets' },
+      { value: '0', label: 'Dual agency' },
+    ],
+    process: [
+      { icon: '◐', title: 'Search', desc: 'Off-market first. Our clients see listings 48 hours before MLS.' },
+      { icon: '✦', title: 'Tour', desc: 'One agent per neighborhood. They know every block, every comp, every seller.' },
+      { icon: '◈', title: 'Offer', desc: 'We never represent both sides. Your interests, full stop.' },
+      { icon: '◇', title: 'Close', desc: 'From handshake to keys, in 30 days. We move at the speed of your life.' },
+    ],
+    bigQuote: { text: 'We do not sell houses. We introduce people to the place they will spend the next chapter.', attr: '— James, partner' },
+  },
+  19: {
+    layout: 'centered',
+    decoration: 'sun',
+    marquee: ['Code', 'UX Design', 'Data Science', 'Photography', 'Music Production', 'Marketing', 'Writing', 'Business'],
+    stats: [
+      { value: '240', label: 'Courses' },
+      { value: '50', suffix: 'K', label: 'Learners' },
+      { value: '92', label: 'Countries' },
+      { value: '4.9', suffix: '/5', label: 'Avg rating' },
+    ],
+    process: [
+      { icon: '✦', title: 'Pick', desc: 'Browse 240 courses. Try the first lesson free, no signup required.' },
+      { icon: '◐', title: 'Learn', desc: 'Watch lessons when you want. Take notes. Try the exercises. Ask the instructor.' },
+      { icon: '✺', title: 'Build', desc: 'Every course ends with a real project you can put in your portfolio.' },
+      { icon: '◈', title: 'Ship', desc: 'Get feedback from the community. Show your work. Land the job.' },
+    ],
+    bigQuote: { text: 'We do not teach theory. We teach the thing you can do on Monday morning.', attr: '— Dr. Yuki, lead instructor' },
+  },
+  20: {
+    layout: 'editorial',
+    decoration: 'pulse',
+    marquee: ['Unlimited Context', 'Real Execution', 'Multi-Agent', 'Codebase Memory', 'Tool Calling', 'Sub-agents', 'Ship Faster', 'MCP'],
+    stats: [
+      { value: '∞', label: 'Context window' },
+      { value: '8', suffix: 'M', label: 'Tokens processed' },
+      { value: '50', suffix: 'K', label: 'Developers' },
+      { value: '<2', suffix: 's', label: 'Time to first fix' },
+    ],
+    process: [
+      { icon: '◧', title: 'Connect', desc: 'Drop us into your repo. We read the codebase, the docs, the open issues.' },
+      { icon: '◐', title: 'Ask', desc: 'Plain English. No prompts to memorize. We figure out what you actually meant.' },
+      { icon: '◆', title: 'Run', desc: 'We run the code. Find the bug. Fix the bug. Run the tests. Open the PR.' },
+      { icon: '✦', title: 'Ship', desc: 'You review. We iterate. The PR lands. The customer never knows we were there.' },
+    ],
+    bigQuote: { text: 'The best AI is the one you forget you are using. That is the only metric we care about.', attr: '— Sam, founding engineer' },
+  },
+};
+
+
+// =========================================================
 // Showcase data — 3 image items per design
 // =========================================================
 const SHOWCASE = {

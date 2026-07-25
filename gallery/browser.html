@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-design="0" data-var="0">
+<html lang="en" data-design="0" data-var="0" data-layout="centered">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,6 +35,8 @@
 
     <!-- Optional hero background image -->
     <div class="dhero-bg" id="dheroBg" aria-hidden="true"></div>
+    <!-- Optional decoration layer -->
+    <div class="ddeco" id="ddeco" aria-hidden="true"></div>
 
     <!-- Top nav -->
     <header class="dnav" id="dnav">
@@ -51,15 +53,74 @@
       <a class="dnav__cta" href="#d-cta" id="dnavcta">Get started →</a>
     </header>
 
-    <!-- Hero -->
-    <section class="dhero" id="dhero">
-      <span class="deyebrow" id="deyebrow">A small word above the title</span>
-      <h1 class="dtitle" id="dtitle">Brand</h1>
-      <span class="drule" aria-hidden="true"></span>
-      <p class="dsub" id="dsub">A single-line tagline that captures the whole brand in twelve words or fewer.</p>
-      <div class="dactions" id="dactions">
-        <a class="dbtn dbtn--primary" href="#d-cta" id="dbtn1">Primary action</a>
-        <a class="dbtn" href="#d-showcase" id="dbtn2">See the work</a>
+    <!-- Hero (with layout variation) -->
+    <section class="dhero" id="dhero" data-layout="centered">
+      <!-- Centered layout (default) -->
+      <div class="dhero-centered">
+        <span class="deyebrow" id="deyebrow">A small word above the title</span>
+        <h1 class="dtitle" id="dtitle">Brand</h1>
+        <span class="drule" aria-hidden="true"></span>
+        <p class="dsub" id="dsub">A single-line tagline that captures the whole brand in twelve words or fewer.</p>
+        <div class="dactions" id="dactions">
+          <a class="dbtn dbtn--primary" href="#d-cta" id="dbtn1">Primary action</a>
+          <a class="dbtn" href="#d-showcase" id="dbtn2">See the work</a>
+        </div>
+      </div>
+
+      <!-- Split layout (text left, image right) -->
+      <div class="dhero-split">
+        <div class="dhero-split__text">
+          <span class="deyebrow" id="deyebrow-2">A small word above the title</span>
+          <h1 class="dtitle" id="dtitle-2">Brand</h1>
+          <span class="drule" aria-hidden="true"></span>
+          <p class="dsub" id="dsub-2">A single-line tagline that captures the whole brand in twelve words or fewer.</p>
+          <div class="dactions" id="dactions-2">
+            <a class="dbtn dbtn--primary" href="#d-cta" id="dbtn1-2">Primary action</a>
+            <a class="dbtn" href="#d-showcase" id="dbtn2-2">See the work</a>
+          </div>
+        </div>
+        <div class="dhero-split__media">
+          <img id="dhero-split-img" alt="" />
+          <div class="dhero-split__sticker" id="dhero-split-sticker"></div>
+        </div>
+      </div>
+
+      <!-- Full-bleed layout -->
+      <div class="dhero-full">
+        <div class="dhero-full__overlay"></div>
+        <div class="dhero-full__content">
+          <span class="deyebrow" id="deyebrow-3">A small word above the title</span>
+          <h1 class="dtitle" id="dtitle-3">Brand</h1>
+          <span class="drule" aria-hidden="true"></span>
+          <p class="dsub" id="dsub-3">A single-line tagline that captures the whole brand in twelve words or fewer.</p>
+          <div class="dactions" id="dactions-3">
+            <a class="dbtn dbtn--primary" href="#d-cta" id="dbtn1-3">Primary action</a>
+            <a class="dbtn" href="#d-showcase" id="dbtn2-3">See the work</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Editorial layout -->
+      <div class="dhero-editorial">
+        <div class="dhero-editorial__col">
+          <span class="deyebrow" id="deyebrow-4">A small word above the title</span>
+          <h1 class="dtitle" id="dtitle-4">Brand</h1>
+        </div>
+        <div class="dhero-editorial__col">
+          <span class="drule" aria-hidden="true"></span>
+          <p class="dsub" id="dsub-4">A single-line tagline that captures the whole brand in twelve words or fewer.</p>
+          <div class="dactions" id="dactions-4">
+            <a class="dbtn dbtn--primary" href="#d-cta" id="dbtn1-4">Primary action</a>
+            <a class="dbtn" href="#d-showcase" id="dbtn2-4">See the work</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee (horizontal scroll) -->
+    <section class="dmarquee" id="dmarquee">
+      <div class="dmarquee__track" id="dmarquee-track">
+        <!-- Filled by JS -->
       </div>
     </section>
 
@@ -67,10 +128,26 @@
     <section id="d-showcase" class="dshowcase">
       <div class="dshowcase__head">
         <span class="dsec-eyebrow" id="dsh-eyebrow">Selected work</span>
-        <h2 class="dsec-title" id="dsh-title">Three things we made</h2>
+        <h2 class="dsec-title" id="dsh-title">Things we made recently</h2>
         <p class="dsh-lede" id="dsh-lede">A quick look at what we do, who we do it for, and how it turned out.</p>
       </div>
-      <div class="dshowcase__grid" id="dsh-grid">
+      <div class="dshowcase__grid" id="dsh-grid"></div>
+    </section>
+
+    <!-- Big stats (3-4 numbers) -->
+    <section class="dstats" id="dstats">
+      <div class="dstats__inner" id="dstats-inner">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
+    <!-- Process (3-4 steps) -->
+    <section class="dprocess" id="dprocess">
+      <div class="dprocess__head">
+        <span class="dsec-eyebrow">How it works</span>
+        <h2 class="dsec-title" id="dprocess-title">From idea to done</h2>
+      </div>
+      <div class="dprocess__grid" id="dprocess-grid">
         <!-- Filled by JS -->
       </div>
     </section>
@@ -79,9 +156,14 @@
     <section id="d-features" class="dfeatures">
       <span class="dsec-eyebrow" id="dsec-eyebrow">Why us</span>
       <h2 class="dsec-title" id="dsec-title">Three reasons we exist</h2>
-      <div class="dgrid" id="dgrid">
-        <!-- Filled by JS -->
-      </div>
+      <div class="dgrid" id="dgrid"></div>
+    </section>
+
+    <!-- Big quote (large featured quote) -->
+    <section class="dbigquote" id="dbigquote">
+      <span class="dbigquote__mark">"</span>
+      <p class="dbigquote__text" id="dbigquote-text">A quote that captures the whole brand in a single sentence.</p>
+      <span class="dbigquote__attr" id="dbigquote-attr">— Attribution</span>
     </section>
 
     <!-- Testimonial -->
