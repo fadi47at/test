@@ -30,14 +30,29 @@
   // Load the colorful image (this is what we paint)
   const colorImg = new Image();
   let imgReady = false;
-  colorImg.onload = () => { imgReady = true; };
+  colorImg.onload = () => { imgReady = true; computeImagePlacement(); };
   colorImg.src = 'hero_bg_color.png';
 
-  // Track the page color so the faded-out region looks identical to the
-  // untouched page (no harsh edges, no color shift)
-  const MASK = '252, 250, 248'; // matches --color-bg
+  // We read the B&W image element's actual bounding rect to know exactly
+  // where the painting happens. This way the painted color lines up
+  // pixel-perfect with the visible B&W.
+  const bgImg = hero.querySelector('.hero__bg--ink');
 
   let w = 0, h = 0;
+  let imgW = 0, imgH = 0;
+  let imgOffsetX = 0, imgOffsetY = 0;
+
+  function computeImagePlacement() {
+    const heroRect = hero.getBoundingClientRect();
+    const bgRect = bgImg.getBoundingClientRect();
+    w = heroRect.width;
+    h = heroRect.height;
+    imgW = bgRect.width;
+    imgH = bgRect.height;
+    imgOffsetX = bgRect.left - heroRect.left;
+    imgOffsetY = bgRect.top - heroRect.top;
+  }
+
   function resize() {
     const rect = hero.getBoundingClientRect();
     w = rect.width;
@@ -47,11 +62,17 @@
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    // Reset the paint to fully transparent — user starts fresh
     ctx.clearRect(0, 0, w, h);
+    computeImagePlacement();
   }
   resize();
   window.addEventListener('resize', resize);
+  // Re-measure after fonts and images settle — the B&W image size
+  // can change slightly once CSS fully resolves.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(computeImagePlacement);
+  }
+  colorImg.addEventListener && colorImg.addEventListener('load', computeImagePlacement);
 
   const stamps = [];
   let lastX = null, lastY = null;
@@ -83,22 +104,32 @@
   }
 
   // Compute where a stamp should sample the colorful image.
-  // The hero (1440x viewport) and the source image may differ in size
-  // (the image is 1440x whatever its natural aspect), so we scale.
+  // The B&W background and the color image are both rendered at 1440px wide
+  // with the image's natural aspect, bottom-anchored inside the hero.
+  // This function returns a slice of the color image that should be painted
+  // at the cursor position, clipped to the image's actual placement.
   function getSourceRect(x, y, r) {
     if (!imgReady) return null;
-    const heroRect = hero.getBoundingClientRect();
-    const sx = colorImg.width / heroRect.width;
-    const sy = colorImg.height / heroRect.height;
+    // Image-local coordinates of the stamp center:
+    const lx = x - imgOffsetX;
+    const ly = y - imgOffsetY;
+    // Clip the stamp's footprint to the image bounds:
+    const cx0 = Math.max(0, lx - r);
+    const cy0 = Math.max(0, ly - r);
+    const cx1 = Math.min(imgW, lx + r);
+    const cy1 = Math.min(imgH, ly + r);
+    if (cx1 <= cx0 || cy1 <= cy0) return null;
+    // Map the clipped footprint back to source-image coordinates:
+    const sx = cx0 * (colorImg.naturalWidth / imgW);
+    const sy = cy0 * (colorImg.naturalHeight / imgH);
+    const sw = (cx1 - cx0) * (colorImg.naturalWidth / imgW);
+    const sh = (cy1 - cy0) * (colorImg.naturalHeight / imgH);
     return {
-      sx: (x - r) * sx,
-      sy: (y - r) * sy,
-      sw: r * 2 * sx,
-      sh: r * 2 * sy,
-      dx: x - r,
-      dy: y - r,
-      dw: r * 2,
-      dh: r * 2,
+      sx: sx, sy: sy, sw: sw, sh: sh,
+      dx: imgOffsetX + cx0,
+      dy: imgOffsetY + cy0,
+      dw: cx1 - cx0,
+      dh: cy1 - cy0,
     };
   }
 
