@@ -855,8 +855,685 @@ const DESIGN_PRESETS = {
       { icon: '✦', title: 'Ship', desc: 'You review. We iterate. The PR lands. The customer never knows we were there.' },
     ],
     bigQuote: { text: 'The best AI is the one you forget you are using. That is the only metric we care about.', attr: '— Sam, founding engineer' },
+    gallery: [
+      { img: 'showcase/vad_01.png', cap: 'Context, kept' },
+      { img: 'showcase/vad_02.png', cap: 'Real execution' },
+      { img: 'showcase/vad_03.png', cap: 'Multi-agent' },
+      { img: 'thumbs/20_vad.png', cap: 'In the wild' },
+      { img: 'showcase/vad_01.png', cap: 'Long sessions' },
+      { img: 'showcase/vad_02.png', cap: 'Live PRs' },
+    ],
+    galleryEyebrow: 'In the wild',
+    galleryTitle: 'How it actually feels to use VAD',
+    galleryLede: 'Six frames from a working day. No mockups, no demos — real sessions, real code, real PRs.',
+    details: [
+      { icon: '◧', title: 'Whole-repo context', desc: 'Reads your entire codebase on connect. No "lost in the middle".' },
+      { icon: '◆', title: 'Real execution', desc: 'Runs the code, runs the tests, runs the lint. The full loop, not just suggestions.' },
+      { icon: '◐', title: 'Multi-agent', desc: 'Spawns sub-agents in parallel. One prompt, six workers, one PR.' },
+      { icon: '✦', title: 'Codebase memory', desc: 'Remembers decisions, naming, and patterns across sessions.' },
+      { icon: '⌬', title: 'Tool calling', desc: 'Native MCP, function calls, terminal. Every tool, on demand.' },
+      { icon: '✺', title: 'Ship in <2s', desc: 'Median time from prompt to first passing test. Less than two seconds.' },
+    ],
+    team: [
+      { initials: 'SM', name: 'Sam Chen', role: 'Founding engineer', bio: 'Built three developer tools before this one. The third one was acquired.', avatarBg: 'linear-gradient(135deg, #7C5CFF, #B89968)' },
+      { initials: 'AY', name: 'Aya Yamada', role: 'Research lead', bio: 'PhD on code synthesis. Believes the best AI is the one you forget you are using.', avatarBg: 'linear-gradient(135deg, #B89968, #C66B3D)' },
+      { initials: 'DK', name: 'Daniel Kerr', role: 'Systems', bio: 'Built the inference layer. The reason responses come back in under two seconds.', avatarBg: 'linear-gradient(135deg, #26251E, #504F49)' },
+      { initials: 'LM', name: 'Lina Moreau', role: 'Design + DX', bio: 'The voice of every prompt. Made the whole thing feel like a person, not a tool.', avatarBg: 'linear-gradient(135deg, #7DF9FF, #7C5CFF)' },
+    ],
+    press: [
+      { name: 'WIRED', style: 'mono' },
+      { name: 'The Verge', style: 'bold' },
+      { name: 'Hacker News', style: 'mono' },
+      { name: 'TechCrunch', style: 'serif' },
+      { name: 'GitHub', style: 'display' },
+    ],
+    faq: [
+      { q: 'Is my code private?', a: 'Yes. We never train on your code. We never store your code after the session ends. Self-hosting is available on the Studio plan.' },
+      { q: 'How big is the context window really?', a: 'Effectively unlimited. We chunk and re-rank in real time. A 4-million-token codebase feels like 4 million tokens.' },
+      { q: 'Does it run code or just suggest?', a: 'It runs code. It executes tests. It opens PRs. Suggestion-only is opt-in, not the default.' },
+      { q: 'Can I use it in my editor?', a: 'Yes — VS Code, JetBrains, Neovim, and a CLI. The same model, the same context, the same result.' },
+    ],
   },
 };
+
+// =========================================================
+// PER-DESIGN GALLERY, DETAILS, TEAM, PRESS, FAQ
+// These add rich per-design content beyond the core sections.
+// =========================================================
+
+// Helper: build a 6-tile gallery from existing assets
+function buildGallery(id, thumbName) {
+  return [
+    { img: `showcase/${thumbName}_01.png`, cap: 'Hero moment' },
+    { img: `showcase/${thumbName}_02.png`, cap: 'In the studio' },
+    { img: `showcase/${thumbName}_03.png`, cap: 'On the ground' },
+    { img: `thumbs/${thumbName}.png`, cap: 'In the wild' },
+    { img: `showcase/${thumbName}_01.png`, cap: 'Detail' },
+    { img: `showcase/${thumbName}_02.png`, cap: 'The full piece' },
+  ];
+}
+
+// Extend existing presets with gallery/details/team/press/faq
+const EXTRA_CONTENT = {
+  1: {
+    gallery: buildGallery(1, 'lumiere'),
+    galleryEyebrow: 'In the atelier',
+    galleryTitle: 'A closer look at the collection',
+    galleryLede: 'Six frames from the Paris studio. The dress, the fabric, the hands.',
+    details: [
+      { icon: '✦', title: 'Hand-embroidered', desc: 'Gold thread on silk, by a single artisan, over three weeks.' },
+      { icon: '✂', title: 'Cut on the bolt', desc: 'Every panel hand-cut. No die-cutting, no shortcuts.' },
+      { icon: '◈', title: 'French seams', desc: 'Every seam enclosed. The inside of a Lumière piece is as finished as the outside.' },
+      { icon: '❋', title: 'Cupro lining', desc: 'Body-temperature silk-cotton blend. Wears like a second skin.' },
+      { icon: '◐', title: 'Mother-of-pearl', desc: 'Hand-cut buttons from the Pacific. No two are the same.' },
+      { icon: '◆', title: 'Numbered', desc: 'Each piece is signed and numbered. We can tell you who made yours.' },
+    ],
+    team: [
+      { initials: 'ML', name: 'Marie-Louise', role: 'Atelier director', bio: 'Forty years on rue Cambon. Trained under the previous director.', avatarBg: 'linear-gradient(135deg, #C9A961, #6B6450)' },
+      { initials: 'IS', name: 'Inès Saint-Cyr', role: 'Head of couture', bio: 'Came from womenswear at Givenchy. Joined Lumière in 2019.', avatarBg: 'linear-gradient(135deg, #0A0A0A, #5A5A5A)' },
+      { initials: 'JP', name: 'Jean-Pierre', role: 'Sample room', bio: 'Cutters\u2019 cutter. Has made every toile since 1998.', avatarBg: 'linear-gradient(135deg, #C66B3D, #8A4A2A)' },
+      { initials: 'CO', name: 'Camille Okafor', role: 'Embroidery', bio: 'Trained at Lesage. Does the gold thread herself.', avatarBg: 'linear-gradient(135deg, #6B1F2A, #C9A961)' },
+    ],
+    press: [
+      { name: 'VOGUE', style: 'display' },
+      { name: 'The New Yorker', style: 'serif' },
+      { name: 'Harper\u2019s Bazaar', style: 'serif' },
+      { name: 'WWD', style: 'mono' },
+      { name: 'Le Figaro', style: 'bold' },
+    ],
+    faq: [
+      { q: 'Do you do ready-to-wear?', a: 'Yes. Two collections a year. Made in the same atelier, by the same hands, in smaller quantities.' },
+      { q: 'Where is the atelier?', a: 'On rue Cambon, in the 1st arrondissement. Open by appointment for clients and friends of the house.' },
+      { q: 'How long does a couture piece take?', a: 'Three to six months from first sketch to final fitting. The most complex pieces take a year.' },
+      { q: 'Do you ship internationally?', a: 'Yes. We hand-carry every piece to its first fitting, anywhere in the world.' },
+    ],
+  },
+  2: {
+    gallery: buildGallery(2, 'nomad'),
+    galleryEyebrow: 'On the road',
+    galleryTitle: 'Six frames from the path',
+    galleryLede: 'From the Sahara to the Himalayas, in pictures, not promises.',
+    details: [
+      { icon: '✺', title: 'Hand-picked routes', desc: 'Every itinerary walked by a guide before you walk it.' },
+      { icon: '◉', title: 'Local guides', desc: 'Not actors. The people who make the place what it is.' },
+      { icon: '➤', title: 'Max 8 people', desc: 'No megabuses, no megaresorts, no megajetlags.' },
+      { icon: '✦', title: '4,000+ alumni', desc: 'Most of our clients come back. That is how you know it works.' },
+      { icon: '◐', title: 'Carbon-offset', desc: 'Every trip, every flight, every transfer. Real offsets, audited annually.' },
+      { icon: '❋', title: 'Single supplement waived', desc: 'We match you with a roommate. No single penalty, ever.' },
+    ],
+    team: [
+      { initials: 'SK', name: 'Salma Khouri', role: 'Founder', bio: 'Quit consulting at 32 to walk the Sahara. Never really came back.', avatarBg: 'linear-gradient(135deg, #C66B3D, #3D2817)' },
+      { initials: 'TN', name: 'Tenzing Norbu', role: 'Himalayan lead', bio: 'Born in Namche. Has summited Everest four times. Guides for us since 2018.', avatarBg: 'linear-gradient(135deg, #4A6B7A, #0A0E1A)' },
+      { initials: 'MR', name: 'Mouna Rahimi', role: 'Sahara lead', bio: 'Speaks four languages, sleeps under the stars, has never lost a guest.', avatarBg: 'linear-gradient(135deg, #D4A574, #8B4513)' },
+      { initials: 'PL', name: 'Pavel Lysenko', role: 'Patagonia', bio: 'Mountain guide, geologist, dad. Knows every glacier by name.', avatarBg: 'linear-gradient(135deg, #1F2538, #0A0E1A)' },
+    ],
+    press: [
+      { name: 'Condé Nast Traveler', style: 'serif' },
+      { name: 'AFAR', style: 'display' },
+      { name: 'National Geographic', style: 'bold' },
+      { name: 'Outside', style: 'bold' },
+      { name: 'Travel + Leisure', style: 'serif' },
+    ],
+    faq: [
+      { q: 'What fitness level do I need?', a: 'Most of our trips are \u201Cyou can walk a city block\u201D fit. We grade every trip 1\u20135 so you know what you are signing up for.' },
+      { q: 'Do you do solo trips?', a: 'Yes \u2014 and we waive the single supplement by matching you with another solo traveler of the same gender.' },
+      { q: 'What\u2019s the cancellation policy?', a: 'Full refund 90 days out. 50% refund 60 days out. After that, your spot is transferable to another trip, no fee.' },
+      { q: 'Is travel insurance included?', a: 'No \u2014 we partner with World Nomads for a 15% discount. You can opt in at booking.' },
+    ],
+  },
+  3: {
+    gallery: buildGallery(3, 'atelier'),
+    galleryEyebrow: 'In the studio',
+    galleryTitle: 'Six projects, in detail',
+    galleryLede: 'From the Loire to Lisbon, in concrete, oak, and light.',
+    details: [
+      { icon: '◧', title: 'Built to last', desc: 'Materials and details chosen for the next century.' },
+      { icon: '◐', title: 'Light first', desc: 'We design around the path of the sun.' },
+      { icon: '◇', title: 'Honest materials', desc: 'Concrete looks like concrete. Wood looks like wood.' },
+      { icon: '✦', title: 'Site-led', desc: 'We spend two weeks on the site before we draw a line.' },
+      { icon: '◆', title: 'Hand-drawn plans', desc: 'Every plan is hand-drawn first. Then modelled. Then built.' },
+      { icon: '◈', title: '200-year details', desc: 'Joinery that does not need replacing in your lifetime.' },
+    ],
+    team: [
+      { initials: 'EV', name: 'Étienne Vasseur', role: 'Founding partner', bio: 'Trained under Jean Nouvel. Twenty-eight years in practice.', avatarBg: 'linear-gradient(135deg, #1A1A1A, #5A5A5A)' },
+      { initials: 'SO', name: 'Sofia Okonkwo', role: 'Design partner', bio: 'Leads interiors. Believes a room is finished when nothing is left to add.', avatarBg: 'linear-gradient(135deg, #D62828, #1A1A1A)' },
+      { initials: 'HA', name: 'Hugo Almeida', role: 'Project architect', bio: 'Site-led, model-obsessed. The person who draws every detail.', avatarBg: 'linear-gradient(135deg, #C8C2B8, #4A4742)' },
+    ],
+    press: [
+      { name: 'Architectural Digest', style: 'serif' },
+      { name: 'Wallpaper*', style: 'bold' },
+      { name: 'Domus', style: 'display' },
+      { name: 'Dezeen', style: 'mono' },
+      { name: 'El Croquis', style: 'serif' },
+    ],
+    faq: [
+      { q: 'How long does a project take?', a: 'Schematic design: 8 weeks. Design development: 12 weeks. Construction documents: 12 weeks. We do not rush the drawing.' },
+      { q: 'Do you do renovations?', a: 'Yes \u2014 about 40% of our work is renovation or adaptive reuse. The other 60% is new build.' },
+      { q: 'What is your fee structure?', a: 'Fixed percentage of construction cost, agreed up-front. We never bill hourly. No scope creep.' },
+      { q: 'Do you work outside France?', a: 'Yes. We have delivered projects in 11 countries. We are happiest on a tricky site.' },
+    ],
+  },
+  4: {
+    gallery: buildGallery(4, 'crescent'),
+    galleryEyebrow: 'In the kitchen',
+    galleryTitle: 'Six courses, in pictures',
+    galleryLede: 'A month on the plate, from the morning market to the pass.',
+    details: [
+      { icon: '✻', title: 'Seasonal menu', desc: 'The menu changes when the season does. No exceptions.' },
+      { icon: '❦', title: 'Single kitchen', desc: 'Every dish from one pass, one chef, one fire.' },
+      { icon: '✦', title: 'Reservations only', desc: 'No walk-ins. We promise you will not wait for a table.' },
+      { icon: '◐', title: 'Sommelier-paired', desc: 'A different glass for every course. No exceptions.' },
+      { icon: '◆', title: '12 seats at the pass', desc: 'You watch the chef plate. The kitchen is the dining room.' },
+      { icon: '◈', title: 'Vegetarian option', desc: 'Eight courses, no compromise. The chef designs around you.' },
+    ],
+    team: [
+      { initials: 'YA', name: 'Yara Aboud', role: 'Chef-owner', bio: 'Trained under Daniel Boulud. Cooks every plate, every night.', avatarBg: 'linear-gradient(135deg, #C9A961, #6B1F2A)' },
+      { initials: 'LA', name: 'Lucia Almeida', role: 'Pastry', bio: 'The desserts are the reason half our reservations rebook.', avatarBg: 'linear-gradient(135deg, #7A8B5C, #F5F0E8)' },
+      { initials: 'OS', name: 'Omar Sharif', role: 'Sommelier', bio: '300 bottles in the cellar. Knows every producer by first name.', avatarBg: 'linear-gradient(135deg, #6B1F2A, #1A0A0F)' },
+      { initials: 'NE', name: 'Nour El-Sayed', role: 'Front of house', bio: 'Trained at Noma. Makes the room feel like a private dining room.', avatarBg: 'linear-gradient(135deg, #C66B3D, #7A8B5C)' },
+    ],
+    press: [
+      { name: 'EATER', style: 'bold' },
+      { name: 'Bon Appétit', style: 'serif' },
+      { name: 'The World\u2019s 50 Best', style: 'display' },
+      { name: 'Food & Wine', style: 'serif' },
+      { name: 'Michelin Guide', style: 'bold' },
+    ],
+    faq: [
+      { q: 'How far in advance should I book?', a: 'Two to four weeks for weeknights, six to eight for weekends. Same-day cancellations open up \u2014 join the waitlist.' },
+      { q: 'Do you do private dining?', a: 'Yes \u2014 the chef\u2019s table seats four, by request, with a custom menu designed around you.' },
+      { q: 'Are kids welcome?', a: 'Yes for lunch. We ask that dinner be 12+ \u2014 the eight-course tasting is a long evening for younger guests.' },
+      { q: 'What is the dress code?', a: 'Whatever makes you feel good. We have had tuxedos and t-shirts. Both were perfect.' },
+    ],
+  },
+  5: {
+    gallery: buildGallery(5, 'verdant'),
+    galleryEyebrow: 'In the field',
+    galleryTitle: 'Six farms, in practice',
+    galleryLede: 'Where the products come from, and the people who grow them.',
+    details: [
+      { icon: '❀', title: 'Carbon negative', desc: 'We remove more than we emit. Public ledger, audited annually.' },
+      { icon: '✿', title: 'Regenerative sourcing', desc: 'Every supplier answers: does this leave the land better?' },
+      { icon: '✤', title: 'Plastic-free shipping', desc: 'Compostable mailers, mushroom packaging, paper tape.' },
+      { icon: '✦', title: 'Refill, not landfill', desc: 'Send the bottle back, we refill and ship. Forever.' },
+      { icon: '◐', title: 'B-Corp certified', desc: 'Top 5% of B-Corps globally. Re-certified every three years.' },
+      { icon: '◆', title: '1% for the planet', desc: 'One percent of every order goes to land regeneration.' },
+    ],
+    team: [
+      { initials: 'AM', name: 'Amara Mensah', role: 'Founder', bio: 'Soil scientist turned entrepreneur. The reason every supplier gets audited.', avatarBg: 'linear-gradient(135deg, #2D4A2B, #7A8B5C)' },
+      { initials: 'PB', name: 'Priya Banerjee', role: 'Head of product', bio: 'Turns sustainability into a refill bottle you actually want to keep.', avatarBg: 'linear-gradient(135deg, #C66B3D, #F5E6D3)' },
+      { initials: 'JK', name: 'Jonas Kessler', role: 'Supply chain', bio: 'Knows every farm by name. The reason our coffee is actually fair-trade.', avatarBg: 'linear-gradient(135deg, #8B6B3D, #3D5A3D)' },
+    ],
+    press: [
+      { name: 'The Guardian', style: 'serif' },
+      { name: 'Fast Company', style: 'bold' },
+      { name: 'WIRED', style: 'mono' },
+      { name: 'Atlas Obscura', style: 'serif' },
+      { name: 'YES! Magazine', style: 'bold' },
+    ],
+    faq: [
+      { q: 'How does the refill program work?', a: 'Order the bottle once. When you run out, mail it back in the prepaid envelope. We wash, refill, and ship. Forever.' },
+      { q: 'Are your products vegan?', a: 'About 90% are. The 10% that aren\u2019t (a beeswax candle, a wool dryer ball) are clearly marked.' },
+      { q: 'Where do you ship?', a: 'EU, UK, US, and Canada. We are working on Australia and Japan \u2014 subscribe to the newsletter for the launch.' },
+      { q: 'Do you do wholesale?', a: 'Yes \u2014 refill stations, zero-waste shops, and design hotels. Email wholesale@verdant.eco.' },
+    ],
+  },
+  6: {
+    gallery: buildGallery(6, 'nebula'),
+    galleryEyebrow: 'On rotation',
+    galleryTitle: 'Six albums we cannot stop playing',
+    galleryLede: 'From the front-row sessions to the vinyl vault. A month on the turntable.',
+    details: [
+      { icon: '♫', title: 'Lossless audio', desc: '24-bit, 96kHz. Studio-grade, not the compressed version.' },
+      { icon: '◐', title: 'Curated daily', desc: 'A real person picks. Not an algorithm. The same curator for years.' },
+      { icon: '♪', title: 'Offline first', desc: 'Download everything. Listen on a plane, on a train, in a basement.' },
+      { icon: '♬', title: 'Vinyl vault', desc: 'Pre-1980 jazz, soul, rare grooves. Ripped from the original masters.' },
+      { icon: '✦', title: 'Front-row sessions', desc: 'Exclusive live recordings from 12 cities, streamed in lossless.' },
+      { icon: '✺', title: 'Friday mixtape', desc: 'A real human\u2019s pick, every Friday. The way music used to be shared.' },
+    ],
+    team: [
+      { initials: 'DP', name: 'Devon Park', role: 'Head of curation', bio: 'DJ since 2003. Has a record collection that fills a basement.', avatarBg: 'linear-gradient(135deg, #7B2CBF, #00E5FF)' },
+      { initials: 'MJ', name: 'Maya Jenkins', role: 'Jazz lead', bio: 'Lived in New Orleans for ten years. Knows every pre-1980 groove.', avatarBg: 'linear-gradient(135deg, #FF006E, #7B2CBF)' },
+      { initials: 'TR', name: 'Tomás Reyes', role: 'Live sessions', bio: 'Records the front-row sessions. Has taped 240 of them.', avatarBg: 'linear-gradient(135deg, #00E5FF, #000000)' },
+    ],
+    press: [
+      { name: 'Pitchfork', style: 'bold' },
+      { name: 'The FADER', style: 'display' },
+      { name: 'Resident Advisor', style: 'mono' },
+      { name: 'NME', style: 'bold' },
+      { name: 'The Wire', style: 'serif' },
+    ],
+    faq: [
+      { q: 'What bitrate do you stream at?', a: 'Lossless \u2014 24-bit, 96kHz, FLAC. About 4x the data of Spotify Premium. Worth it on real speakers.' },
+      { q: 'Can I download for offline?', a: 'Yes \u2014 everything in your library, on up to 5 devices. The downloads are lossless too.' },
+      { q: 'How is your curation different?', a: 'Four real humans. No A/B testing, no "because you listened to X". The same person who picks your mix picks for everyone.' },
+      { q: 'Do you have a free tier?', a: 'Yes \u2014 but the free tier is lossy. The lossless tier is $9.99/mo, with a 30-day free trial.' },
+    ],
+  },
+  7: {
+    gallery: buildGallery(7, 'odyssey'),
+    galleryEyebrow: 'At altitude',
+    galleryTitle: 'Six summits, six stories',
+    galleryLede: 'From K2 to the Roof of the World, in the words of the people who came back.',
+    details: [
+      { icon: '▲', title: '142 summits', desc: 'Successful summits since 2012. Zero fatalities.' },
+      { icon: '◐', title: '6 continents', desc: 'We operate on every continent except Antarctica (and we\u2019re working on it).' },
+      { icon: '✦', title: '6-month prep', desc: 'We design a training plan for your body, not the brochure.' },
+      { icon: '◈', title: 'Sherpa-led', desc: 'Local guides who know the mountain personally. Not imported contractors.' },
+      { icon: '✺', title: '12 years guiding', desc: 'No client has ever needed rescue. That is the only metric we track.' },
+      { icon: '➤', title: 'No ego trips', desc: 'If the mountain is not in, we tell you. We have turned around at base camp.' },
+    ],
+    team: [
+      { initials: 'PR', name: 'Pavel Reznik', role: 'Lead guide', bio: 'Eight K2 summits. The reason the team has a 100% safety record.', avatarBg: 'linear-gradient(135deg, #4A90E2, #1A2B4A)' },
+      { initials: 'TN', name: 'Tenzing Norbu', role: 'Sherpa lead', bio: 'Born in Namche. Has summited Everest 11 times.', avatarBg: 'linear-gradient(135deg, #8B6B3D, #1A3D2E)' },
+      { initials: 'CC', name: 'Camila Cruz', role: 'Patagonia lead', bio: 'Mountaineer, geologist, mom. Speaks four languages.', avatarBg: 'linear-gradient(135deg, #FFB088, #9B7EDE)' },
+    ],
+    press: [
+      { name: 'National Geographic', style: 'bold' },
+      { name: 'Outside', style: 'bold' },
+      { name: 'Climbing Magazine', style: 'serif' },
+      { name: 'Adventure Journal', style: 'display' },
+      { name: 'The New York Times', style: 'serif' },
+    ],
+    faq: [
+      { q: 'What fitness level do I need?', a: 'You should be able to run 10k, do 20 pull-ups, and hike 8 hours with a 15kg pack. We design the rest.' },
+      { q: 'How dangerous is it really?', a: 'K2 has a fatality rate of ~1 in 25. With a Sherpa team and proper acclimatization, our clients have a 100% return rate.' },
+      { q: 'What if I have to turn back?', a: 'You turn back. No refund, no judgment. The mountain will be there next year.' },
+      { q: 'Can I do it solo?', a: 'No. We do not run solo expeditions. The Sherpa team is non-negotiable.' },
+    ],
+  },
+  8: {
+    gallery: buildGallery(8, 'vertex'),
+    galleryEyebrow: 'On-chain',
+    galleryTitle: 'Six vaults, six chains',
+    galleryLede: 'Where the money lives, and how it works while you sleep.',
+    details: [
+      { icon: '◆', title: 'Self-custody', desc: 'You own your keys. We never have access to your funds.' },
+      { icon: '⌬', title: 'Audited contracts', desc: 'Every contract audited by three independent firms. Public reports.' },
+      { icon: '◈', title: 'No gas surprises', desc: 'Predictable fees, batched transactions, no hidden costs.' },
+      { icon: '✦', title: 'Cross-chain', desc: '12 chains, one balance. Move without bridging, every time.' },
+      { icon: '◐', title: 'Pro trading', desc: 'Sub-second execution, deep liquidity, no hidden fees.' },
+      { icon: '✺', title: 'No lock-ups', desc: 'Withdraw any time, any amount. The money is always yours.' },
+    ],
+    team: [
+      { initials: 'LO', name: 'Lena Okonkwo', role: 'Founder & CEO', bio: 'Quant turned founder. Quit Jane Street to build this.', avatarBg: 'linear-gradient(135deg, #7B2CBF, #FF006E)' },
+      { initials: 'AV', name: 'Alex Volkov', role: 'CTO', bio: 'Smart contracts since 2017. Wrote three of the EIPs.', avatarBg: 'linear-gradient(135deg, #00FF88, #00E5FF)' },
+      { initials: 'NJ', name: 'Naomi Johnson', role: 'Risk', bio: 'Former Circle. The reason we have zero security incidents.', avatarBg: 'linear-gradient(135deg, #14B8A6, #0EA5E9)' },
+    ],
+    press: [
+      { name: 'CoinDesk', style: 'bold' },
+      { name: 'The Block', style: 'serif' },
+      { name: 'Decrypt', style: 'mono' },
+      { name: 'Bankless', style: 'display' },
+      { name: 'Bloomberg', style: 'bold' },
+    ],
+    faq: [
+      { q: 'What is self-custody, really?', a: 'You hold the private keys. We never see them, never store them. If we get hacked, your funds are safe.' },
+      { q: 'How do you make money?', a: 'A 0.05% fee on yield, only on what you actually earn. No deposit fees, no withdrawal fees.' },
+      { q: 'What chains do you support?', a: 'Ethereum, Base, Arbitrum, Optimism, Polygon, Avalanche, Solana, Sui, Aptos, NEAR, Stellar, and TON.' },
+      { q: 'Has the protocol been audited?', a: 'Three times \u2014 by Trail of Bits, OpenZeppelin, and Spearbit. Reports are public.' },
+    ],
+  },
+  9: {
+    gallery: buildGallery(9, 'helix'),
+    galleryEyebrow: 'In the clinic',
+    galleryTitle: 'Six visits, in the room',
+    galleryLede: 'What healthcare actually looks like, when nobody is rushed.',
+    details: [
+      { icon: '✚', title: 'Licensed clinicians', desc: 'Real doctors, real therapists. Not chatbots pretending to be either.' },
+      { icon: '◉', title: 'Same-day visits', desc: 'Talk to someone today, not in three weeks. Every day of the week.' },
+      { icon: '✦', title: 'Your data, your rules', desc: 'HIPAA-grade security, end-to-end encryption, export any time.' },
+      { icon: '◐', title: 'Same clinician', desc: 'See the same person every time. We do not rotate you through strangers.' },
+      { icon: '◆', title: 'At-home labs', desc: 'Real lab work, real results. No waiting rooms, no awkward magazines.' },
+      { icon: '✺', title: '24/7 care', desc: 'Real human on call. Not a phone tree, not a chatbot.' },
+    ],
+    team: [
+      { initials: 'YT', name: 'Dr. Yuki Tanaka', role: 'Chief Medical Officer', bio: 'Internal medicine, 18 years. Believes healthcare is a relationship.', avatarBg: 'linear-gradient(135deg, #1A4D5C, #A8DADC)' },
+      { initials: 'RM', name: 'Dr. Ravi Mehta', role: 'Mental health lead', bio: 'Therapist since 2008. Trauma-trained, evidence-based.', avatarBg: 'linear-gradient(135deg, #FF6B6B, #F5E6D3)' },
+      { initials: 'EK', name: 'Dr. Elena Kowalski', role: 'Pediatrics', bio: 'Mother of three, pediatrician of twenty. Books in 3 weeks.' },
+      { initials: 'JG', name: 'Dr. James Garcia', role: 'Dermatology', bio: 'Stanford-trained. The person you go to for the thing you have been ignoring.', avatarBg: 'linear-gradient(135deg, #0EA5E9, #FFFFFF)' },
+    ],
+    press: [
+      { name: 'STAT', style: 'bold' },
+      { name: 'WIRED', style: 'mono' },
+      { name: 'The Atlantic', style: 'serif' },
+      { name: 'Kaiser Health News', style: 'serif' },
+      { name: 'DocWire', style: 'display' },
+    ],
+    faq: [
+      { q: 'Is Helix insurance?', a: 'No \u2014 Helix is care. We work with most major insurance plans. You pay your copay, we do the rest.' },
+      { q: 'What conditions do you treat?', a: '90% of primary care: colds, mental health, skin, pediatrics, women\u2019s health, chronic conditions, prescriptions.' },
+      { q: 'How fast can I see someone?', a: 'Average wait is 8 minutes. Same-day visits, 7 days a week.' },
+      { q: 'Can I keep my regular doctor?', a: 'Yes \u2014 Helix is in addition to your existing care. We send notes to your PCP after every visit.' },
+    ],
+  },
+  10: {
+    gallery: buildGallery(10, 'polaris'),
+    galleryEyebrow: 'On orbit',
+    galleryTitle: 'Six missions, in flight',
+    galleryLede: 'From the launch pad to low-earth orbit, in real-time.',
+    details: [
+      { icon: '▲', title: 'Flight-proven', desc: 'Hardware that has actually been to space, not just in renderings.' },
+      { icon: '✦', title: 'Mission-grade QA', desc: 'Every unit tested to NASA outgassing specs. We are the specs.' },
+      { icon: '⌖', title: 'Real-time telemetry', desc: 'Stream every reading, every moment, every orbit.' },
+      { icon: '◐', title: '24/7 mission control', desc: 'Real engineers, on shift, watching your satellite like a hawk.' },
+      { icon: '◆', title: 'On-time launches', desc: '14 successful missions, on time, on budget. The launch is the easy part.' },
+      { icon: '◈', title: 'Sub-meter imagery', desc: 'Earth observation delivered within 90 minutes of capture.' },
+    ],
+    team: [
+      { initials: 'MA', name: 'Dr. Maya Anand', role: 'Chief engineer', bio: 'NASA JPL for 12 years. The reason we have zero mission failures.', avatarBg: 'linear-gradient(135deg, #0A1929, #C0C0C0)' },
+      { initials: 'RV', name: 'Ravi Venkatesh', role: 'Mission control', bio: 'Watched 240 satellite passes from the console. Knows every orbit by heart.', avatarBg: 'linear-gradient(135deg, #FF6B35, #0A0A0A)' },
+      { initials: 'HL', name: 'Hana Lindqvist', role: 'Astronaut training', bio: 'Former ESA. Designs the sub-orbital curriculum.', avatarBg: 'linear-gradient(135deg, #1A2B5C, #FF6B35)' },
+    ],
+    press: [
+      { name: 'SpaceNews', style: 'display' },
+      { name: 'Aviation Week', style: 'serif' },
+      { name: 'Ars Technica', style: 'bold' },
+      { name: 'MIT Tech Review', style: 'serif' },
+      { name: 'The Economist', style: 'bold' },
+    ],
+    faq: [
+      { q: 'How much does a launch cost?', a: 'Small-sat rideshare starts at $1.2M for a 12U cubesat. Dedicated launches start at $24M. Email us for a custom quote.' },
+      { q: 'What if my satellite fails?', a: 'We have a 100% mission success rate across 14 launches. If something goes wrong, mission control will tell you in under 60 seconds.' },
+      { q: 'How fast is the imagery?', a: 'Sub-meter resolution, delivered within 90 minutes of capture, anywhere on Earth.' },
+      { q: 'Can civilians train for sub-orbital?', a: 'Yes \u2014 the program is open to researchers, journalists, and educators. Six months of training, then you fly.' },
+    ],
+  },
+  11: {
+    gallery: buildGallery(11, 'mira'),
+    galleryEyebrow: 'In the darkroom',
+    galleryTitle: 'Six frames, one photographer',
+    galleryLede: 'From Lisbon to the night walks, in the prints themselves.',
+    details: [
+      { icon: '◐', title: 'Original RAW files', desc: 'You get the full archive, not the curated highlights.' },
+      { icon: '✦', title: 'Print-ready', desc: '300dpi, color-managed, ready for the gallery wall.' },
+      { icon: '◇', title: 'Unlimited revisions', desc: 'We shoot until you love every frame. No timer.' },
+      { icon: '◆', title: 'Hand-printed', desc: 'Darkroom prints, signed and numbered. The only ones worth framing.' },
+      { icon: '✺', title: 'Film available', desc: 'Medium format, large format, or digital. Your call.' },
+      { icon: '◈', title: 'Worldwide', desc: 'Based in Lisbon, available worldwide. Travel is on us.' },
+    ],
+    team: [
+      { initials: 'MR', name: 'Mira Rauch', role: 'Photographer', bio: 'Twelve solo shows, two books, thirty-eight countries. The work is the work.', avatarBg: 'linear-gradient(135deg, #C73E1D, #0A0506)' },
+      { initials: 'TM', name: 'Tomás Moutinho', role: 'Studio manager', bio: 'Runs the darkroom, prints every final. The reason the prints are flawless.', avatarBg: 'linear-gradient(135deg, #1A1A1A, #D4A574)' },
+    ],
+    press: [
+      { name: 'Aperture', style: 'serif' },
+      { name: 'British Journal of Photography', style: 'serif' },
+      { name: 'FOAM Magazine', style: 'bold' },
+      { name: 'Magnum Photos', style: 'display' },
+      { name: 'The New York Times', style: 'serif' },
+    ],
+    faq: [
+      { q: 'How long is a session?', a: 'Two to four hours for portraits. For documentary, we sometimes shoot for days. There is no timer.' },
+      { q: 'Do you shoot film or digital?', a: 'Both. Film for the projects, digital for the assignments. We let the work decide.' },
+      { q: 'How are prints delivered?', desc: 'Hand-printed, signed, numbered, framed if you want. Shipped in archival boxes within four weeks.' },
+      { q: 'Do you license the images?', a: 'Yes \u2014 editorial, commercial, and gallery licensing. The work always stays with us first.' },
+    ],
+  },
+  12: {
+    gallery: buildGallery(12, 'brewco'),
+    galleryEyebrow: 'On the bar',
+    galleryTitle: 'Six cups, in the cup',
+    galleryLede: 'From the farm to the espresso bar, in the cup itself.',
+    details: [
+      { icon: '◉', title: 'Single-origin', desc: 'Every bag traceable to a single farm, a single harvest, a single roast.' },
+      { icon: '☕', title: 'Roasted to order', desc: 'Shipped within 48 hours of leaving the drum. Always fresh.' },
+      { icon: '✺', title: 'Direct trade', desc: 'We pay the farmer 3x the Fair Trade minimum. Always.' },
+      { icon: '✦', title: 'Q-graded', desc: 'Every batch cupped by certified Q-graders. The defective 3% goes home with us.' },
+      { icon: '◐', title: 'Brew guides', desc: 'Every bag ships with the recipe. We make it easy to make it right.' },
+      { icon: '◆', title: 'Refillable bags', desc: 'Send the bag back, we refill and ship. Less waste, more coffee.' },
+    ],
+    team: [
+      { initials: 'KW', name: 'Kenji Watanabe', role: 'Head roaster', bio: 'Q-grader, 18 years. Drinks the defective 3% himself.', avatarBg: 'linear-gradient(135deg, #6B4423, #F5E6D3)' },
+      { initials: 'MO', name: 'Maya Okafor', role: 'Sourcing', bio: 'Visits the farms. Pays the farmers. The reason we can call it direct trade.', avatarBg: 'linear-gradient(135deg, #C66B3D, #8B6B3D)' },
+      { initials: 'BS', name: 'Ben Shapiro', role: 'Brooklyn bar', bio: 'Eight seats, one bar, no laptops after 11am. The way cafes used to be.', avatarBg: 'linear-gradient(135deg, #0A0506, #C66B3D)' },
+    ],
+    press: [
+      { name: 'Sprudge', style: 'display' },
+      { name: 'Perfect Daily Grind', style: 'serif' },
+      { name: 'Eater', style: 'bold' },
+      { name: 'Barista Magazine', style: 'serif' },
+      { name: 'The New Yorker', style: 'serif' },
+    ],
+    faq: [
+      { q: 'How fresh is the coffee?', a: 'Shipped within 48 hours of leaving the drum. You will see the roast date on every bag.' },
+      { q: 'Do you sell decaf?', a: 'Yes \u2014 the Swiss Water process, single-origin. Tastes like coffee, not like chemistry.' },
+      { q: 'What\u2019s your most popular bag?', a: 'The Daily Ritual \u2014 our flagship light roast. Floral, citrus, the cup you reach for every morning.' },
+      { q: 'Do you do wholesale?', a: 'Yes \u2014 60+ cafes in NYC, SF, Tokyo, London, and Seoul. Email wholesale@brewco.cafe.' },
+    ],
+  },
+  13: {
+    gallery: buildGallery(13, 'ember'),
+    galleryEyebrow: 'On the day',
+    galleryTitle: 'Six weddings, in the details',
+    galleryLede: 'From the Tuscan vineyard to the Parisian château, in the small moments.',
+    details: [
+      { icon: '✦', title: 'Single planner', desc: 'One person from first call to last dance. No hand-offs.' },
+      { icon: '❀', title: 'Vendor-agnostic', desc: 'We do not take commissions. We recommend what is right for you.' },
+      { icon: '◐', title: 'Day-of coordination', desc: 'We run the day. You live it. We handle every glitch in real time.' },
+      { icon: '◈', title: '14 countries', desc: 'Tuscany, Paris, Santorini, Marrakech, the Cotswolds. We have done them all.' },
+      { icon: '◆', title: 'No bridezilla moments', desc: 'Our couples rebook their anniversary dinners. That is the metric.' },
+      { icon: '✺', title: 'Real flowers only', desc: 'No silk, no faux, no foam. The week-of, by a real florist.' },
+    ],
+    team: [
+      { initials: 'AY', name: 'Anya Yusupova', role: 'Founder & lead planner', bio: '142 weddings, zero bridezilla moments. The reason people rebook.', avatarBg: 'linear-gradient(135deg, #6B1F2A, #F4D5D0)' },
+      { initials: 'LM', name: 'Lucia Marini', role: 'Tuscany lead', bio: 'Lives in Florence. Knows every vineyard, every caterer, every corner.', avatarBg: 'linear-gradient(135deg, #C9A961, #FAF7F0)' },
+      { initials: 'CJ', name: 'Camille Joubert', role: 'Paris lead', bio: 'Trained at Hôtel de Crillon. The reason the Parisian weddings are magic.', avatarBg: 'linear-gradient(135deg, #C66B3D, #3D5A3D)' },
+    ],
+    press: [
+      { name: 'Vogue Weddings', style: 'display' },
+      { name: 'Brides', style: 'serif' },
+      { name: 'The Knot', style: 'bold' },
+      { name: 'Over the Moon', style: 'serif' },
+      { name: 'Once Wed', style: 'serif' },
+    ],
+    faq: [
+      { q: 'How far in advance do you book?', a: 'Peak season (May\u2013October) books 9\u201312 months out. Shoulder seasons have more flexibility.' },
+      { q: 'What does the day-of package include?', a: 'A lead planner, an assistant, vendor coordination, timeline management, and \u2014 most importantly \u2014 the ability to fix anything in real time.' },
+      { q: 'Do you plan elopements?', a: 'Yes \u2014 from a two-person Santorini sunset to a 30-person Tuscan villa. The planning is the same; the day is just smaller.' },
+      { q: 'What is your fee?', a: 'Starts at $14,000 for full planning. Day-of coordination starts at $6,800. Custom quotes for destination weddings.' },
+    ],
+  },
+  14: {
+    gallery: buildGallery(14, 'mosaic'),
+    galleryEyebrow: 'On the wall',
+    galleryTitle: 'Six shows, in the room',
+    galleryLede: 'From the solo show to the first Friday opening, in the work itself.',
+    details: [
+      { icon: '◐', title: '4 artists a year', desc: 'Not forty. Each one gets a real show.' },
+      { icon: '✦', title: 'Direct from studio', desc: 'No middlemen, no markups, no reproductions. Original work only.' },
+      { icon: '◈', title: '70% to the artist', desc: 'When the work sells, the artist gets 70%. The gallery keeps 30%.' },
+      { icon: '◆', title: 'Certificate of authenticity', desc: 'Signed, numbered, archived. Your piece is provably the one.' },
+      { icon: '❀', title: 'Free First Fridays', desc: 'Open evening, the first Friday of every month. Wine, the artists, the room.' },
+      { icon: '✺', title: '280K visitors a year', desc: 'The largest independent gallery in Berlin. The most visited per square meter.' },
+    ],
+    team: [
+      { initials: 'MR', name: 'Mateo Reyes', role: 'Director', bio: 'Curator since 2009. The reason the rooms are built around the work.', avatarBg: 'linear-gradient(135deg, #FF6B00, #000000)' },
+      { initials: 'AK', name: 'Anna Kowalski', role: 'Senior curator', bio: 'Leads the photography program. Has a great eye for first shows.', avatarBg: 'linear-gradient(135deg, #0A0A0A, #FFD700)' },
+      { initials: 'JT', name: 'Jin Tanaka', role: 'Installation', bio: 'Builds the rooms. The reason the light is right.', avatarBg: 'linear-gradient(135deg, #FF0000, #FFFFFF)' },
+    ],
+    press: [
+      { name: 'ARTnews', style: 'bold' },
+      { name: 'Frieze', style: 'serif' },
+      { name: 'Artforum', style: 'serif' },
+      { name: 'Hyperallergic', style: 'mono' },
+      { name: 'Contemporary Art Daily', style: 'display' },
+    ],
+    faq: [
+      { q: 'How do I buy a piece?', a: 'Email the work title to sales@mosaic.gallery. We will send the certificate, the invoice, and arrange shipping.' },
+      { q: 'Do you take consignments?', a: 'No \u2014 the work is direct from the artist\u2019s studio. The certificate includes the provenance.' },
+      { q: 'Are First Fridays really free?', a: 'Yes. Open evening, the first Friday of every month, 6\u201310pm. Wine, the artists, the room.' },
+      { q: 'Do you ship internationally?', a: 'Yes \u2014 we have shipped to 38 countries. Crating, customs, insurance, all included.' },
+    ],
+  },
+  15: {
+    gallery: buildGallery(15, 'apex'),
+    galleryEyebrow: 'On the floor',
+    galleryTitle: 'Six lifts, in the gym',
+    galleryLede: 'From the iron program to the marathon build, in real numbers.',
+    details: [
+      { icon: '◆', title: 'Real coaches', desc: 'Every program written by a coach with a national certification.' },
+      { icon: '◐', title: 'Periodized training', desc: 'No random workouts. Cycles, deloads, progressive overload.' },
+      { icon: '✦', title: 'Form first', desc: 'We would rather you lift less with perfect form than more with bad form.' },
+      { icon: '✺', title: 'InBody scan', desc: 'Every new member does a scan, a movement screen, and a goals interview.' },
+      { icon: '◈', title: 'Re-assess every 8 weeks', desc: 'The data tells the truth. We use it.' },
+      { icon: '✤', title: 'Open gym 24/7', desc: 'Train at 4am or 10pm. The keys are yours.' },
+    ],
+    team: [
+      { initials: 'TH', name: 'Tariq Hassan', role: 'Head coach', bio: 'CSCS, 12 years. Added 40kg to his deadlift in his first year here.', avatarBg: 'linear-gradient(135deg, #FFD60A, #1A1A1A)' },
+      { initials: 'JN', name: 'Jules Nakamura', role: 'Olympic lifting', bio: 'Former national team. The reason our lifters do not plateau.', avatarBg: 'linear-gradient(135deg, #DC2626, #1A1A1A)' },
+      { initials: 'MA', name: 'Marcus Allen', role: 'Conditioning', bio: 'CrossFit L2, ex-football. Designs the WODs.', avatarBg: 'linear-gradient(135deg, #00FF88, #000000)' },
+    ],
+    press: [
+      { name: 'Men\u2019s Health', style: 'bold' },
+      { name: 'Runner\u2019s World', style: 'serif' },
+      { name: 'BarBend', style: 'display' },
+      { name: 'Breaking Muscle', style: 'serif' },
+      { name: 'T-Nation', style: 'mono' },
+    ],
+    faq: [
+      { q: 'Do I need to be in shape to start?', a: 'No. The first session is a movement screen, an InBody scan, and a goals interview. We build the program around you.' },
+      { q: 'How much does it cost?', a: '$189/mo for the open gym + classes. Personal training is $89/session, or $649/mo for 8 sessions.' },
+      { q: 'Is there a contract?', a: 'No \u2014 month-to-month. Cancel any time, no fee.' },
+      { q: 'Do you have a women\u2019s only program?', a: 'Yes \u2014 the women\u2019s strength program runs Tuesday and Thursday at 6pm, with a female coach.' },
+    ],
+  },
+  16: {
+    gallery: buildGallery(16, 'chapter'),
+    galleryEyebrow: 'On the press',
+    galleryTitle: 'Six titles, in the books',
+    galleryLede: 'From the hardback list to the indie bookshop, in the books themselves.',
+    details: [
+      { icon: '❦', title: 'Author-friendly terms', desc: 'We pay advances. We pay royalties. We do not bury rights.' },
+      { icon: '✦', title: 'Independent voice', desc: 'No corporate parent, no marketing department, no algorithmic shelf.' },
+      { icon: '◐', title: 'Real distribution', desc: '240 independent bookstores across 12 countries. Not just on Amazon.' },
+      { icon: '◆', title: '12 titles a year', desc: 'Fiction, memoir, essays, poetry, translation. Every one edited by a human.' },
+      { icon: '✺', title: 'Letterpress limited editions', desc: 'For the books that earn it. Hand-set, signed, numbered.' },
+      { icon: '◈', title: 'Audiobook with every title', desc: 'Narrated by the author, when we can. Always human.' },
+    ],
+    team: [
+      { initials: 'EM', name: 'Elena Marquez', role: 'Editor-in-chief', bio: '20 years in independent publishing. The reason our slush pile is read by humans.', avatarBg: 'linear-gradient(135deg, #6B1F2A, #A8B89A)' },
+      { initials: 'DR', name: 'Dimitri Roussel', role: 'Senior editor', bio: 'Fiction, translation. The reason our novels feel like novels.', avatarBg: 'linear-gradient(135deg, #8B6B3D, #1A1A1A)' },
+      { initials: 'AO', name: 'Adaeze Okafor', role: 'Poetry', bio: 'Poet, critic, editor. Reads every manuscript twice.', avatarBg: 'linear-gradient(135deg, #FF6B6B, #FFFFFF)' },
+    ],
+    press: [
+      { name: 'The Paris Review', style: 'serif' },
+      { name: 'Granta', style: 'bold' },
+      { name: 'The Believer', style: 'serif' },
+      { name: 'n+1', style: 'display' },
+      { name: 'Lit Hub', style: 'mono' },
+    ],
+    faq: [
+      { q: 'Do you accept unsolicited manuscripts?', a: 'Yes \u2014 we read every one. Send a query letter and 30 pages to submissions@chapter.press. Response within 12 weeks.' },
+      { q: 'What is your advance structure?', a: '$8,000\u2013$25,000 for debut fiction, more for established authors. Royalty rates start at 15% hardcover, 22% paperback.' },
+      { q: 'Do you publish translations?', a: 'Yes \u2014 about 30% of the list is translation. We work with the translator as a full partner, not a service provider.' },
+      { q: 'How do I find a Chapter book near me?', a: 'Use the stockist map at chapter.press/find. 240 independent bookstores in 12 countries.' },
+    ],
+  },
+  17: {
+    gallery: buildGallery(17, 'spark'),
+    galleryEyebrow: 'On the wall',
+    galleryTitle: 'Six brands, in the wild',
+    galleryLede: 'From the logo to the launch, in the work itself.',
+    details: [
+      { icon: '✦', title: 'Senior-only team', desc: 'No juniors learning on your dime. The people who pitch do the work.' },
+      { icon: '◈', title: 'Fixed-price projects', desc: 'No hourly billing, no scope creep, no surprise invoices.' },
+      { icon: '✺', title: 'We say no', desc: 'If a brief is bad for the brand, we say so. Even before signing.' },
+      { icon: '◐', title: 'Brand + product', desc: 'Logo, type, color, voice, web, app. The whole thing, designed as one.' },
+      { icon: '◆', title: 'Strategy first', desc: 'Two weeks of listening before any pixels move.' },
+      { icon: '✤', title: 'Launch support', desc: 'We stay for 90 days after launch. The launch is the start, not the end.' },
+    ],
+    team: [
+      { initials: 'TB', name: 'Theo Bennett', role: 'Founder & creative director', bio: 'Sixteen years in the room. Believes the brief is half the work.', avatarBg: 'linear-gradient(135deg, #FF006E, #F5F0E8)' },
+      { initials: 'EC', name: 'Emma Chen', role: 'Strategy lead', bio: 'Reads the customer research, writes the positioning. The reason our brands work.', avatarBg: 'linear-gradient(135deg, #E0BBE4, #FFB088)' },
+      { initials: 'RB', name: 'Rafael Borges', role: 'Design lead', bio: 'Type-obsessed. The reason our brands feel like brands.', avatarBg: 'linear-gradient(135deg, #FFD60A, #0A0A0A)' },
+    ],
+    press: [
+      { name: 'It\u2019s Nice That', style: 'serif' },
+      { name: 'AIGA Eye on Design', style: 'serif' },
+      { name: 'Brand New', style: 'mono' },
+      { name: 'Communication Arts', style: 'display' },
+      { name: 'The Dieline', style: 'bold' },
+    ],
+    faq: [
+      { q: 'How much does a brand project cost?', a: 'Starts at $80,000 for identity, $150,000 for identity + web. Custom quotes for product or campaign work.' },
+      { q: 'How long does a project take?', a: 'Identity: 12 weeks. Identity + web: 18 weeks. We do not rush the strategy phase.' },
+      { q: 'Do you do naming?', a: 'Yes \u2014 the naming sprint is $24,000, delivered in three weeks. Comes with trademark search and linguistic check.' },
+      { q: 'Do you work with startups?', a: 'Yes \u2014 about 30% of the work is pre-Series A. The brief is the same; the budget is different.' },
+    ],
+  },
+  18: {
+    gallery: buildGallery(18, 'tide'),
+    galleryEyebrow: 'On the coast',
+    galleryTitle: 'Six homes, in the light',
+    galleryLede: 'From the cove to the olive estate, in the houses themselves.',
+    details: [
+      { icon: '◐', title: 'Off-market first', desc: 'We share listings with our clients 48 hours before they hit MLS.' },
+      { icon: '✦', title: 'Local-only agents', desc: 'Each agent works one neighborhood. Knows every block, every comp.' },
+      { icon: '◈', title: 'No dual agency', desc: 'We never represent both sides. Your interests, full stop.' },
+      { icon: '◆', title: '14 coastal markets', desc: 'From the Hamptons to the Aegean. Local in each one.' },
+      { icon: '✺', title: '$2.4B closed in 2025', desc: 'Across 142 homes. Average days on market: 18.' },
+      { icon: '❋', title: 'Buyer + seller rep', desc: 'Different agents for each side, even on a flip. No conflict, ever.' },
+    ],
+    team: [
+      { initials: 'JC', name: 'James Cole', role: 'Founding partner', bio: 'Twenty-two years in coastal luxury. The reason we have off-market firsts.', avatarBg: 'linear-gradient(135deg, #1A2B4A, #C9A961)' },
+      { initials: 'HR', name: 'Hana Reyes', role: 'Hamptons', bio: 'Born and raised in East Hampton. Knows every buyer on the coast.', avatarBg: 'linear-gradient(135deg, #A8DADC, #1A4D5C)' },
+      { initials: 'PV', name: 'Pavel Volkov', role: 'Aegean', bio: 'Lives on Mykonos. Speaks four languages. Closes the impossible deals.', avatarBg: 'linear-gradient(135deg, #E8D9B5, #1A2B4A)' },
+    ],
+    press: [
+      { name: 'Architectural Digest', style: 'serif' },
+      { name: 'Robb Report', style: 'bold' },
+      { name: 'The Wall Street Journal', style: 'serif' },
+      { name: 'Coastal Living', style: 'serif' },
+      { name: 'Mansion Global', style: 'display' },
+    ],
+    faq: [
+      { q: 'Do I need to be pre-approved?', a: 'Not to start, but to make an offer. We have lender partners if you need a referral.' },
+      { q: 'How does off-market first work?', a: 'We email our buyers 48 hours before any new listing hits MLS. The first look is the best look.' },
+      { q: 'Do you work internationally?', a: 'Yes \u2014 we have closed in 14 countries. The local partner model means you have one of us and one of them.' },
+      { q: 'What is your fee?', a: '2.5% buyer-side, 2.5% seller-side. We do not charge transaction fees on top.' },
+    ],
+  },
+  19: {
+    gallery: buildGallery(19, 'quanta'),
+    galleryEyebrow: 'In the cohort',
+    galleryTitle: 'Six courses, in practice',
+    galleryLede: 'From the code bootcamp to the UX program, in the projects.',
+    details: [
+      { icon: '✦', title: 'Self-paced', desc: 'Start today, finish when you finish. No cohorts, no deadlines.' },
+      { icon: '◐', title: 'Project-based', desc: 'You graduate with a portfolio, not just a certificate.' },
+      { icon: '✺', title: 'Real instructors', desc: 'People who do the thing for a living, not content marketers.' },
+      { icon: '◆', title: '240 courses', desc: 'Code, design, data, photography, music, business. New courses every month.' },
+      { icon: '◈', title: 'Job-ready guarantee', desc: 'If you do not land a job in 6 months after graduating the bootcamp, you get your money back.' },
+      { icon: '❋', title: 'Free first lesson', desc: 'Try before you buy. No signup, no card, just the lesson.' },
+    ],
+    team: [
+      { initials: 'DR', name: 'Dr. Yuki Ramachandran', role: 'Lead instructor', bio: 'PhD in CS, ex-Google. Teaches the code program.', avatarBg: 'linear-gradient(135deg, #FF6B6B, #FFF4B8)' },
+      { initials: 'PI', name: 'Priya Iyer', role: 'UX lead', bio: 'Dropped out, taught herself, now teaches. The reason the UX program works.', avatarBg: 'linear-gradient(135deg, #2D4A2B, #F5E6D3)' },
+      { initials: 'JN', name: 'Jules Nakamura', role: 'Data science', bio: 'Former data scientist at Spotify. The reason the data program is practical.', avatarBg: 'linear-gradient(135deg, #FFD60A, #1A1A1A)' },
+    ],
+    press: [
+      { name: 'Course Report', style: 'serif' },
+      { name: 'Switchup', style: 'bold' },
+      { name: 'Class Central', style: 'display' },
+      { name: 'EdSurge', style: 'mono' },
+      { name: 'The Verge', style: 'bold' },
+    ],
+    faq: [
+      { q: 'Do I need a CS degree?', a: 'No. About 60% of our code graduates had never written a line before. The first lesson is designed to be the first lesson.' },
+      { q: 'How long is the bootcamp?', a: '12 weeks for code, 14 weeks for UX, 16 weeks for data. Self-paced, so you can take longer.' },
+      { q: 'Is the job guarantee real?', a: 'Yes \u2014 if you do not land a job in 6 months after graduating the bootcamp, you get your money back. The terms are public.' },
+      { q: 'Can I expense this through my employer?', a: 'Most of our learners do. We provide a receipt that satisfies most L&D departments.' },
+    ],
+  },
+};
+
+// Merge EXTRA_CONTENT into DESIGN_PRESETS
+Object.keys(EXTRA_CONTENT).forEach((id) => {
+  if (DESIGN_PRESETS[id]) {
+    Object.assign(DESIGN_PRESETS[id], EXTRA_CONTENT[id]);
+  }
+});
 
 
 // =========================================================
@@ -991,28 +1668,30 @@ const TESTIMONIALS = {
   20: { quote: '"It shipped a feature in eight minutes that I had been avoiding for two weeks. I owe it a beer."', author: 'Sam Chen', role: 'Senior engineer, fintech' },
 };
 
-// Hero background images (use the gallery thumb, or null for designs that look better without)
+// Hero background images — using showcase[0] instead of thumbs
+// (thumbs contained browser-chrome previews, causing "browser on browser")
+// Per layout: full-bleed uses as overlay; centered/editorial use as soft bg.
 const HERO_BG = {
-  1: 'thumbs/01_lumiere.png',
-  2: 'thumbs/02_nomad.png',
-  3: null,  // Atelier: pure minimal
-  4: 'thumbs/04_crescent.png',
-  5: 'thumbs/05_verdant.png',
-  6: 'thumbs/06_nebula.png',
-  7: 'thumbs/07_odyssey.png',
-  8: 'thumbs/08_vertex.png',
-  9: 'thumbs/09_helix.png',
-  10: 'thumbs/10_polaris.png',
-  11: 'thumbs/11_mira.png',
-  12: 'thumbs/12_brewco.png',
-  13: 'thumbs/13_ember.png',
-  14: 'thumbs/14_mosaic.png',
-  15: 'thumbs/15_apex.png',
-  16: 'thumbs/16_chapter.png',
-  17: 'thumbs/17_spark.png',
-  18: 'thumbs/18_tide.png',
-  19: 'thumbs/19_quanta.png',
-  20: 'thumbs/20_vad.png',
+  1: 'showcase/lumiere_01.png',     // dress on model
+  2: 'showcase/nomad_02.png',       // himalayan trek
+  3: null,                          // Atelier: pure minimal, let typography breathe
+  4: 'showcase/crescent_01.png',     // tasting course
+  5: 'showcase/verdant_01.png',      // refill set
+  6: 'showcase/nebula_01.png',       // front-row session
+  7: 'showcase/odyssey_01.png',      // k2 approach
+  8: 'showcase/vertex_01.png',       // crypto vault
+  9: 'showcase/helix_01.png',        // doctor visit
+  10: 'showcase/polaris_01.png',     // launch
+  11: 'showcase/mira_01.png',        // portrait
+  12: 'showcase/brewco_01.png',      // pour ritual
+  13: 'showcase/ember_01.png',       // tuscan wedding
+  14: 'showcase/mosaic_01.png',      // solo show
+  15: 'showcase/apex_01.png',        // strength
+  16: 'showcase/chapter_01.png',     // hardback list
+  17: 'showcase/spark_01.png',       // identity
+  18: 'showcase/tide_01.png',        // cove house
+  19: 'showcase/quanta_01.png',      // code
+  20: 'showcase/vad_01.png',         // unlimited context
 };
 
 // Helper: get a variation

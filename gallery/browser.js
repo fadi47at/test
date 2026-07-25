@@ -123,6 +123,74 @@ function applyContent(d, v) {
     </article>
   `).join('');
 
+  // Gallery (6 images in mosaic grid)
+  const gallery = preset.gallery || [];
+  document.getElementById('dgal-eyebrow').textContent = preset.galleryEyebrow || 'Inside the work';
+  document.getElementById('dgal-title').textContent = preset.galleryTitle || 'A closer look';
+  document.getElementById('dgal-lede').textContent = preset.galleryLede || 'Six moments from the studio, the road, the kitchen, the lab.';
+  const galTiles = ['gal-tile--lg', 'gal-tile--sm', 'gal-tile--sm', 'gal-tile--sm', 'gal-tile--sm', 'gal-tile--sm'];
+  document.getElementById('dgal-grid').innerHTML = gallery.slice(0, 6).map((g, i) => `
+    <div class="gal-tile ${galTiles[i] || 'gal-tile--sm'}">
+      <img src="${g.img}" alt="${g.cap || ''}" loading="lazy" />
+      ${g.cap ? `<span class="gal-tile__cap">${g.cap}</span>` : ''}
+    </div>
+  `).join('');
+  document.getElementById('d-gallery').style.display = gallery.length ? 'block' : 'none';
+
+  // Details (6 items with icon + title + short text)
+  const details = preset.details || [];
+  document.getElementById('ddet-eyebrow').textContent = preset.detailsEyebrow || "What's inside";
+  document.getElementById('ddet-title').textContent = preset.detailsTitle || 'The small details that matter';
+  document.getElementById('ddet-grid').innerHTML = details.slice(0, 6).map((it) => `
+    <div class="det-item">
+      <div class="det-item__icon">${it.icon || '✦'}</div>
+      <div class="det-item__body">
+        <h4 class="det-item__title">${it.title}</h4>
+        <p class="det-item__desc">${it.desc}</p>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('d-details').style.display = details.length ? 'block' : 'none';
+
+  // Team / People
+  const team = preset.team || [];
+  document.getElementById('dteam-eyebrow').textContent = preset.teamEyebrow || 'The people';
+  document.getElementById('dteam-title').textContent = preset.teamTitle || "Who you'll be working with";
+  document.getElementById('dteam-grid').innerHTML = team.slice(0, 4).map((p) => `
+    <div class="dteam-card">
+      <div class="dteam-card__avatar" style="${p.avatarBg ? `background:${p.avatarBg};` : ''}">${p.initials || (p.name || '?').slice(0, 2)}</div>
+      <h4 class="dteam-card__name">${p.name}</h4>
+      <p class="dteam-card__role">${p.role}</p>
+      <p class="dteam-card__bio">${p.bio || ''}</p>
+    </div>
+  `).join('');
+  document.getElementById('d-team').style.display = team.length ? 'block' : 'none';
+
+  // Press / As Seen In
+  const press = preset.press || [];
+  document.getElementById('dpress-eyebrow').textContent = preset.pressEyebrow || 'As seen in';
+  document.getElementById('dpress-row').innerHTML = press.slice(0, 6).map((p) => `
+    <span class="press-logo press-logo--${p.style || 'display'}">${p.name}</span>
+  `).join('');
+  document.getElementById('d-press').style.display = press.length ? 'block' : 'none';
+
+  // FAQ
+  const faq = preset.faq || [];
+  document.getElementById('dfaq-eyebrow').textContent = preset.faqEyebrow || 'Questions, answered';
+  document.getElementById('dfaq-title').textContent = preset.faqTitle || 'What people ask first';
+  document.getElementById('dfaq-list').innerHTML = faq.slice(0, 5).map((f) => `
+    <div class="faq-item">
+      <h4 class="faq-item__q">${f.q}<span class="faq-item__plus">+</span></h4>
+      <p class="faq-item__a">${f.a}</p>
+    </div>
+  `).join('');
+  document.getElementById('d-faq').style.display = faq.length ? 'block' : 'none';
+
+  // FAQ toggle
+  document.querySelectorAll('.faq-item').forEach((item) => {
+    item.addEventListener('click', () => item.classList.toggle('is-open'));
+  });
+
   // Stats
   const stats = preset.stats || [];
   const statsInner = document.getElementById('dstats-inner');
