@@ -1528,11 +1528,304 @@ const EXTRA_CONTENT = {
   },
 };
 
+// =========================================================
+// PER-DESIGN FEATURES (custom to each brand, not the category default)
+// =========================================================
+const FEATURES_PER_DESIGN = {
+  1: [ // Lumière — haute couture
+    { icon: '✦', title: 'Hand-embroidered on rue Cambon', desc: 'One artisan, one piece, three weeks per garment. By appointment only.' },
+    { icon: '✂', title: 'French seams, always', desc: 'The inside is as finished as the outside. Every piece passes the seam inspection.' },
+    { icon: '◈', title: 'Mother-of-pearl buttons', desc: 'Hand-cut from the Pacific. No two buttons are the same. Engraved with the season.' },
+    { icon: '❋', title: 'Cupro lining', desc: 'Body-temperature silk-cotton blend. Wears like a second skin from day one.' },
+    { icon: '◆', title: 'Numbered, signed, archived', desc: 'Each piece is signed by its seamstress. We can tell you who made yours.' },
+    { icon: '◐', title: 'Fédération certified', desc: 'Member of the Chambre Syndicale de la Haute Couture since 1962.' },
+  ],
+  2: [ // Nomad — adventure travel
+    { icon: '✺', title: 'Hand-picked routes', desc: 'Every itinerary walked by a guide before you walk it. We do not sell what we have not done.' },
+    { icon: '◉', title: 'Local guides only', desc: 'Not actors. The people who make the place what it is. Sherpas, Bedouins, gauchos.' },
+    { icon: '➤', title: 'Max 8 travelers', desc: 'No megabuses, no megaresorts, no megajetlags. Small groups, real presence.' },
+    { icon: '✦', title: '4,000+ alumni', desc: 'Most of our clients come back. That is the only metric we track. Nothing else.' },
+    { icon: '◐', title: 'Carbon-neutral, audited', desc: 'Every trip, every flight, every transfer. Public ledger, third-party verified.' },
+    { icon: '❋', title: 'Single supplement waived', desc: 'We match you with a same-gender roommate. Never a single penalty, ever.' },
+  ],
+  3: [ // Atelier — architecture
+    { icon: '◧', title: 'Built for the next century', desc: 'Materials and details chosen for 200 years, not 20 seasons. We measure twice.' },
+    { icon: '◐', title: 'Light first', desc: 'We design around the path of the sun. The form follows the light, never the trend.' },
+    { icon: '◇', title: 'Honest materials', desc: 'Concrete looks like concrete. Wood looks like wood. Nothing is faked, nothing is hidden.' },
+    { icon: '✦', title: 'Site-led', desc: 'Two weeks on the site before we draw a single line. The building starts there.' },
+    { icon: '◆', title: 'Hand-drawn plans first', desc: 'Every plan is hand-drawn first. Then modelled. Then built. The drawing is the thinking.' },
+    { icon: '◈', title: '200-year details', desc: 'Joinery that does not need replacing in your lifetime. Built to outlive us all.' },
+  ],
+  4: [ // Crescent — fine dining
+    { icon: '✻', title: 'Seasonal menu, always', desc: 'The menu changes when the season does. No exceptions, no off-season frozen product.' },
+    { icon: '❦', title: 'Single kitchen, single fire', desc: 'Every dish from one pass, one chef, one fire. You watch the chef plate each course.' },
+    { icon: '✦', title: '12 seats at the pass', desc: 'We seat 12. The kitchen is the dining room. You watch us cook.' },
+    { icon: '◐', title: 'Sommelier-paired', desc: 'A different glass for every course. No exceptions. The wine list is the cellar.' },
+    { icon: '◆', title: '320 bottles in the cellar', desc: 'Small producers only. Names you cannot pronounce, prices you can. The list is the room.' },
+    { icon: '◈', title: 'Vegetarian, no compromise', desc: 'Eight courses, no compromise. The chef designs the menu around you, not the other way.' },
+  ],
+  5: [ // Verdant — sustainability
+    { icon: '❀', title: 'Carbon negative', desc: 'We remove more than we emit. Public ledger, third-party audited every year.' },
+    { icon: '✿', title: 'Regenerative sourcing', desc: 'Every supplier answers: does this make the land better than we found it? If no, we pass.' },
+    { icon: '✤', title: 'Plastic-free shipping', desc: 'Compostable mailers, recycled paper tape, mushroom packaging. Nothing wasted.' },
+    { icon: '✦', title: 'Refill, not landfill', desc: 'Send the bottle back, we refill and ship. Forever. The bottle outlives its contents.' },
+    { icon: '◐', title: 'B-Corp top 5%', desc: 'Top 5% of B-Corps globally. Re-certified every three years. No greenwashing.' },
+    { icon: '◆', title: '1% for the planet', desc: 'One percent of every order goes to land regeneration. 184,000 trees and counting.' },
+  ],
+  6: [ // Nebula — music streaming
+    { icon: '♫', title: 'Lossless, 24-bit/96kHz', desc: 'Studio-grade, not the compressed version. 4x the data of Spotify. Worth it on real speakers.' },
+    { icon: '◐', title: 'Four real humans curate', desc: 'Not an algorithm. The same person who picks your mix picks for everyone, for years.' },
+    { icon: '♪', title: 'Vinyl vault included', desc: 'Pre-1980 jazz, soul, rare grooves. Ripped from the original masters, in lossless.' },
+    { icon: '♬', title: 'Front-row sessions', desc: 'Exclusive live recordings from 12 cities, streamed in lossless. You are in the front row.' },
+    { icon: '✦', title: 'Friday mixtape', desc: 'A real human\u2019s pick, every Friday. The way music used to be shared. No algorithm.' },
+    { icon: '✺', title: 'Offline first', desc: 'Download everything. Listen on a plane, on a train, in a basement. No WiFi needed.' },
+  ],
+  7: [ // Odyssey — adventure expeditions
+    { icon: '▲', title: '142 summits, 0 fatalities', desc: 'Successful summits since 2012. The only safety record that actually matters in this business.' },
+    { icon: '◐', title: 'Sherpa-led, not imported', desc: 'Local guides who know the mountain personally. Not imported contractors on a tourist visa.' },
+    { icon: '✦', title: '10-day acclimatization', desc: 'We spend ten days at altitude before we even start. The mountain punishes shortcuts.' },
+    { icon: '◈', title: '6-month training plan', desc: 'Designed for your body, not the brochure. The training is half the trip.' },
+    { icon: '✺', title: '12 years guiding', desc: 'No client has ever needed rescue. That is the only metric we track.' },
+    { icon: '➤', title: 'No ego trips', desc: 'If the mountain is not in, we tell you. We have turned around at base camp. Twice.' },
+  ],
+  8: [ // Vertex — DeFi
+    { icon: '◆', title: 'Self-custody, always', desc: 'You hold the private keys. We never see them, never store them. If we get hacked, you are safe.' },
+    { icon: '⌬', title: 'Audited by three firms', desc: 'Trail of Bits, OpenZeppelin, Spearbit. Public reports. We publish the issues we find ourselves.' },
+    { icon: '◈', title: 'No gas surprises', desc: 'Predictable fees, batched transactions. We tell you the cost before you sign.' },
+    { icon: '✦', title: '12 chains, one balance', desc: 'Cross-chain without bridges, every time. Move between Ethereum, Solana, Sui, NEAR in seconds.' },
+    { icon: '◐', title: '0.05% fee, only on yield', desc: 'No deposit fees, no withdrawal fees. We make money when you do. Aligned incentives.' },
+    { icon: '✺', title: 'No lock-ups', desc: 'Withdraw any time, any amount. The money is always yours, always accessible.' },
+  ],
+  9: [ // Helix — telemedicine
+    { icon: '✚', title: 'Same-day, 7 days a week', desc: 'Talk to someone today, not in three weeks. Every day, including holidays. No exceptions.' },
+    { icon: '◉', title: '8-min average wait', desc: 'From app open to face on screen, the median is under eight minutes. The longest last month was 14.' },
+    { icon: '✦', title: 'Same clinician, every time', desc: 'You see the same person every visit. We do not rotate you through strangers. Continuity of care.' },
+    { icon: '◐', title: 'HIPAA-grade security', desc: 'End-to-end encryption, audit logs, export any time. Your data is yours. We do not sell it.' },
+    { icon: '◆', title: 'At-home labs', desc: 'Real lab work, real results. No waiting rooms, no awkward magazines, no insurance phone tree.' },
+    { icon: '✺', title: '24/7, real human on call', desc: 'Not a phone tree, not a chatbot. A clinician who knows you. Always reachable.' },
+  ],
+  10: [ // Polaris — aerospace
+    { icon: '▲', title: '14 launches, 0 failures', desc: 'Successful missions since 2014. On time, on budget, every time. The launch is the easy part.' },
+    { icon: '◐', title: 'NASA outgassing spec', desc: 'Every unit tested to NASA outgassing specs. We are the spec, not just compliant with it.' },
+    { icon: '✦', title: '24/7 mission control', desc: 'Real engineers, on shift, watching your satellite. We tell you in 60 seconds if something is wrong.' },
+    { icon: '⌖', title: 'Sub-meter, 90 min', desc: 'Sub-meter resolution imagery, delivered within 90 minutes of capture. Anywhere on Earth.' },
+    { icon: '◈', title: '14 successful missions', desc: 'Atlas Program, civilian research, sub-orbital training. We have done the impossible, on time.' },
+    { icon: '◆', title: '32 active satellites', desc: 'Currently in orbit, talking to ground, delivering data. The constellation is the company.' },
+  ],
+  11: [ // Mira — photography
+    { icon: '◐', title: 'Original RAW files', desc: 'You get the full archive, not the curated highlights. Every frame, every take, yours.' },
+    { icon: '✦', title: 'Hand-printed, signed', desc: 'Darkroom prints on archival paper. Signed, numbered, ready for the gallery wall.' },
+    { icon: '◇', title: '300dpi, color-managed', desc: 'Print-ready files, 300dpi, color-managed. No surprises between screen and print.' },
+    { icon: '◆', title: 'Unlimited revisions', desc: 'We shoot until you love every frame. No timer. No hourly billing. The work is the work.' },
+    { icon: '✺', title: 'Film available', desc: 'Medium format, large format, or digital. You call it, we bring it. Or we shoot both.' },
+    { icon: '◈', title: 'Worldwide, on us', desc: 'Based in Lisbon, available anywhere. Travel costs are on us. The work is the only invoice.' },
+  ],
+  12: [ // Brew & Co — coffee
+    { icon: '◉', title: 'Single-origin, traceable', desc: 'Every bag traceable to a single farm, a single harvest, a single roast. Public ledger.' },
+    { icon: '☕', title: 'Roasted to order', desc: 'Shipped within 48 hours of leaving the drum. The roast date is on every bag. Always fresh.' },
+    { icon: '✺', title: '3x Fair Trade minimum', desc: 'We pay the farmer three times the Fair Trade minimum. Always. Direct trade, no middlemen.' },
+    { icon: '✦', title: 'Q-graded every batch', desc: 'Certified Q-graders cup every batch. The defective 3% goes home with us, not you.' },
+    { icon: '◐', title: 'Brew guides included', desc: 'Every bag ships with the recipe. We make it easy to make it right on the first try.' },
+    { icon: '◆', title: 'Refillable bags', desc: 'Send the bag back, we refill and ship. Less waste, more coffee, same price.' },
+  ],
+  13: [ // Ember — wedding planner
+    { icon: '✦', title: 'Single planner, start to finish', desc: 'One person from first call to last dance. No hand-offs, no surprises. Continuity is the gift.' },
+    { icon: '❀', title: 'Vendor-agnostic, always', desc: 'We do not take commissions. We recommend what is right for you, not what pays us most.' },
+    { icon: '◐', title: 'Day-of, we run it', desc: 'You live the day. We handle every glitch in real time. You will not see a single problem.' },
+    { icon: '◈', title: '14 countries', desc: 'Tuscany, Paris, Santorini, Marrakech, the Cotswolds. We have done them all. We can do yours.' },
+    { icon: '◆', title: 'Real flowers only', desc: 'No silk, no faux, no foam. The week-of, by a real florist. The scent of the day is part of the memory.' },
+    { icon: '✺', title: '142 couples served', desc: 'And 100% would rebook. That is the only metric that matters for a wedding planner.' },
+  ],
+  14: [ // Mosaic — art gallery
+    { icon: '◐', title: '4 artists a year, no more', desc: 'Not forty. Each one gets a real show. The curation is the constraint.' },
+    { icon: '✦', title: 'Direct from studio', desc: 'No middlemen, no markups, no reproductions. Original work, sourced from the artist\u2019s studio.' },
+    { icon: '◈', title: '70% to the artist', desc: 'When the work sells, the artist gets 70%. We keep 30%. The split is the contract.' },
+    { icon: '◆', title: 'Certificate, archived', desc: 'Signed, numbered, archived. Your piece is provably the one, with the paper to prove it.' },
+    { icon: '❀', title: 'Free First Fridays', desc: 'First Friday of every month, 6-10pm, free. Wine, the artists, the room. The art is the door.' },
+    { icon: '✺', title: '280K visitors a year', desc: 'The largest independent gallery in Berlin. The most visited per square meter, per curator.' },
+  ],
+  15: [ // Apex — fitness
+    { icon: '◆', title: 'Real coaches, certified', desc: 'Every program written by a coach with a national certification. Not influencers. Coaches.' },
+    { icon: '◐', title: 'Periodized training', desc: 'No random workouts. Cycles, deloads, progressive overload. The science is the method.' },
+    { icon: '✦', title: 'Form first', desc: 'We\u2019d rather you lift less with perfect form than more with bad form. Always.' },
+    { icon: '✺', title: 'InBody + movement screen', desc: 'Every new member does a scan, a movement screen, and a goals interview. We start with data.' },
+    { icon: '◈', title: 'Re-assess every 8 weeks', desc: 'The data tells the truth. We use it. If the program is not working, we change it. Always.' },
+    { icon: '✤', title: 'Open gym 24/7', desc: 'Train at 4am or 10pm. The keys are yours. The only locked door is the front, after hours.' },
+  ],
+  16: [ // Chapter — publishing
+    { icon: '❦', title: 'Author-friendly terms', desc: 'We pay advances. We pay royalties. We do not bury rights in fine print. The contract is the promise.' },
+    { icon: '✦', title: 'Independent voice', desc: 'No corporate parent, no marketing department, no algorithmic shelf. The list is the line.' },
+    { icon: '◐', title: '240 independent stockists', desc: 'In 12 countries, on real shelves, in real bookstores. Not just on Amazon. Never only on Amazon.' },
+    { icon: '◆', title: '12 titles a year', desc: 'Fiction, memoir, essays, poetry, translation. Every one edited by a human, read twice.' },
+    { icon: '✺', title: 'Letterpress limited editions', desc: 'For the books that earn it. Hand-set, signed, numbered. The object is the gift.' },
+    { icon: '◈', title: 'Audiobook with every title', desc: 'Narrated by the author when we can. Always human, never synthetic. The voice is the work.' },
+  ],
+  17: [ // Spark — agency
+    { icon: '✦', title: 'Senior-only team', desc: 'No juniors learning on your dime. The people who pitch do the work. The team is the brand.' },
+    { icon: '◈', title: 'Fixed-price projects', desc: 'No hourly billing, no scope creep, no surprise invoices. The number is the number.' },
+    { icon: '✺', title: 'We say no', desc: 'If a brief is bad for the brand, we say so. Even before signing. The courage is the craft.' },
+    { icon: '◐', title: 'Brand + product', desc: 'Logo, type, color, voice, web, app. The whole thing, designed as one. The system is the strategy.' },
+    { icon: '◆', title: 'Strategy first', desc: 'Two weeks of listening before any pixels move. The brief is half the work.' },
+    { icon: '✤', title: '90-day launch support', desc: 'We stay for 90 days after launch. The launch is the start, not the end.' },
+  ],
+  18: [ // Tide — real estate
+    { icon: '◐', title: 'Off-market first', desc: 'We share listings with our clients 48 hours before they hit MLS. The first look is the best look.' },
+    { icon: '✦', title: 'Local-only agents', desc: 'Each agent works one neighborhood. Knows every block, every comp, every seller.' },
+    { icon: '◈', title: 'No dual agency', desc: 'We never represent both sides. Your interests, full stop. The conflict is the choice.' },
+    { icon: '◆', title: '14 coastal markets', desc: 'From the Hamptons to the Aegean. One of us, one of them. The local partner is the model.' },
+    { icon: '✺', title: '$2.4B closed in 2025', desc: 'Across 142 homes. Average days on market: 18. The number is the track record.' },
+    { icon: '❋', title: 'Buyer + seller separated', desc: 'Different agents for each side, even on a flip. No conflict, ever. The structure is the safety.' },
+  ],
+  19: [ // Quanta — education
+    { icon: '✦', title: 'Self-paced, no cohorts', desc: 'Start today, finish when you finish. No deadlines, no waiting for the next group. The pace is yours.' },
+    { icon: '◐', title: 'Project-based learning', desc: 'You graduate with a portfolio, not just a certificate. The portfolio is the proof.' },
+    { icon: '✺', title: 'Real instructors', desc: 'People who do the thing for a living, not content marketers. The work is the curriculum.' },
+    { icon: '◆', title: '240 courses', desc: 'Code, design, data, photography, music, business. New courses every month. The library grows.' },
+    { icon: '◈', title: 'Job-ready guarantee', desc: 'If you do not land a job in 6 months after graduating the bootcamp, you get your money back.' },
+    { icon: '✤', title: 'Free first lesson', desc: 'Try before you buy. No signup, no card, just the lesson. The first lesson is the audition.' },
+  ],
+  20: [ // VAD — AI coding
+    { icon: '◧', title: 'Whole-repo context', desc: 'Reads your entire codebase on connect. No "lost in the middle". The context is the model.' },
+    { icon: '◆', title: 'Real execution', desc: 'Runs the code, runs the tests, runs the lint. The full loop, not just suggestions.' },
+    { icon: '◐', title: 'Multi-agent', desc: 'Spawns sub-agents in parallel. One prompt, six workers, one PR. The team is the tool.' },
+    { icon: '✦', title: 'Codebase memory', desc: 'Remembers decisions, naming, and patterns across sessions. The model learns the codebase.' },
+    { icon: '⌬', title: 'Tool calling, native', desc: 'Native MCP, function calls, terminal. Every tool, on demand, with permission. The integration is the surface.' },
+    { icon: '✺', title: 'Sub-2s to first fix', desc: 'Median time from prompt to first passing test. Less than two seconds. The speed is the standard.' },
+  ],
+};
+
+// =========================================================
+// PER-DESIGN PRICING (custom to each industry)
+// =========================================================
+const PRICING_PER_DESIGN = {
+  1: [ // Lumière — fashion
+    { name: 'Atelier visit', price: 'Free', suffix: '', featured: false, features: ['By appointment', '30-min private tour', 'See current collection', 'No obligation'] },
+    { name: 'Made-to-measure', price: '€18,000', suffix: 'from', featured: true, features: ['3 fittings included', 'Hand-embroidered details', 'Mother-of-pearl buttons', 'Numbered, signed'] },
+    { name: 'Couture commission', price: 'Custom', suffix: '', featured: false, features: ['Bespoke piece', '6-month lead time', 'Direct with designer', 'Lifetime alteration'] },
+  ],
+  2: [ // Nomad — travel
+    { name: 'Day trip', price: '€280', suffix: '', featured: false, features: ['Local guide', 'Small group, max 8', 'Lunch included', 'Single-day commitment'] },
+    { name: '7-day expedition', price: '€3,800', suffix: '', featured: true, features: ['Hand-picked route', 'All meals + lodging', 'Carbon-neutral', 'Single supplement waived'] },
+    { name: 'Private charter', price: '€24,000+', suffix: '', featured: false, features: ['Your dates, your route', 'Bespoke itinerary', 'Dedicated guide', 'Family or friends only'] },
+  ],
+  3: [ // Atelier — architecture
+    { name: 'Site visit', price: '€3,800', suffix: '', featured: false, features: ['2-week on-site analysis', 'Light + materials report', 'Hand-drawn sketches', 'No commitment'] },
+    { name: 'Schematic design', price: '€18,000', suffix: '', featured: true, features: ['8-week engagement', 'Site-led process', 'Hand-drawn plans', '2 design iterations'] },
+    { name: 'Full project', price: '€140,000+', suffix: '', featured: false, features: ['Schematic + DD + CD', 'Construction oversight', 'Materials specification', '200-year details'] },
+  ],
+  4: [ // Crescent — restaurant
+    { name: 'Lunch tasting', price: '€85', suffix: '/person', featured: false, features: ['5-course tasting', 'Wine pairing optional', '12 seats at the pass', 'Tuesday to Saturday'] },
+    { name: 'Dinner tasting', price: '€185', suffix: '/person', featured: true, features: ['8-course tasting', 'Sommelier pairing', 'Reservations only', 'Tuesday to Saturday'] },
+    { name: 'Chef\u2019s table', price: '€320', suffix: '/person', featured: false, features: ['4 seats, by request', 'Custom menu around you', 'Picking with the chef', 'Tuesday to Saturday'] },
+  ],
+  5: [ // Verdant — sustainability
+    { name: 'Starter set', price: '€24', suffix: '', featured: false, features: ['3 refills + bottles', 'Compostable mailer', 'Free shipping first order', 'Cancel anytime'] },
+    { name: 'Annual refill', price: '€48', suffix: '/mo', featured: true, features: ['Monthly refill delivery', 'Bottles that last forever', '1% to land regen', 'Carbon negative'] },
+    { name: 'Wholesale', price: 'Custom', suffix: '', featured: false, features: ['Refill stations', 'Hotel + retail', 'Co-branded options', 'B-Corp certified'] },
+  ],
+  6: [ // Nebula — music
+    { name: 'Free', price: '$0', suffix: '/mo', featured: false, features: ['Lossy streaming', 'Curated daily mixes', 'Mobile + web', 'Ad-supported'] },
+    { name: 'Lossless', price: '$9.99', suffix: '/mo', featured: true, features: ['24-bit, 96kHz FLAC', 'Vinyl vault included', 'Front-row sessions', 'Offline downloads'] },
+    { name: 'Family', price: '$14.99', suffix: '/mo', featured: false, features: ['Up to 6 accounts', 'Lossless for everyone', 'Kids mode', 'One bill'] },
+  ],
+  7: [ // Odyssey — expedition
+    { name: 'Day climb', price: '€480', suffix: '', featured: false, features: ['Local mountain', 'Sherpa guide', 'Lunch at base', 'Single-day commitment'] },
+    { name: '14-day expedition', price: '€6,800', suffix: '', featured: true, features: ['10-day acclimatization', 'Sherpa-led, max 6', 'All meals + lodging', '6-month training plan'] },
+    { name: 'Private summit', price: '€28,000+', suffix: '', featured: false, features: ['Your team, your dates', 'Bespoke route', 'Dedicated guide team', 'Return guarantee'] },
+  ],
+  8: [ // Vertex — DeFi
+    { name: 'Free', price: '$0', suffix: '', featured: false, features: ['Self-custody wallet', 'Basic yield', '0.05% on earnings', 'No deposit fees'] },
+    { name: 'Pro', price: '$29', suffix: '/mo', featured: true, features: ['Pro trading tools', 'Sub-second execution', 'Cross-chain routing', 'Priority support'] },
+    { name: 'Enterprise', price: 'Custom', suffix: '', featured: false, features: ['Treasury management', 'Dedicated relationship', 'Custom contracts', 'White-glove onboarding'] },
+  ],
+  9: [ // Helix — healthcare
+    { name: 'Single visit', price: '$0', suffix: 'copay', featured: false, features: ['Same-day visit', '8-min average wait', 'Same clinician', 'Insurance accepted'] },
+    { name: 'Family', price: '$49', suffix: '/mo', featured: true, features: ['Up to 6 members', 'Unlimited visits', 'At-home labs included', 'Mental health + pediatrics'] },
+    { name: 'Concierge', price: '$249', suffix: '/mo', featured: false, features: ['24/7 dedicated clinician', 'At-home visits', 'Specialist referrals', 'Same-day prescriptions'] },
+  ],
+  10: [ // Polaris — aerospace
+    { name: 'Rideshare', price: '$1.2M', suffix: '', featured: false, features: ['12U cubesat', 'Sun-synchronous orbit', '14-day lead time', 'Shared launch'] },
+    { name: 'Dedicated launch', price: '$24M+', suffix: '', featured: true, features: ['Your payload, your orbit', 'Custom integration', 'Mission control for 5y', 'On-time guarantee'] },
+    { name: 'Constellation', price: '$48M+', suffix: '', featured: false, features: ['Multi-satellite program', 'Dedicated launch window', '5-year operations', 'White-glove engineering'] },
+  ],
+  11: [ // Mira — photography
+    { name: 'Day session', price: '€1,800', suffix: '', featured: false, features: ['4-hour shoot', '40 edited frames', 'Online gallery', 'Print-ready files'] },
+    { name: 'Editorial', price: '€4,800', suffix: '', featured: true, features: ['2-day shoot', '100 edited frames', 'Behind-the-scenes', 'Hand-printed edition'] },
+    { name: 'Annual retainer', price: '€18,000', suffix: '/yr', featured: false, features: ['4 editorial shoots', 'Priority booking', 'Travel included', 'Brand campaign'] },
+  ],
+  12: [ // Brew & Co — coffee
+    { name: 'Single bag', price: '$18', suffix: '', featured: false, features: ['250g, single origin', 'Roasted to order', 'Brew guide included', 'Free shipping over $40'] },
+    { name: 'Subscription', price: '$58', suffix: '/mo', featured: true, features: ['4 bags, rotating origins', 'Roasted to order', 'Brew guides + recipes', 'Cancel anytime'] },
+    { name: 'Wholesale', price: 'Custom', suffix: '', featured: false, features: ['Cafes + restaurants', '60+ partners', 'Custom blends', 'Q-graded QC'] },
+  ],
+  13: [ // Ember — wedding
+    { name: 'Day-of coordination', price: '$6,800', suffix: '', featured: false, features: ['2 planners on day-of', 'Vendor coordination', 'Timeline management', 'Last 6 weeks of planning'] },
+    { name: 'Full planning', price: '$14,000', suffix: '', featured: true, features: ['Single planner start to finish', 'All vendors coordinated', 'Day-of coordination', 'Real flowers only'] },
+    { name: 'Destination', price: '$24,000+', suffix: '', featured: false, features: ['Tuscany, Paris, Santorini', 'Local partner network', 'Travel + lodging help', 'Single planner, full planning'] },
+  ],
+  14: [ // Mosaic — art gallery
+    { name: 'Gallery visit', price: 'Free', suffix: '', featured: false, features: ['Tuesday to Sunday', 'Walk-in welcome', 'No appointment needed', 'Free First Fridays'] },
+    { name: 'Collecting consultation', price: '€480', suffix: '', featured: true, features: ['2-hour private session', 'With the curator', 'Studio visits available', 'Direct from artist'] },
+    { name: 'Acquisition', price: 'Custom', suffix: '', featured: false, features: ['Direct from studio', 'Certificate of authenticity', 'Crating + shipping worldwide', '70% to artist'] },
+  ],
+  15: [ // Apex — fitness
+    { name: 'Open gym', price: '$189', suffix: '/mo', featured: false, features: ['24/7 access', 'All classes included', 'InBody scan quarterly', 'No contract'] },
+    { name: 'Open + training', price: '$649', suffix: '/mo', featured: true, features: ['Open gym access', '8 PT sessions', 'Re-assess every 8 weeks', 'Custom programming'] },
+    { name: 'Private', price: '$1,800', suffix: '/mo', featured: false, features: ['Dedicated coach', 'Unlimited sessions', 'At-home option', 'Nutrition + recovery'] },
+  ],
+  16: [ // Chapter — publishing
+    { name: 'Submission', price: 'Free', suffix: '', featured: false, features: ['Query + 30 pages', 'Read by a human', 'Response in 12 weeks', 'No agent required'] },
+    { name: 'Advance', price: '$8,000', suffix: 'from', featured: true, features: ['For debut fiction', 'Royalty rates 15-22%', 'Author-friendly terms', '2-book option'] },
+    { name: 'Translation', price: 'Custom', suffix: '', featured: false, features: ['Translator as full partner', '30% of our list', 'Rights handled in-house', 'World rights available'] },
+  ],
+  17: [ // Spark — agency
+    { name: 'Identity sprint', price: '$24,000', suffix: '', featured: false, features: ['2-week engagement', 'Logo + type + color', 'One direction', 'Brand book'] },
+    { name: 'Brand + product', price: '$80,000+', suffix: '', featured: true, features: ['Identity + web + product', '12-18 week engagement', 'Senior team only', 'Fixed price'] },
+    { name: 'Retainer', price: 'Custom', suffix: '', featured: false, features: ['Monthly engagement', 'Always-on team', 'Campaign + product', 'Long-term partnership'] },
+  ],
+  18: [ // Tide — real estate
+    { name: 'Buyer consult', price: 'Free', suffix: '', featured: false, features: ['60-min session', 'Off-market preview', 'No commitment', 'Local expert'] },
+    { name: 'Buyer representation', price: '2.5%', suffix: '', featured: true, features: ['Off-market first', 'Local-only agents', 'No dual agency', 'Closing in 30 days'] },
+    { name: 'Seller representation', price: '2.5%', suffix: '', featured: false, features: ['Off-market first', 'Cinematic marketing', 'No dual agency', '$2.4B closed 2025'] },
+  ],
+  19: [ // Quanta — education
+    { name: 'Free lesson', price: '$0', suffix: '', featured: false, features: ['Try any course', 'No signup required', 'First lesson free', 'No card'] },
+    { name: 'Self-paced course', price: '$89', suffix: '', featured: true, features: ['Lifetime access', 'Real project', 'Instructor feedback', 'Community access'] },
+    { name: 'Bootcamp', price: '$2,400', suffix: '', featured: false, features: ['12-week code, 14-week UX', 'Job-ready guarantee', 'Real mentor', 'Money back if no job in 6mo'] },
+  ],
+  20: [ // VAD — AI coding
+    { name: 'Free', price: '$0', suffix: '', featured: false, features: ['Open source', 'Local execution', 'Community support', 'Self-hosted'] },
+    { name: 'Studio', price: '$49', suffix: '/mo', featured: true, features: ['Unlimited context', 'Real execution', 'Multi-agent', 'Priority support'] },
+    { name: 'Enterprise', price: 'Custom', suffix: '', featured: false, features: ['Self-hosted', 'Codebase memory', 'Dedicated engineer', 'SLA + support'] },
+  ],
+};
+
 // Merge EXTRA_CONTENT into DESIGN_PRESETS
 Object.keys(EXTRA_CONTENT).forEach((id) => {
-  if (DESIGN_PRESETS[id]) {
-    Object.assign(DESIGN_PRESETS[id], EXTRA_CONTENT[id]);
+  const designId = parseInt(id, 10);
+  if (DESIGN_PRESETS[designId]) {
+    Object.assign(DESIGN_PRESETS[designId], EXTRA_CONTENT[id]);
   }
+  // Also apply to DESIGNS array (features, pricing)
+  if (EXTRA_CONTENT[id].features || EXTRA_CONTENT[id].pricing) {
+    const design = DESIGNS.find((d) => d.id === designId);
+    if (design) {
+      if (EXTRA_CONTENT[id].features) design.features = EXTRA_CONTENT[id].features;
+      if (EXTRA_CONTENT[id].pricing) design.pricing = EXTRA_CONTENT[id].pricing;
+    }
+  }
+});
+
+// Apply per-design features and pricing
+Object.keys(FEATURES_PER_DESIGN).forEach((id) => {
+  const designId = parseInt(id, 10);
+  const design = DESIGNS.find((d) => d.id === designId);
+  if (design) design.features = FEATURES_PER_DESIGN[id];
+});
+Object.keys(PRICING_PER_DESIGN).forEach((id) => {
+  const designId = parseInt(id, 10);
+  const design = DESIGNS.find((d) => d.id === designId);
+  if (design) design.pricing = PRICING_PER_DESIGN[id];
 });
 
 
