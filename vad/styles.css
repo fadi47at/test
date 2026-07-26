@@ -39,22 +39,12 @@ body {
   padding-bottom: 60px;
   overflow: hidden;
   isolation: isolate;
-}
-.hero__bg {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 1440px;
-  max-width: none;
-  height: auto;
-  transform: translateX(-50%);
-  z-index: 0;
-  pointer-events: none;
-  display: block;
-  user-select: none;
-}
-.hero__bg--ink {
-  z-index: 0;
+  /* B&W ink-painting fills the entire hero as a background */
+  background-color: var(--color-bg);
+  background-image: url('hero_bg.png');
+  background-size: 100% 100%;
+  background-position: bottom center;
+  background-repeat: no-repeat;
 }
 .hero__paint {
   position: absolute;

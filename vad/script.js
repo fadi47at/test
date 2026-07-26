@@ -31,28 +31,14 @@
   // Load the colorful image (this is what we paint)
   const colorImg = new Image();
   let imgReady = false;
-  colorImg.onload = () => { imgReady = true; computeImagePlacement(); };
+  colorImg.onload = () => { imgReady = true; };
   colorImg.src = 'hero_bg_color.png';
 
-  // We read the B&W image element's actual bounding rect to know exactly
-  // where the painting happens. This way the painted color lines up
-  // pixel-perfect with the visible B&W.
-  const bgImg = hero.querySelector('.hero__bg--ink');
-
+  // The B&W is a CSS background that fills the entire hero
+  // (background-size: 100% 100%). The color image is mapped to the
+  // same hero rectangle, so painting at any cursor position reveals
+  // the color of the underlying B&W at that exact spot.
   let w = 0, h = 0;
-  let imgW = 0, imgH = 0;
-  let imgOffsetX = 0, imgOffsetY = 0;
-
-  function computeImagePlacement() {
-    const heroRect = hero.getBoundingClientRect();
-    const bgRect = bgImg.getBoundingClientRect();
-    w = heroRect.width;
-    h = heroRect.height;
-    imgW = bgRect.width;
-    imgH = bgRect.height;
-    imgOffsetX = bgRect.left - heroRect.left;
-    imgOffsetY = bgRect.top - heroRect.top;
-  }
 
   function resize() {
     const rect = hero.getBoundingClientRect();
@@ -64,16 +50,9 @@
     canvas.style.height = h + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    computeImagePlacement();
   }
   resize();
   window.addEventListener('resize', resize);
-  // Re-measure after fonts and images settle — the B&W image size
-  // can change slightly once CSS fully resolves.
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(computeImagePlacement);
-  }
-  colorImg.addEventListener && colorImg.addEventListener('load', computeImagePlacement);
 
   const stamps = [];
   let lastX = null, lastY = null;
@@ -105,32 +84,26 @@
   }
 
   // Compute where a stamp should sample the colorful image.
-  // The B&W background and the color image are both rendered at 1440px wide
-  // with the image's natural aspect, bottom-anchored inside the hero.
-  // This function returns a slice of the color image that should be painted
-  // at the cursor position, clipped to the image's actual placement.
+  // The B&W CSS background fills the entire hero (background-size: 100% 100%),
+  // so the color image is mapped 1:1 to the hero's pixel rectangle.
+  // This function returns a slice of the color image clipped to the
+  // stamp's footprint, ready to be drawn at the cursor position.
   function getSourceRect(x, y, r) {
     if (!imgReady) return null;
-    // Image-local coordinates of the stamp center:
-    const lx = x - imgOffsetX;
-    const ly = y - imgOffsetY;
-    // Clip the stamp's footprint to the image bounds:
-    const cx0 = Math.max(0, lx - r);
-    const cy0 = Math.max(0, ly - r);
-    const cx1 = Math.min(imgW, lx + r);
-    const cy1 = Math.min(imgH, ly + r);
+    // Clip the stamp's footprint to the hero bounds.
+    const cx0 = Math.max(0, x - r);
+    const cy0 = Math.max(0, y - r);
+    const cx1 = Math.min(w, x + r);
+    const cy1 = Math.min(h, y + r);
     if (cx1 <= cx0 || cy1 <= cy0) return null;
-    // Map the clipped footprint back to source-image coordinates:
-    const sx = cx0 * (colorImg.naturalWidth / imgW);
-    const sy = cy0 * (colorImg.naturalHeight / imgH);
-    const sw = (cx1 - cx0) * (colorImg.naturalWidth / imgW);
-    const sh = (cy1 - cy0) * (colorImg.naturalHeight / imgH);
+    // Map the footprint back to source-image coordinates:
+    const sx = cx0 * (colorImg.naturalWidth / w);
+    const sy = cy0 * (colorImg.naturalHeight / h);
+    const sw = (cx1 - cx0) * (colorImg.naturalWidth / w);
+    const sh = (cy1 - cy0) * (colorImg.naturalHeight / h);
     return {
       sx: sx, sy: sy, sw: sw, sh: sh,
-      dx: imgOffsetX + cx0,
-      dy: imgOffsetY + cy0,
-      dw: cx1 - cx0,
-      dh: cy1 - cy0,
+      dx: cx0, dy: cy0, dw: cx1 - cx0, dh: cy1 - cy0,
     };
   }
 
