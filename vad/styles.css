@@ -369,6 +369,18 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  filter: grayscale(100%) brightness(0.97) contrast(1.04);
+  transition: filter 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.card:hover .card__art {
+  filter: grayscale(0%) brightness(1) contrast(1);
+}
+.results__art {
+  filter: grayscale(100%) brightness(0.97) contrast(1.04);
+  transition: filter 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.results:hover .results__art {
+  filter: grayscale(0%) brightness(1) contrast(1);
 }
 .card__art[data-art="websites"]    { background-image: url('card_websites.png'); }
 .card__art[data-art="stores"]      { background-image: url('card_stores.png'); }
