@@ -14,13 +14,14 @@
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  // Brush geometry
-  const R_START = 30;     // initial brush radius
-  const R_END = 200;      // max brush radius
-  const R_VARY = 0.35;    // per-stamp radius variation
-  const LIFETIME = 2200;  // ms — how long a stamp stays before fading out
-  const STAMP_STEP = 18;  // px between stamps along the cursor path
-  const MAX_STAMPS = 220; // cap
+  // Brush geometry — a tight, sharp-cored ink droplet. Small + dense so
+  // the color reveals crisp and the cursor feels responsive.
+  const R_START = 12;     // initial brush radius (px)
+  const R_END = 52;       // max brush radius
+  const R_VARY = 0.5;     // per-stamp radius variation (more droplet feel)
+  const LIFETIME = 1500;  // ms — how long a stamp stays before fading
+  const STAMP_STEP = 9;   // px between stamps along the cursor path
+  const MAX_STAMPS = 320; // cap
   const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
   // Test helper: ?paint=hold → never fade (for screenshot tests)
@@ -133,38 +134,68 @@
     };
   }
 
-  // Draw one stamp: a soft circle that "stamps" the color image at
-  // the cursor position. The soft edge comes from destination-in on a
-  // radial gradient (alpha mask).
+  // Offscreen canvas used to compose each stamp with its soft edge mask
+  // in isolation — that way the mask's destination-in never wipes other
+  // stamps already on the main canvas.
+  const stampCanvas = document.createElement('canvas');
+  const stampCtx = stampCanvas.getContext('2d');
+
+  // Draw one stamp: paint the color image slice, then mask its outer
+  // edge with a soft radial gradient. The mask gives the stamp a sharp
+  // core that fades to transparent at the edge — like real ink soaking
+  // into paper — without blurring the colors themselves.
   function drawStamp(s, now) {
     const age = now - s.born;
     const t = age / LIFETIME; // 0..1
     if (t >= 1 && !HOLD) return false;
 
-    // Expand smoothly (easeOutCubic), hold for a beat, then fade
-    const expand = Math.min(1, t * 2.4);          // 0→1 in first ~40% of life
+    // Expand smoothly (easeOutCubic), then fade
+    const expand = Math.min(1, t * 2.4);
     const ease = 1 - Math.pow(1 - expand, 3);
     const r = R_START + (s.rmax - R_START) * ease;
-    // Fade in quickly, hold, fade out
     const fadeIn = Math.min(1, t * 8);
-    const fadeOut = t < 0.55 ? 1 : 1 - (t - 0.55) / 0.45;
+    const fadeOut = t < 0.45 ? 1 : 1 - (t - 0.45) / 0.55;
     const alpha = HOLD ? 1 : Math.max(0, Math.min(1, fadeIn)) * Math.max(0, Math.min(1, fadeOut));
 
     const rect = getSourceRect(s.x, s.y, r);
     if (!rect) return true;
 
-    // 1) Paint the color image slice to an offscreen-equivalent region on the
-    //    main canvas. We use destination-over so the stamp adds to whatever
-    //    is already there, never erasing existing paint.
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.globalAlpha = alpha;
-    try {
-      ctx.drawImage(colorImg, rect.sx, rect.sy, rect.sw, rect.sh, rect.dx, rect.dy, rect.dw, rect.dh);
-    } catch (e) {
-      // Source rect may briefly fall outside the image — skip safely
+    // Size the offscreen canvas to this stamp's footprint (in device pixels)
+    const size = Math.ceil(r * 2);
+    const dprSize = Math.ceil(size * DPR);
+    if (stampCanvas.width !== dprSize || stampCanvas.height !== dprSize) {
+      stampCanvas.width = dprSize;
+      stampCanvas.height = dprSize;
     }
-    ctx.globalAlpha = 1;
+    stampCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    stampCtx.clearRect(0, 0, size, size);
+
+    // 1) Paint the color image slice in the offscreen canvas.
+    //    The stamp's top-left in hero coords is (s.x - r, s.y - r), so
+    //    translate (rect.dx, rect.dy) into the offscreen coordinate space.
+    const offX = rect.dx - (s.x - r);
+    const offY = rect.dy - (s.y - r);
+    stampCtx.globalAlpha = alpha;
+    try {
+      stampCtx.drawImage(colorImg, rect.sx, rect.sy, rect.sw, rect.sh, offX, offY, rect.dw, rect.dh);
+    } catch (e) {
+      return true;
+    }
+    stampCtx.globalAlpha = 1;
+
+    // 2) Apply a radial-gradient soft-edge mask on the offscreen canvas.
+    stampCtx.globalCompositeOperation = 'destination-in';
+    const grad = stampCtx.createRadialGradient(r, r, 0, r, r, r);
+    grad.addColorStop(0,    'rgba(0,0,0,1)');
+    grad.addColorStop(0.5,  'rgba(0,0,0,0.95)');
+    grad.addColorStop(0.8,  'rgba(0,0,0,0.4)');
+    grad.addColorStop(1,    'rgba(0,0,0,0)');
+    stampCtx.fillStyle = grad;
+    stampCtx.fillRect(0, 0, size, size);
+
+    // 3) Stamp the composited result onto the main canvas.
     ctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(stampCanvas, 0, 0, dprSize, dprSize, s.x - r, s.y - r, size, size);
     return true;
   }
 

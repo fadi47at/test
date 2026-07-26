@@ -64,8 +64,8 @@ body {
   z-index: 1;
   pointer-events: none;
   display: block;
-  /* Soften the hard stamp edges into an inky wash */
-  filter: blur(6px);
+  /* The brush itself uses a radial-gradient mask for soft ink edges,
+     so we don't need any CSS blur — keeps the colors crisp. */
 }
 
 .hero__cursor-hint {
