@@ -84,26 +84,55 @@
   }
 
   // Compute where a stamp should sample the colorful image.
-  // The B&W CSS background fills the entire hero (background-size: 100% 100%),
-  // so the color image is mapped 1:1 to the hero's pixel rectangle.
-  // This function returns a slice of the color image clipped to the
-  // stamp's footprint, ready to be drawn at the cursor position.
+  // The B&W uses background-size: cover, so the image is scaled to
+  // cover the hero while preserving its aspect ratio (small crop
+  // instead of distortion). The color image is mapped to the same
+  // displayed area, so the painted color lines up with the B&W
+  // pixel-perfect at every window size.
   function getSourceRect(x, y, r) {
     if (!imgReady) return null;
-    // Clip the stamp's footprint to the hero bounds.
+    // Compute the displayed image rectangle (object-fit: cover logic).
+    const heroAspect = w / h;
+    const imgAspect = colorImg.naturalWidth / colorImg.naturalHeight;
+    let dispW, dispH, dispX, dispY;
+    if (imgAspect > heroAspect) {
+      // Image is wider than the hero → match height, crop sides
+      dispH = h;
+      dispW = h * imgAspect;
+      dispX = (w - dispW) / 2;
+      dispY = 0;
+    } else {
+      // Image is taller than the hero → match width, crop top/bottom
+      dispW = w;
+      dispH = w / imgAspect;
+      dispX = 0;
+      dispY = (h - dispH) / 2;
+    }
+    // Clip the stamp's footprint to the displayed image area.
     const cx0 = Math.max(0, x - r);
     const cy0 = Math.max(0, y - r);
     const cx1 = Math.min(w, x + r);
     const cy1 = Math.min(h, y + r);
     if (cx1 <= cx0 || cy1 <= cy0) return null;
-    // Map the footprint back to source-image coordinates:
-    const sx = cx0 * (colorImg.naturalWidth / w);
-    const sy = cy0 * (colorImg.naturalHeight / h);
-    const sw = (cx1 - cx0) * (colorImg.naturalWidth / w);
-    const sh = (cy1 - cy0) * (colorImg.naturalHeight / h);
+    // Clip again to the displayed-image rectangle so we don't sample
+    // pixels that aren't actually visible.
+    const cx0c = Math.max(dispX, cx0);
+    const cy0c = Math.max(dispY, cy0);
+    const cx1c = Math.min(dispX + dispW, cx1);
+    const cy1c = Math.min(dispY + dispH, cy1);
+    if (cx1c <= cx0c || cy1c <= cy0c) return null;
+    // Map the clipped footprint back to source-image coordinates.
+    const lx0 = cx0c - dispX;
+    const ly0 = cy0c - dispY;
+    const lx1 = cx1c - dispX;
+    const ly1 = cy1c - dispY;
+    const sx = lx0 * (colorImg.naturalWidth / dispW);
+    const sy = ly0 * (colorImg.naturalHeight / dispH);
+    const sw = (lx1 - lx0) * (colorImg.naturalWidth / dispW);
+    const sh = (ly1 - ly0) * (colorImg.naturalHeight / dispH);
     return {
       sx: sx, sy: sy, sw: sw, sh: sh,
-      dx: cx0, dy: cy0, dw: cx1 - cx0, dh: cy1 - cy0,
+      dx: cx0c, dy: cy0c, dw: cx1c - cx0c, dh: cy1c - cy0c,
     };
   }
 
