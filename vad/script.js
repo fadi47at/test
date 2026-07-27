@@ -12,10 +12,8 @@
   const testParams = new URLSearchParams(window.location.search);
   const HOLD = testParams.get('paint') === 'hold';
 
-  // Offscreen canvas used to compose each stamp with its soft edge
-  // mask — kept module-level so all painters share it.
-  const stampCanvas = document.createElement('canvas');
-  const stampCtx = stampCanvas.getContext('2d');
+  // Each cursor painter keeps its own offscreen stamp + mask canvases
+  // (created inside createCursorPainter below).
 
   /**
    * Wire up a cursor-paint effect to a container.
@@ -35,23 +33,76 @@
 
     const colorImg = new Image();
     let imgReady = false;
-    colorImg.onload = () => { imgReady = true; };
-    colorImg.src = colorSrc;
+
+    // Per-painter offscreen stamp canvas, allocated once at the max brush
+    // diameter — no per-stamp reallocation (was a source of jank).
+    const maxDpr = Math.ceil(o.rEnd * 2 * DPR);
+    const stampCanvas = document.createElement('canvas');
+    stampCanvas.width = maxDpr;
+    stampCanvas.height = maxDpr;
+    const stampCtx = stampCanvas.getContext('2d');
+
+    // Pre-render the soft circular mask ONCE. The old code rebuilt this
+    // gradient for every stamp on every frame — the main cause of stutter.
+    const maskCanvas = document.createElement('canvas');
+    maskCanvas.width = maxDpr;
+    maskCanvas.height = maxDpr;
+    const maskCtx = maskCanvas.getContext('2d');
+    (function () {
+      const mr = o.rEnd * DPR;
+      const g = maskCtx.createRadialGradient(mr, mr, 0, mr, mr, mr);
+      g.addColorStop(0,   'rgba(0,0,0,1)');
+      g.addColorStop(0.5, 'rgba(0,0,0,0.95)');
+      g.addColorStop(0.8, 'rgba(0,0,0,0.4)');
+      g.addColorStop(1,   'rgba(0,0,0,0)');
+      maskCtx.fillStyle = g;
+      maskCtx.fillRect(0, 0, maxDpr, maxDpr);
+    })();
 
     let w = 0, h = 0;
+    // Cached "cover" mapping of the color image onto the box — constant
+    // between resizes, so we don't recompute it per stamp per frame.
+    let dispX = 0, dispY = 0, dispW = 0, dispH = 0, sxRatio = 1, syRatio = 1;
+    function recomputeMapping() {
+      if (!imgReady || w === 0 || h === 0) return;
+      const boxAspect = w / h;
+      const imgAspect = colorImg.naturalWidth / colorImg.naturalHeight;
+      if (imgAspect > boxAspect) {
+        dispH = h; dispW = h * imgAspect; dispX = (w - dispW) / 2; dispY = 0;
+      } else {
+        dispW = w; dispH = w / imgAspect; dispX = 0; dispY = (h - dispH) / 2;
+      }
+      sxRatio = colorImg.naturalWidth / dispW;
+      syRatio = colorImg.naturalHeight / dispH;
+    }
+
+    // Cached container rect for mouse coords (refreshed on enter/scroll/resize).
+    let rectLeft = 0, rectTop = 0;
+    function refreshRect() {
+      const r = container.getBoundingClientRect();
+      rectLeft = r.left; rectTop = r.top;
+    }
+
+    colorImg.onload = () => { imgReady = true; recomputeMapping(); };
+    colorImg.src = colorSrc;
+
     function resize() {
       const rect = container.getBoundingClientRect();
       w = rect.width;
       h = rect.height;
+      rectLeft = rect.left;
+      rectTop = rect.top;
       canvas.width = Math.round(w * DPR);
       canvas.height = Math.round(h * DPR);
       canvas.style.width = w + 'px';
       canvas.style.height = h + 'px';
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       ctx.clearRect(0, 0, w, h);
+      recomputeMapping();
     }
     resize();
     window.addEventListener('resize', resize);
+    window.addEventListener('scroll', refreshRect, { passive: true });
 
     const stamps = [];
     let lastX = null, lastY = null;
@@ -85,37 +136,19 @@
     // to the same displayed area — painted color lines up with the B&W.
     function getSourceRect(x, y, r) {
       if (!imgReady) return null;
-      const boxAspect = w / h;
-      const imgAspect = colorImg.naturalWidth / colorImg.naturalHeight;
-      let dispW, dispH, dispX, dispY;
-      if (imgAspect > boxAspect) {
-        dispH = h; dispW = h * imgAspect;
-        dispX = (w - dispW) / 2; dispY = 0;
-      } else {
-        dispW = w; dispH = w / imgAspect;
-        dispX = 0; dispY = (h - dispH) / 2;
-      }
-      const cx0 = Math.max(0, x - r);
-      const cy0 = Math.max(0, y - r);
-      const cx1 = Math.min(w, x + r);
-      const cy1 = Math.min(h, y + r);
-      if (cx1 <= cx0 || cy1 <= cy0) return null;
-      const cx0c = Math.max(dispX, cx0);
-      const cy0c = Math.max(dispY, cy0);
-      const cx1c = Math.min(dispX + dispW, cx1);
-      const cy1c = Math.min(dispY + dispH, cy1);
+      const cx0c = Math.max(dispX, x - r);
+      const cy0c = Math.max(dispY, y - r);
+      const cx1c = Math.min(dispX + dispW, x + r);
+      const cy1c = Math.min(dispY + dispH, y + r);
       if (cx1c <= cx0c || cy1c <= cy0c) return null;
-      const lx0 = cx0c - dispX;
-      const ly0 = cy0c - dispY;
-      const lx1 = cx1c - dispX;
-      const ly1 = cy1c - dispY;
-      const sx = lx0 * (colorImg.naturalWidth / dispW);
-      const sy = ly0 * (colorImg.naturalHeight / dispH);
-      const sw = (lx1 - lx0) * (colorImg.naturalWidth / dispW);
-      const sh = (ly1 - ly0) * (colorImg.naturalHeight / dispH);
+      const dw = cx1c - cx0c;
+      const dh = cy1c - cy0c;
       return {
-        sx: sx, sy: sy, sw: sw, sh: sh,
-        dx: cx0c, dy: cy0c, dw: cx1c - cx0c, dh: cy1c - cy0c,
+        sx: (cx0c - dispX) * sxRatio,
+        sy: (cy0c - dispY) * syRatio,
+        sw: dw * sxRatio,
+        sh: dh * syRatio,
+        dx: cx0c, dy: cy0c, dw: dw, dh: dh,
       };
     }
 
@@ -136,11 +169,10 @@
 
       const size = Math.ceil(r * 2);
       const dprSize = Math.ceil(size * DPR);
-      if (stampCanvas.width !== dprSize || stampCanvas.height !== dprSize) {
-        stampCanvas.width = dprSize;
-        stampCanvas.height = dprSize;
-      }
+
       stampCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      stampCtx.globalCompositeOperation = 'source-over';
+      stampCtx.globalAlpha = 1;
       stampCtx.clearRect(0, 0, size, size);
 
       const offX = rect.dx - (s.x - r);
@@ -151,14 +183,9 @@
       } catch (e) { return true; }
       stampCtx.globalAlpha = 1;
 
+      // Cut to the soft circle using the pre-rendered mask (no per-frame gradient).
       stampCtx.globalCompositeOperation = 'destination-in';
-      const grad = stampCtx.createRadialGradient(r, r, 0, r, r, r);
-      grad.addColorStop(0,   'rgba(0,0,0,1)');
-      grad.addColorStop(0.5, 'rgba(0,0,0,0.95)');
-      grad.addColorStop(0.8, 'rgba(0,0,0,0.4)');
-      grad.addColorStop(1,   'rgba(0,0,0,0)');
-      stampCtx.fillStyle = grad;
-      stampCtx.fillRect(0, 0, size, size);
+      stampCtx.drawImage(maskCanvas, 0, 0, maxDpr, maxDpr, 0, 0, size, size);
 
       ctx.globalCompositeOperation = 'source-over';
       ctx.drawImage(stampCanvas, 0, 0, dprSize, dprSize, s.x - r, s.y - r, size, size);
@@ -173,7 +200,7 @@
         const alive = drawStamp(stamps[i], now);
         if (!alive) stamps.splice(i, 1);
       }
-      if (stamps.length || hasCursor) requestAnimationFrame(loop);
+      if (stamps.length) requestAnimationFrame(loop);
       else running = false;
     }
     function start() {
@@ -182,16 +209,15 @@
 
     container.addEventListener('mouseenter', (e) => {
       hasCursor = true;
-      const rect = container.getBoundingClientRect();
-      lastX = e.clientX - rect.left;
-      lastY = e.clientY - rect.top;
+      refreshRect();
+      lastX = e.clientX - rectLeft;
+      lastY = e.clientY - rectTop;
       stampAlong(lastX, lastY);
       container.classList.add('is-painted');
       start();
     });
     container.addEventListener('mousemove', (e) => {
-      const rect = container.getBoundingClientRect();
-      stampAlong(e.clientX - rect.left, e.clientY - rect.top);
+      stampAlong(e.clientX - rectLeft, e.clientY - rectTop);
       start();
     });
     container.addEventListener('mouseleave', () => {
@@ -229,27 +255,30 @@
   const hero = document.querySelector('.hero');
   const heroCanvas = document.getElementById('heroPaint');
   if (hero && heroCanvas) {
-    createCursorPainter(hero, heroCanvas, 'hero_bg_color.png', {
+    createCursorPainter(hero, heroCanvas, 'hero_bg_color.webp', {
       rStart: 12, rEnd: 52, lifetime: 1500, stampStep: 9, maxStamps: 320,
     });
   }
 
   // ===== Wire up the 5 cards =====
   // Smaller brush since cards are smaller surfaces.
+  // The painter's container is .card__media so the color overlay maps
+  // 1:1 onto the grayscale .card__art (same box → identical cover crop).
   const cards = document.querySelectorAll('.card');
   cards.forEach((card) => {
+    const media = card.querySelector('.card__media');
     const canvas = card.querySelector('.card__paint');
-    if (!canvas) return;
+    if (!media || !canvas) return;
     const colorName = canvas.getAttribute('data-color');
     if (!colorName) return;
-    createCursorPainter(card, canvas, colorName, {
+    createCursorPainter(media, canvas, colorName, {
       rStart: 6, rEnd: 26, lifetime: 1200, stampStep: 6, maxStamps: 180,
     });
   });
 })();
 
 // =========================================================
-// Hero subtitle typewriter (RTL-aware: chars revealed RTL)
+// Hero subtitle typewriter (RTL: reveals right-to-left)
 // =========================================================
 (function () {
   const sub = document.querySelector('.hero__subtitle');
@@ -261,25 +290,26 @@
   function type() {
     sub.textContent = '';
     sub.classList.add('is-typing');
-    const chars = [];
-    for (const ch of original) {
-      const s = document.createElement('span');
-      s.className = 'char';
-      s.textContent = ch;
-      sub.appendChild(s);
-      chars.push(s);
-    }
+    // One growing text node keeps Arabic letters CONNECTED (per-char
+    // spans isolate each letter and break cursive shaping). Caret sits
+    // at the left (the RTL "end"), so text grows right→left.
+    const textNode = document.createTextNode('');
+    sub.appendChild(textNode);
     const caret = document.createElement('span');
     caret.className = 'type-caret';
     caret.setAttribute('aria-hidden', 'true');
     sub.appendChild(caret);
 
-    const DELAY = 50;
+    const DELAY = 45;
     const START = 350;
-    chars.forEach((c, i) => {
-      setTimeout(() => c.classList.add('is-typed'), START + (chars.length - 1 - i) * DELAY);
-    });
-    setTimeout(() => sub.classList.add('is-done'), START + chars.length * DELAY + 200);
+    let i = 0;
+    function step() {
+      i++;
+      textNode.nodeValue = original.slice(0, i);
+      if (i < original.length) setTimeout(step, DELAY);
+      else setTimeout(() => sub.classList.add('is-done'), 200);
+    }
+    setTimeout(step, START);
   }
 
   if (document.fonts && document.fonts.ready) {
@@ -296,52 +326,66 @@
   const titles = document.querySelectorAll('.card__text h3');
   if (!titles.length || !('IntersectionObserver' in window)) return;
 
-  const CHAR_DELAY = 50;
+  const CHAR_DELAY = 45;
 
+  // One growing text node per title keeps Arabic letters CONNECTED
+  // (per-char spans isolate letters and break cursive shaping).
+  const items = [];
   titles.forEach((h3) => {
-    const text = h3.textContent;
+    const text = h3.textContent.trim();
     h3.textContent = '';
-    for (const c of text) {
-      const span = document.createElement('span');
-      span.className = 'char';
-      span.textContent = c;
-      h3.appendChild(span);
-    }
+    const textNode = document.createTextNode('');
+    h3.appendChild(textNode);
     const cursor = document.createElement('span');
     cursor.className = 'cursor';
     cursor.setAttribute('aria-hidden', 'true');
     h3.appendChild(cursor);
+    items.push({ h3, text, textNode });
   });
 
-  function animateType(h3) {
+  function animateType(item) {
+    const { h3, text, textNode } = item;
     if (h3.dataset.typed === '1') return;
     h3.dataset.typed = '1';
     h3.classList.add('is-active');
-    const chars = h3.querySelectorAll('.char');
-    chars.forEach((char, i) => {
-      setTimeout(() => char.classList.add('is-typed'), i * CHAR_DELAY);
-    });
-    setTimeout(() => h3.classList.add('is-done'), chars.length * CHAR_DELAY + 200);
+    let i = 0;
+    function step() {
+      i++;
+      textNode.nodeValue = text.slice(0, i);
+      if (i < text.length) setTimeout(step, CHAR_DELAY);
+      else setTimeout(() => h3.classList.add('is-done'), 200);
+    }
+    step();
   }
 
-  function snapShow(h3) {
+  function snapShow(item) {
+    const { h3, text, textNode } = item;
     if (h3.dataset.typed === '1') return;
     h3.dataset.typed = '1';
     h3.classList.add('is-active', 'is-done');
-    h3.querySelectorAll('.char').forEach((c) => c.classList.add('is-typed'));
+    textNode.nodeValue = text;
   }
 
+  const byNode = new Map(items.map((it) => [it.h3, it]));
+
   const obs = new IntersectionObserver(
-    (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) animateType(entry.target); }); },
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const item = byNode.get(entry.target);
+          if (item) animateType(item);
+        }
+      });
+    },
     { threshold: 0.3 }
   );
   titles.forEach((h3) => obs.observe(h3));
 
   window.addEventListener('scroll', () => {
     const cut = window.innerHeight * 0.5;
-    titles.forEach((h3) => {
-      if (h3.dataset.typed === '1') return;
-      if (h3.getBoundingClientRect().bottom < cut) snapShow(h3);
+    items.forEach((item) => {
+      if (item.h3.dataset.typed === '1') return;
+      if (item.h3.getBoundingClientRect().bottom < cut) snapShow(item);
     });
   }, { passive: true });
 })();
